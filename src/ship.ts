@@ -1,23 +1,27 @@
 export default class Ship {
-    length: number;
-    numOfHits: number;
-    sunk: boolean;
+    private length: number;
+    private hits: number;
+    private sunk: boolean;
 
     constructor(length:number) {
         this.length = length;
-        this.numOfHits = 0;
+        this.hits = 0;
         this.sunk = false;
     }
 
     isSunk() {
-        this.sunk = true;
+        return this.sunk? true: false;
     }
 
     hit() {
-        this.numOfHits += 1;
+        this.hits += 1;
 
-        if (this.numOfHits === this.length) {
-            this.isSunk();
+        if (this.hits === this.length) {
+            this.sunk = true;
         }
+    }
+
+    get numOfHits() {
+        return this.hits;
     }
 }
