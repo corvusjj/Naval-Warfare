@@ -41,7 +41,7 @@ describe('Cruiser (length of 3)', () => {
         expect(cruiser.isSunk()).toBe(true);
     });
 
-    it('num of length should be equal to 0 if not hit', () => {
+    it('num of hits should be equal to 0 if not hit', () => {
         const cruiser = new Ship(3);
         expect(cruiser.numOfHits()).toBe(0);
     });
