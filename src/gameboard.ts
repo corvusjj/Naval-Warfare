@@ -1,3 +1,5 @@
+import Ship from "./ship";
+
 function setupBoard() {
     const board: string[][] = [];
     const firstRow = '0ABCDEFGHIJ';
@@ -26,7 +28,7 @@ export default class GameBoard {
         return [...this.board];
     }
 
-    seekCoordinates(ship:object, square:string) {
+    seekCoordinates(ship:Ship, square:string) {
         const length:number = ship.getLength();
         const direction:string = ship.getDirection();
         let x = parseInt(square[0]);
