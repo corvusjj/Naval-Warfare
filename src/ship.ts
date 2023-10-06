@@ -1,12 +1,24 @@
 export default class Ship {
     private length: number;
     private hits: number;
+    private isVertical: boolean;
     private sunk: boolean;
 
     constructor(length:number) {
         this.length = length;
         this.hits = 0;
+        this.isVertical = true;
         this.sunk = false;
+    }
+
+    getDirection() {
+        return this.isVertical? 'vertical': 'horizontal';
+    }
+
+    toggleDirection() {
+        if (this.isVertical) {
+            this.isVertical = false;
+        } else this.isVertical = true;
     }
 
     isSunk() {
@@ -21,7 +33,7 @@ export default class Ship {
         }
     }
 
-    get numOfHits() {
+    numOfHits() {
         return this.hits;
     }
 }
