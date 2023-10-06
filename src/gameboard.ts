@@ -14,11 +14,15 @@ function setupBoard() {
 }
 
 export default class GameBoard {
-    board: string[][];
+    private board: string[][];
     ships: object;
 
     constructor() {
         this.board = setupBoard();
         this.ships = {};
+    }
+
+    getBoard() {
+        return [...this.board];
     }
 }
