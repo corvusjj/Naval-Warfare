@@ -21,6 +21,10 @@ export default class Ship {
         } else this.isVertical = true;
     }
 
+    getLength() {
+        return this.length;
+    }
+
     isSunk() {
         return this.sunk? true: false;
     }

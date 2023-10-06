@@ -25,4 +25,25 @@ export default class GameBoard {
     getBoard() {
         return [...this.board];
     }
+
+    seekCoordinates(ship:object, square:string) {
+        const length:number = ship.getLength();
+        const direction:string = ship.getDirection();
+        let x = parseInt(square[0]);
+        let y = parseInt(square[1]);
+
+        let canBePlaced  = true;    
+        const coordinates = [[x, y]];
+
+        for(let i = 1; i < length; i++) {
+            direction === 'vertical'? x++: y++;
+            if (this.board[x][y] !== '.') {
+                canBePlaced = false;
+                break;
+            }
+            coordinates.push([x, y]);
+        }
+
+        return {canBePlaced, coordinates};
+    }
 }
