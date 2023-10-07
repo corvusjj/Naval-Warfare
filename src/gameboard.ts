@@ -31,19 +31,21 @@ export default class GameBoard {
     seekCoordinates(ship:Ship, square:string) {
         const length:number = ship.getLength();
         const direction:string = ship.getDirection();
-        let x = parseInt(square[0]);
-        let y = parseInt(square[1]);
+        let x = parseInt(square.split('-')[0]);
+        let y = parseInt(square.split('-')[1]);
 
         let canBePlaced  = true;    
-        const coordinates = [[x, y]];
+        const coordinates = [[x,y]];
 
         for(let i = 1; i < length; i++) {
             direction === 'vertical'? x++: y++;
-            if (this.board[x][y] !== '.') {
+            if ( x > 10 ||
+                 y > 10 ||
+                this.board[x][y] !== '.') {
                 canBePlaced = false;
                 break;
             }
-            coordinates.push([x, y]);
+            coordinates.push([x,y]);
         }
 
         return {canBePlaced, coordinates};
