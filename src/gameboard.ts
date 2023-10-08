@@ -1,6 +1,7 @@
 import Ship from "./ship";
+type playerShips = Record<string, Ship>;
 
-function setupBoard() {
+export function setupBoard() {
     const board: string[][] = [];
     const firstRow = '0ABCDEFGHIJ';
     board.push(firstRow.split(''));
@@ -17,7 +18,7 @@ function setupBoard() {
 
 export default class GameBoard {
     private board: string[][];
-    ships: object;
+    private ships: playerShips;
 
     constructor() {
         this.board = setupBoard();
@@ -49,5 +50,22 @@ export default class GameBoard {
         }
 
         return {canBePlaced, coordinates};
+    }
+
+    markBoard(char:string, square:number[]) {
+        const x = square[0];
+        const y = square[1];
+        this.board[x][y] = char;
+    }
+
+    placeShip(ship:Ship, square:string, char:string) {
+        const seekPlacement = this.seekCoordinates(ship, square);
+        if (seekPlacement.canBePlaced === false) return;
+
+        seekPlacement.coordinates.forEach((square:number[]) => {
+            this.markBoard(char, square);
+        });
+
+        this.ships[char] = ship;
     }
 }
