@@ -39,10 +39,14 @@ export default class GameBoard {
     }
 
     checkAllSunk() {
+        let allSunk = true;
         for (const char in this.ships) {
-            if (!this.ships[char].isSunk()) break;
+            if (!this.ships[char].isSunk()) {
+                allSunk = false;
+                break;
+            }
         }
-        return true;
+        return allSunk;
     }
 
     seekCoordinates(ship:Ship, square:string) {
@@ -93,16 +97,21 @@ export default class GameBoard {
         this.ships[char] = ship;
     }
 
+    hitShip(char:string) {
+        this.ships[char].hit();
+
+        if (this.ships[char].isSunk()) {
+            if (this.checkAllSunk()) this.gameOver();
+            return this.getShipCoordinates(char);
+        }
+    }
+
     receiveAttack(square: number[]) {
         const x = square[0];
         const y = square[1];
         const hitChar = this.board[x][y];
 
-        if (hitChar !== '.') this.ships[hitChar].hit();
-
-        if (this.ships[hitChar].isSunk() === true) {
-            this.getShipCoordinates(hitChar);
-        }
+        return hitChar === '.'? this.markBoard('o', square): this.hitShip(hitChar);
     }
 
     getShipCoordinates(char:string) {
