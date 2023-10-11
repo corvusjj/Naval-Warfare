@@ -52,7 +52,7 @@ export default class GameBoard {
         return {canBePlaced, coordinates};
     }
 
-    markBoard(char:string, square:number[]) {
+    private markBoard(char:string, square:number[]) {
         const x = square[0];
         const y = square[1];
         this.board[x][y] = char;
@@ -67,5 +67,25 @@ export default class GameBoard {
         });
 
         this.ships[char] = ship;
+    }
+
+    getShipsStatus() {
+        type shipStatus = Record<string, {
+                hits: number,
+                sunk: boolean
+            }>;
+
+        const shipsStatus: shipStatus = {};
+
+        for (const property in this.ships) {
+            const ship = this.ships[property];
+
+            shipsStatus[property] = {
+                hits: ship.numOfHits(),
+                sunk: ship.isSunk()
+            }
+        }
+        
+        return shipsStatus;
     }
 }
