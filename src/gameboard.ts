@@ -38,6 +38,13 @@ export default class GameBoard {
         return "game over";
     }
 
+    checkAllSunk() {
+        for (const char in this.ships) {
+            if (!this.ships[char].isSunk()) break;
+        }
+        return true;
+    }
+
     seekCoordinates(ship:Ship, square:string) {
         const length:number = ship.getLength();
         const direction:string = ship.getDirection();
