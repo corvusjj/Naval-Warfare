@@ -115,3 +115,60 @@ describe('Marking ship characters on board', () => {
         expect(gameBoard.getBoard()).toEqual(modifiedBoard);
     });
 });
+
+describe('ships status', () => {
+    let battleship:Ship;
+    let carrier:Ship;
+    let cruiser:Ship;
+    let submarine:Ship;
+    let destroyer:Ship;
+
+    beforeEach(() => {
+        battleship = new Ship(4);
+        carrier = new Ship(5);
+        cruiser = new Ship(3);
+        submarine = new Ship(3);
+        destroyer = new Ship(2);
+
+        battleship.toggleDirection();
+        cruiser.toggleDirection();
+
+        gameBoard.placeShip(battleship, '1-7', 'b');
+        gameBoard.placeShip(carrier, '2-2', 'c');
+        gameBoard.placeShip(cruiser, '2-4', 'r');
+        gameBoard.placeShip(submarine, '8-1', 's');
+        gameBoard.placeShip(destroyer, '3-7', 'd');
+    });
+
+    it('must hit ship if attacked on its coordinate.', () => {
+        const char = 'd';
+        gameBoard.receiveAttack([3,7]);
+
+        expect(gameBoard.getShipsStatus()[char]).toEqual(
+            {
+                hits: 1,
+                sunk: false
+            }
+        );
+    });
+
+    it('ship should sink if amount of hits is equal to its length.', () => {
+        const char = 'r';
+        gameBoard.receiveAttack([2,4]);
+        gameBoard.receiveAttack([2,5]);
+        gameBoard.receiveAttack([2,6]);
+
+        expect(gameBoard.getShipsStatus()[char]).toEqual(
+            {
+                hits: 3,
+                sunk: true
+            }
+        );
+    });
+
+    it('sunk ship should return its coordinates.', () => {
+        gameBoard.receiveAttack([8,1]);
+        gameBoard.receiveAttack([9,1]);
+        expect(gameBoard.receiveAttack([10,1])).toEqual([[8,1], [9,1], [10,1]]);
+    })
+});
