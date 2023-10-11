@@ -1,5 +1,6 @@
 import Ship from "./ship";
 type playerShips = Record<string, Ship>;
+type shipCoordinates = Record<string, number[][]>;
 
 export function setupBoard() {
     const board: string[][] = [];
@@ -19,10 +20,12 @@ export function setupBoard() {
 export default class GameBoard {
     private board: string[][];
     private ships: playerShips;
+    private shipCoordinates: shipCoordinates;
 
     constructor() {
         this.board = setupBoard();
         this.ships = {};
+        this.shipCoordinates = {};
     }
 
     getBoard() {
@@ -58,15 +61,39 @@ export default class GameBoard {
         this.board[x][y] = char;
     }
 
+    private setShipCoordinates(char:string, square:number[]) {
+        const x = square[0];
+        const y = square[1];
+        this.shipCoordinates[char].push([x,y]);
+    }
+
     placeShip(ship:Ship, square:string, char:string) {
         const seekPlacement = this.seekCoordinates(ship, square);
         if (seekPlacement.canBePlaced === false) return;
 
+        this.shipCoordinates[char] = [];
         seekPlacement.coordinates.forEach((square:number[]) => {
             this.markBoard(char, square);
+            this.setShipCoordinates(char, square);
         });
 
         this.ships[char] = ship;
+    }
+
+    receiveAttack(square: number[]) {
+        const x = square[0];
+        const y = square[1];
+        const hitChar = this.board[x][y];
+
+        if (hitChar !== '.') this.ships[hitChar].hit();
+        
+        if (this.ships[hitChar].isSunk() === true) {
+            return this.getShipCoordinates(hitChar);
+        }
+    }
+
+    getShipCoordinates(char:string) {
+        return this.shipCoordinates[char];
     }
 
     getShipsStatus() {
