@@ -111,7 +111,12 @@ export default class GameBoard {
         const y = square[1];
         const hitChar = this.board[x][y];
 
-        return hitChar === '.'? this.markBoard('o', square): this.hitShip(hitChar);
+        if (hitChar === '.') {
+            this.markBoard('o', square);
+        } else {
+            this.markBoard('x', square);
+            return this.hitShip(hitChar);
+        }
     }
 
     getShipCoordinates(char:string) {
