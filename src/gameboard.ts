@@ -28,8 +28,14 @@ export default class GameBoard {
         this.shipCoordinates = {};
     }
 
-    getBoard() {
-        return [...this.board];
+    reset() {
+        this.board = setupBoard();
+        this.ships = {};
+        this.shipCoordinates = {};
+    }
+
+    gameOver() {
+        return "game over";
     }
 
     seekCoordinates(ship:Ship, square:string) {
@@ -86,9 +92,9 @@ export default class GameBoard {
         const hitChar = this.board[x][y];
 
         if (hitChar !== '.') this.ships[hitChar].hit();
-        
+
         if (this.ships[hitChar].isSunk() === true) {
-            return this.getShipCoordinates(hitChar);
+            this.getShipCoordinates(hitChar);
         }
     }
 
@@ -114,5 +120,9 @@ export default class GameBoard {
         }
         
         return shipsStatus;
+    }
+
+    getBoard() {
+        return [...this.board];
     }
 }
