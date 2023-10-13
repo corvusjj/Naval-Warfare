@@ -1,3 +1,30 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     background: #001833;
+    display: flex;
+    justify-content: center;
 }
+
+.gameboard {
+    margin: 50px;
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+
+    .square {
+        width: 50px;
+        height: 50px;
+        border: 1px solid #ffffff57;
+        color: white;
+        cursor: pointer;
+    }
+
+    .square-axis {
+        pointer-events: none;
+    }
+}
+
