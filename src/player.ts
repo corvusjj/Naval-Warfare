@@ -15,8 +15,10 @@ function setupShips() {
 export default class Player {
     gameBoard: GameBoard;
     ships: playerShips;
+    name: string;
 
-    constructor() {
+    constructor(name:string) {
+        this.name = name;
         this.gameBoard = new GameBoard;
         this.ships = setupShips();
     }
