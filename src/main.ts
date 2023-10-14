@@ -1,4 +1,4 @@
 import './components/style.scss';
-import { setupBoardUI } from './components/interface';
+import { startGame } from './game';
 
-setupBoardUI();
+startGame();
