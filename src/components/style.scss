@@ -10,21 +10,49 @@ body {
     justify-content: center;
 }
 
-.gameboard {
+.gameboard-container {
     margin: 50px;
+    border: 1px solid skyblue;
+    max-width: 442px;
+    overflow: hidden;
+}
+
+.boards-toggle {
+    left: -100%;
+}
+
+.boards-panel {
+    // border: 1px solid green;
+    display: flex;
+    position: relative;
+}
+
+.board {
     display: grid;
     grid-template-columns: repeat(11, 1fr);
 
     .square {
-        width: 50px;
-        height: 50px;
-        border: 1px solid #ffffff57;
+        width: 40px;
+        height: 40px;
+        border: 1px solid #ffffff63;
         color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         cursor: pointer;
+
+        &:first-of-type {
+            border-top: none;
+            background: #001833;
+        }
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.178);
+        }
     }
 
     .square-axis {
         pointer-events: none;
+        background: #082547;
     }
 }
-
