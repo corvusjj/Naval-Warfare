@@ -44,6 +44,8 @@ function setupBoardUI (name:string) {
             yIndex++;
         }
     }
+
+    board.setAttribute('data-index', `${boardsPanel.childElementCount}`);
     boardsPanel.appendChild(board);
 }
 
@@ -52,7 +54,7 @@ function toggleBoard() {
 }
 
 function hitSquare(e: MouseEvent) {
-    const square:HTMLDivElement = e.target;
+    const square = e.target as HTMLDivElement;
     square.textContent = 'x';
     square.style.pointerEvents = 'none';
     toggleBoard();
