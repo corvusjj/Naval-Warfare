@@ -37,7 +37,7 @@ function setupBoardUI (name:string) {
         } else {
             square.style.borderLeft = 'none';
             square.setAttribute('data-coord', `${y[yIndex]}-${x[xIndex]}`);
-            square.addEventListener('click', hitSquare);
+            square.addEventListener('click', attack);
         }
 
         xIndex++;
@@ -58,19 +58,33 @@ function toggleBoardUI(index: number) {
     boardsPanel.style.left = '-100%';
 }
 
-function hitSquare(e: MouseEvent) {
-    const square = e.target as HTMLDivElement;
+function attack(e: MouseEvent) {
+    const squareNode = e.target as HTMLDivElement;
+    const stringCoord = squareNode.dataset.coord!;
+    const coordinates = stringCoord.split('-');
 
-    const coord = square.dataset.coord!;
-    const [x, y] = coord.split('-');
-    userMethods.attack([parseInt(x), parseInt(y)]);
-
-    square.style.pointerEvents = 'none';
+    hitSquare(coordinates.map(x => parseInt(x)));
+    squareNode.style.pointerEvents = 'none';
 }
 
-function markSquareUI(element: { textContent: string; }) {
-    element.textContent = 'x';
+function hitSquare(square: number[]) {
+    userMethods.attack(square);
 }
+
+function markSquareUI(square: number[], name: string) {
+    const [x, y] = square.map(num => num.toString());
+    const board = document.querySelector(`.${name}`)!;
+    const tileUI = board.querySelector(`[data-coord="${x}-${y}"]`)!;
+    tileUI.textContent = 'X';
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        userMethods.setGameState(false, ['john', 'nathan']);
+        setupBoardUI('nathan');
+        setupBoardUI('john');
+    }   
+});
 
 export { 
     toggleBoardUI,

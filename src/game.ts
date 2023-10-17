@@ -1,6 +1,7 @@
 import Player from './player';
 import { 
     toggleBoardUI,
+    markSquareUI
 } from './components/interface';
 interface attackState {
     state: string;
@@ -58,6 +59,7 @@ const userMethods = {
     attack: (square: number[]) => {
         const attackState:attackState = gameState.attack(square);
         console.log(attackState);
+        markSquareUI(square, gameState.defender.name);
         gameState.toggleState();
     }
 }
