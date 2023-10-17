@@ -118,25 +118,19 @@ describe('Marking ship characters on board', () => {
 
 describe('ships status', () => {
     let battleship:Ship;
-    let carrier:Ship;
     let cruiser:Ship;
-    let submarine:Ship;
     let destroyer:Ship;
 
     beforeEach(() => {
         battleship = new Ship(4);
-        carrier = new Ship(5);
         cruiser = new Ship(3);
-        submarine = new Ship(3);
         destroyer = new Ship(2);
 
         battleship.toggleDirection();
         cruiser.toggleDirection();
 
         gameBoard.placeShip(battleship, '1-7', 'b');
-        gameBoard.placeShip(carrier, '2-2', 'c');
         gameBoard.placeShip(cruiser, '2-4', 'r');
-        gameBoard.placeShip(submarine, '8-1', 's');
         gameBoard.placeShip(destroyer, '3-7', 'd');
     });
 
@@ -165,10 +159,56 @@ describe('ships status', () => {
             }
         );
     });
+});
 
-    it('sunk ship should return its coordinates.', () => {
-        gameBoard.receiveAttack([8,1]);
+describe('game board states', () => {
+    let submarine:Ship;
+    let destroyer:Ship;
+
+    beforeEach(() => {
+        submarine = new Ship(3);
+        destroyer = new Ship(2);
+
+        gameBoard.placeShip(submarine, '8-1', 's');
+        gameBoard.placeShip(destroyer, '3-7', 'd');
+    });
+
+    it('missed attack should return "miss" with right coordinates', () => {
+        expect(gameBoard.receiveAttack([2,5])).toEqual(
+            { state: 'miss', coordinates: [[2,5]] }
+        );
+    });
+
+    it('attacked ship should return "hit" with right coordinates', () => {
+        expect(gameBoard.receiveAttack([8,1])).toEqual(
+            { state: 'hit', coordinates: [[8,1]] }
+        );
+    });
+
+    it('attacked ship on its last square should return "sunk" along with all its coordinates', () => {
         gameBoard.receiveAttack([9,1]);
-        expect(gameBoard.receiveAttack([10,1])).toEqual([[8,1], [9,1], [10,1]]);
-    })
+        gameBoard.receiveAttack([10,1]);
+
+        expect(gameBoard.receiveAttack([8,1])).toEqual(
+            { state: 'sunk', coordinates: [[8,1], [9,1], [10,1]] }
+        );
+    });
+
+    it('last ship attack on its last square should return "game-over" along with all its coordinates', () => {
+        gameBoard.receiveAttack([9,1]);
+        gameBoard.receiveAttack([10,1]);
+        gameBoard.receiveAttack([8,1]);
+        gameBoard.receiveAttack([3,7]);
+
+        expect(gameBoard.receiveAttack([4,7])).toEqual(
+            { state: 'game-over', coordinates: [[3,7], [4,7]] }
+        );
+    });
+
+    it('should reset gameBoard', () => {
+        gameBoard.reset();
+
+        expect(gameBoard.getShipsStatus()).toEqual({});
+        expect(gameBoard.getBoard()).toEqual(setupBoard());
+    });
 });
