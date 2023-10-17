@@ -1,7 +1,12 @@
 import Player from './player';
 import { 
-    toggleBoardUI
+    toggleBoardUI,
 } from './components/interface';
+interface attackState {
+    state: string;
+    coordinates: number[][];
+}
+
 
 let gameState: GameState;
 
@@ -33,7 +38,7 @@ class GameState {
     }
 
     attack(square: number[]) {
-        this.attacker.attack(square, this.defender);
+        return this.attacker.attack(square, this.defender);
     }   
 }
 
@@ -48,11 +53,12 @@ const userMethods = {
         
         gameState = new GameState(p1, p2);
         if (vsComputer) gameState.vsComputer = true;
-        console.log(gameState);
     },
 
     attack: (square: number[]) => {
-        gameState.attack(square);
+        const attackState:attackState = gameState.attack(square);
+        console.log(attackState);
+        gameState.toggleState();
     }
 }
 

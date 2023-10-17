@@ -24,10 +24,10 @@ export default class Player {
     }
 
     receiveAttack(square:number[]) {
-        this.gameBoard.receiveAttack(square);
+        return this.gameBoard.receiveAttack(square);
     }
 
     attack(square:number[], opponent:Player) {
-        opponent.receiveAttack(square);
+        return opponent.receiveAttack(square);
     }
 }

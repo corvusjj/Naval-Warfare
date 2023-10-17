@@ -34,10 +34,6 @@ export default class GameBoard {
         this.shipCoordinates = {};
     }
 
-    gameOver() {
-        return "game over";
-    }
-
     checkAllSunk() {
         let allSunk = true;
         for (const char in this.ships) {
@@ -97,12 +93,15 @@ export default class GameBoard {
         this.ships[char] = ship;
     }
 
-    hitShip(char:string) {
+    hitShip(char:string, square:number[]) {
         this.ships[char].hit();
 
         if (this.ships[char].isSunk()) {
-            if (this.checkAllSunk()) this.gameOver();
-            return this.getShipCoordinates(char);
+            return this.checkAllSunk()?
+            {state: 'game-over', coordinates: this.getShipCoordinates(char)}:
+            {state: 'sunk', coordinates: this.getShipCoordinates(char)};
+        } else {
+            return { state: 'hit', coordinates: [square] }
         }
     }
 
@@ -113,9 +112,10 @@ export default class GameBoard {
 
         if (hitChar === '.') {
             this.markBoard('o', square);
+            return { state:'miss', coordinates: [[x, y]] };
         } else {
             this.markBoard('x', square);
-            return this.hitShip(hitChar);
+            return this.hitShip(hitChar, [x,y]);
         }
     }
 
