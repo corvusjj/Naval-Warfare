@@ -1,4 +1,7 @@
-const boardsPanel = document.querySelector('.boards-panel')!;
+import { userMethods } from "../game";
+
+// eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
+const boardsPanel = document.querySelector('.boards-panel') as HTMLElement;
 
 function setupBoardUI (name:string) {
     const board = document.createElement('div');
@@ -49,19 +52,27 @@ function setupBoardUI (name:string) {
     boardsPanel.appendChild(board);
 }
 
-function toggleBoard() {
-    boardsPanel.classList.toggle('boards-toggle');
+function toggleBoardUI(index: number) {
+    index === 0?
+    boardsPanel.style.left = '0':
+    boardsPanel.style.left = '-100%';
 }
 
 function hitSquare(e: MouseEvent) {
     const square = e.target as HTMLDivElement;
-    square.textContent = 'x';
+
+    const coord = square.dataset.coord!;
+    const [x, y] = coord.split('-');
+    userMethods.attack([parseInt(x), parseInt(y)]);
+
     square.style.pointerEvents = 'none';
-    toggleBoard();
+}
+
+function markSquareUI(element: { textContent: string; }) {
+    element.textContent = 'x';
 }
 
 export { 
-    setupBoardUI,
-    toggleBoard 
+    toggleBoardUI,
+    markSquareUI
 }
-
