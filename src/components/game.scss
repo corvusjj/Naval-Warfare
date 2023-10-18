@@ -1,3 +1,6 @@
+$inner-color: #001833;
+$outer-color: #001f42;
+
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -5,18 +8,28 @@
 }
 
 body {
-    background: #002249;
-    display: flex;
+    background: $outer-color;
+    display: grid;
     justify-content: center;
+    color: #dfdddd;
+}
+
+%container {
+    border-radius: 10px;
+    box-shadow: 0 2px 0 hsla(0, 0%, 100%, .15), inset 0 2px 2px hsla(0, 0%, 0%, 0.2);
+    background: $inner-color;
+}
+
+.player {
+    padding: 20px;
+    @extend %container;
 }
 
 .gameboard-container {
     margin: 50px;
     max-width: 475px;
     overflow: hidden;
-    border-radius: 10px;
-    background: #011a38;
-    box-shadow: 0 2px 0 hsla(0, 0%, 100%, .15), inset 0 2px 2px hsla(0, 0%, 0%, 0.2);
+    @extend %container;
 
     .boards-panel {
         // border: 1px solid red;
@@ -39,8 +52,7 @@ body {
     .square {
         width: 35px;
         height: 35px;
-        border: 1px solid #ffffff63;
-        color: white;
+        border: 1px solid #ffffff49;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -63,5 +75,28 @@ body {
 
     &:first-of-type {
         margin-right: 45px;
+    }
+}
+
+.control-container {
+    @extend %container;
+    padding: 20px;
+
+    button {
+        color: #dfdddd;
+        border-radius: 50%;
+        padding: 10px;
+        background: $outer-color;
+        border: none;
+        box-shadow: 0 -2px 0 hsla(0, 0%, 100%, .15), 0 1px 3px hsla(0, 0%, 0%, .3);
+
+        svg {
+            width: 25px;
+            height: 25px;
+        }
+
+        & * {
+            pointer-events: none;
+        }
     }
 }
