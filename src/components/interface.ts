@@ -54,8 +54,8 @@ function setupBoardUI (name:string) {
 
 function toggleBoardUI(index: number) {
     index === 0?
-    boardsPanel.style.left = '0':
-    boardsPanel.style.left = '-100%';
+    boardsPanel.classList.remove('toggle-panel'):
+    boardsPanel.classList.add('toggle-panel');
 }
 
 function attack(e: MouseEvent) {
@@ -63,12 +63,8 @@ function attack(e: MouseEvent) {
     const stringCoord = squareNode.dataset.coord!;
     const coordinates = stringCoord.split('-');
 
-    hitSquare(coordinates.map(x => parseInt(x)));
+    userMethods.attack(coordinates.map(x => parseInt(x)));
     squareNode.style.pointerEvents = 'none';
-}
-
-function hitSquare(square: number[]) {
-    userMethods.attack(square);
 }
 
 function markSquareUI(square: number[], name: string) {
