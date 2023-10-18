@@ -6,6 +6,8 @@ const soundBtn = document.querySelector('#sound');
 const soundIconOn = soundBtn?.querySelector('#sound-icon-on') as HTMLElement | null;
 const soundIconOff = soundBtn?.querySelector('#sound-icon-off') as HTMLElement | null;
 
+const led = document.querySelector('.led');
+
 let musicIsActive = true;
 let soundIsActive = true;
 
@@ -31,3 +33,10 @@ function toggleSound() {
 
 musicBtn?.addEventListener('click', toggleMusic);
 soundBtn?.addEventListener('click', toggleSound);
+
+export function activateLed(state: string) {
+    led?.classList.add(`led-${state}`);
+    setTimeout(() => {
+        led?.classList.remove(`led-${state}`);
+    }, 500);
+}
