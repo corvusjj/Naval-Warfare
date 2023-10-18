@@ -81,6 +81,9 @@ body {
 .control-container {
     @extend %container;
     padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
     button {
         color: #dfdddd;
@@ -103,4 +106,23 @@ body {
 
     #music-icon-off { display: none; }
     #sound-icon-off { display: none; }
+
+    .led {
+        width: 10px;
+        height: 10px;
+        background: #333;
+        border-radius: 50%;
+        // box-shadow: 0 0 20px 5px #0f0;
+        
+    }
+
+    .led-green {
+        background: #0f0;
+        box-shadow: 0 0 20px 5px #0f0;
+    }
+
+    .led-red {
+        background: #f00;
+        box-shadow: 0 0 20px 5px #f00;
+    }
 }
