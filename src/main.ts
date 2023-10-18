@@ -1,4 +1,4 @@
-import './components/style.scss';
-import { startGame } from './game';
-
-startGame();
+import './components/game.scss';
+import './components/interface';
+import './utilities/controlPanel';
+// userMethods.setGameState(true, ['john']);

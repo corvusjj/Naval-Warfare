@@ -89,6 +89,7 @@ body {
         background: $outer-color;
         border: none;
         box-shadow: 0 -2px 0 hsla(0, 0%, 100%, .15), 0 1px 3px hsla(0, 0%, 0%, .3);
+        cursor: pointer;
 
         svg {
             width: 25px;
@@ -99,4 +100,7 @@ body {
             pointer-events: none;
         }
     }
+
+    #music-icon-off { display: none; }
+    #sound-icon-off { display: none; }
 }
