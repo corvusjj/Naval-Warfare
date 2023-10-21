@@ -5,7 +5,7 @@ import generateBoard from '../../utilities/uiBoardGenerator';
 const boardsPanel = document.querySelector('.boards-panel') as HTMLElement;
 
 function setupBoardGame(p1Name: string, p2Name: string) {
-    boardsPanel.innerHTML = '';
+    // boardsPanel.innerHTML = '';
 
     const board1 = generateBoard(p1Name);
     const board2 = generateBoard(p2Name);
@@ -24,8 +24,8 @@ function toggleBoardUI(index: number) {
     boardsPanel.classList.add('toggle-panel');
 }
 
-function attack(e: MouseEvent) {
-    const squareNode = e.target as HTMLDivElement;
+function attack(e: Event) {
+    const squareNode = e.target as HTMLDivElement; 
     const stringCoord = squareNode.dataset.coord!;
     const coordinates = stringCoord.split('-');
 

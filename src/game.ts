@@ -1,9 +1,13 @@
 import Player from './gameTemplates/player';
 import AiPlayer from './gameTemplates/aiPlayer';
+import './components/interface/gameInterface';
 import { 
     toggleBoardUI,
-    markSquareUI
+    markSquareUI,
 } from './components/interface/gameInterface';
+import './components/style/game.scss';
+import './utilities/controlPanel';
+
 interface attackState {
     state: string;
     coordinates: number[][];
