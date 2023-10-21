@@ -38,7 +38,7 @@ class GameState {
         this.attacker === this.p1? toggleBoardUI(0): toggleBoardUI(1);
     }
 
-    attack(square: number[]) {
+    attack(square: number[]):attackState {
         return this.attacker.attack(square, this.defender);
     }   
 }
