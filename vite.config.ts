@@ -10,8 +10,8 @@ export default defineConfig({
     build: {
         rollupOptions: {
           input: {
-            main: resolve(__dirname, './src/pages/game.html'),
-            // nested: resolve(__dirname, 'nested/index.html'),
+            game: resolve(__dirname, './src/pages/game.html'),
+            placement: resolve(__dirname, './src/pages/placement.html'),
           },
         },
       },
