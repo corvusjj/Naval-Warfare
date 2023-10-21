@@ -1,5 +1,5 @@
-import Player from './player';
-import AiPlayer from './components/aiPlayer';
+import Player from './gameTemplates/player';
+import AiPlayer from './gameTemplates/aiPlayer';
 import { 
     toggleBoardUI,
     markSquareUI

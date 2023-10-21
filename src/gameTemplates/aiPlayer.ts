@@ -1,5 +1,5 @@
 import Player from './player';
-import setupAllCoordinates from "./utilities/coordinatesGenerator";
+import setupAllCoordinates from "../utilities/coordinatesGenerator";
 
 export default class AiPlayer extends Player {
     enemySquares: number[][];

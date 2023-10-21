@@ -1,5 +1,5 @@
 import { expect, it, describe, beforeEach } from "vitest";
-import Player from "../player";
+import Player from "../gameTemplates/player";
 
 let player1: Player;
 let player2: Player;

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import Ship from '../ship';
+import Ship from '../gameTemplates/ship';
 
 describe('Carrier (length of 5)', () => {
     let carrier: Ship;

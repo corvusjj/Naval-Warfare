@@ -1,7 +1,7 @@
 import { expect, it, describe, beforeEach } from "vitest";
-import GameBoard from "../gameboard";
+import GameBoard from "../gameTemplates/gameboard";
 import setupBoard from "../utilities/appBoardGenerator";
-import Ship from "../ship";
+import Ship from "../gameTemplates/ship";
 
 const boardTemplate = [
     ['0', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
