@@ -1,5 +1,5 @@
 import { userMethods } from '../../game';
-import generateBoard from '../uiBoardGenerator';
+import generateBoard from '../../utilities/uiBoardGenerator';
 
 // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
 const boardsPanel = document.querySelector('.boards-panel') as HTMLElement;
