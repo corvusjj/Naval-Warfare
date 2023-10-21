@@ -1,5 +1,6 @@
 $inner-color: #001833;
-$outer-color: #001f42;
+// $outer-color: #001f42;
+$outer-color: #222d38;
 
 *, *::before, *::after {
     box-sizing: border-box;
@@ -112,8 +113,6 @@ body {
         height: 10px;
         background: #333;
         border-radius: 50%;
-        // box-shadow: 0 0 20px 5px #0f0;
-        
     }
 
     .led-green {
@@ -125,4 +124,25 @@ body {
         background: #f00;
         box-shadow: 0 0 20px 5px #f00;
     }
+}
+
+#destroyer {
+    position: absolute;
+    top: 77px;
+    left: 36px;
+    // transform: rotate(90deg);
+}
+
+#cruiser {
+    position: absolute;
+    left: 70px;
+    top: 177px;
+}
+
+#fire {
+    position: absolute;
+    width: 72px;
+    height: auto;
+    left: 84px;
+    top: 55px;
 }
