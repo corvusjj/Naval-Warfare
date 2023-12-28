@@ -4,7 +4,7 @@ import {
     markSquareUI,
 } from './components/interface/gameInterface';
 
-const gameInputs = {
+const gameOperations = {
     setGameState(vsComputer:boolean, playerNames:string[]) {
         userMethods.setGameState(vsComputer, playerNames);
     },
@@ -14,7 +14,7 @@ const gameInputs = {
     }
 }
 
-const interfaceMethods = {
+const interfaceOperations = {
     toggleBoardInterface(index: number) {
         toggleBoardUI(index);
     },
@@ -25,6 +25,6 @@ const interfaceMethods = {
 }
 
 export {
-    gameInputs,
-    interfaceMethods
+    gameOperations,
+    interfaceOperations
 }
