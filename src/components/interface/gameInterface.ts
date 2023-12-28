@@ -1,4 +1,4 @@
-import { userMethods } from '../../game';
+import { gameInputs } from '../../gameInterfaceHandler';
 import generateBoard from '../../utilities/uiBoardGenerator';
 
 // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
@@ -29,7 +29,7 @@ function attack(e: Event) {
     const stringCoord = squareNode.dataset.coord!;
     const coordinates = stringCoord.split('-');
 
-    userMethods.attack(coordinates.map(x => parseInt(x)));
+    gameInputs.attack(coordinates.map(x => parseInt(x)));
     squareNode.style.pointerEvents = 'none';
 }
 
@@ -42,7 +42,7 @@ function markSquareUI(square: number[], name: string) {
 
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
-        userMethods.setGameState(false, ['john', 'nathan']);
+        gameInputs.setGameState(false, ['john', 'nathan']);
         setupBoardGame('nathan', 'john');
     }   
 });

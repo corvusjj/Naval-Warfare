@@ -1,10 +1,6 @@
 import Player from './gameTemplates/player';
 import AiPlayer from './gameTemplates/aiPlayer';
-import './components/interface/gameInterface';
-import { 
-    toggleBoardUI,
-    markSquareUI,
-} from './components/interface/gameInterface';
+import { interfaceMethods } from './gameInterfaceHandler';
 import './components/style/game.scss';
 import './utilities/controlPanel';
 
@@ -39,7 +35,9 @@ class GameState {
             this.defender = this.p2;
         }
 
-        this.attacker === this.p1? toggleBoardUI(0): toggleBoardUI(1);
+        this.attacker === this.p1? 
+        interfaceMethods.toggleBoardInterface(0): 
+        interfaceMethods.toggleBoardInterface(1);
     }
 
     attack(square: number[]):attackState {
@@ -63,7 +61,7 @@ const userMethods = {
     attack: (square: number[]) => {
         const attackState:attackState = gameState.attack(square);
         console.log(attackState);
-        markSquareUI(square, gameState.defender.name);
+        interfaceMethods.markSquareInterface(square, gameState.defender.name);
         gameState.toggleState();
 
         if (gameState.vsComputer && gameState.attacker === gameState.p2) {
@@ -73,7 +71,7 @@ const userMethods = {
             }
         }
     },
-};
+}
 
 export { userMethods }
 
