@@ -31,10 +31,10 @@ describe('Board coordinates', () => {
 
 //  placing ship coordinates are arranged (up to down), (left to right) starting from initial square.
 describe('Seek ship placement', () => {
-    it('vertical ship(3) on coordinates 0-3 should be true with returning coordinates [0,3], [1,3], [2,3].', () => {
+    it('vertical ship(3) on coordinates 1-3 should be true with returning coordinates [1,3], [2,3], [3,3].', () => {
         const cruiser = new Ship(3);
-        expect(gameBoard.seekCoordinates(cruiser, '0-3')).toEqual(
-            { canBePlaced:true, coordinates:[[0,3], [1,3], [2,3]] }
+        expect(gameBoard.seekCoordinates(cruiser, '1-3')).toEqual(
+            { canBePlaced:true, coordinates:[[1,3], [2,3], [3,3]] }
         );
     });
 
