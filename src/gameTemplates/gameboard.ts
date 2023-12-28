@@ -94,6 +94,9 @@ export default class GameBoard {
         }
     }
 
+    //  attacking a square will return one of 4 states, and a list / single pair of coordinates.
+    //  States - miss, hit, sunk, game-over.
+    //  the coordinates are collected for UI animations, AI player, avoiding attack repetitions. 
     receiveAttack(square: number[]) {
         const x = square[0];
         const y = square[1];
