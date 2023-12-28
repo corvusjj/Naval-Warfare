@@ -66,6 +66,9 @@ export default class GameBoard {
         this.shipCoordinates[char].push([x,y]);
     }
 
+    //  responsible for ship placement before the game.
+    //  if seekCoordinates() returns true, it will setup the ships and shipCoordinates object with their corresponding characters,
+    //  and marks the 2d array board.
     placeShip(ship:Ship, square:string, char:string) {
         const seekPlacement = this.seekCoordinates(ship, square);
         if (seekPlacement.canBePlaced === false) return;
