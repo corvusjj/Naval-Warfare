@@ -1,5 +1,5 @@
 import { gameOperations } from '../../gameInterfaceHandler';
-import generateBoard from '../../utilities/uiBoardGenerator';
+import generateBoard from '../../utilities/battleshipBoardInterface';
 
 // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
 const boardsPanel = document.querySelector('.boards-panel') as HTMLElement;
@@ -42,9 +42,9 @@ function markSquareUI(square: number[], name: string) {
 
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
-        gameOperations.setGameState(false, ['john', 'nathan']);
-        setupBoardGame('nathan', 'john');
-    }   
+        gameOperations.setGameState(false, ['john', 'Fleet_Admiral_Bot']);
+        setupBoardGame('john', 'Fleet_Admiral_Bot');
+    }
 });
 
 export { 

@@ -1,5 +1,5 @@
 import Ship from "./ship";
-import setupBoard from "../utilities/appBoardGenerator";
+import setupBoard from "../utilities/2dBattleshipArray";
 type playerShips = Record<string, Ship>;
 type shipCoordinates = Record<string, number[][]>;
 

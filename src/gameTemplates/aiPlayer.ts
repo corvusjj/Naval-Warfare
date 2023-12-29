@@ -1,5 +1,5 @@
 import Player from './player';
-import setupAllCoordinates from "../utilities/coordinatesGenerator";
+import setupAllCoordinates from "../utilities/battleshipCoordinates";
 
 export default class AiPlayer extends Player {
     enemySquares: number[][];
@@ -32,8 +32,8 @@ export default class AiPlayer extends Player {
         return coordinates;
     }
 
-    chooseSquare() {
-        console.log(this);
+    chooseTarget() {
+        console.log(this.squaresInDiagonal);
         return this.enemySquares[3];
     }
 }

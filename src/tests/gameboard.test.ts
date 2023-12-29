@@ -1,6 +1,6 @@
 import { expect, it, describe, beforeEach } from "vitest";
 import GameBoard from "../gameTemplates/gameboard";
-import setupBoard from "../utilities/appBoardGenerator";
+import setupBoard from "../utilities/2dBattleshipArray";
 import Ship from "../gameTemplates/ship";
 
 const boardTemplate = [
