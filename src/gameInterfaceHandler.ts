@@ -1,8 +1,5 @@
 import { userMethods } from './game';
-import { 
-    toggleBoardUI,
-    markSquareUI,
-} from './components/interface/gameInterface';
+import { interfaceMethods } from './components/interface/gameInterface';
 
 const gameOperations = {
     setGameState(vsComputer:boolean, playerNames:string[]) {
@@ -20,11 +17,11 @@ const gameOperations = {
 
 const interfaceOperations = {
     toggleBoardInterface(index: number) {
-        toggleBoardUI(index);
+        interfaceMethods.toggleBoardUI(index);
     },
 
     markSquareInterface(square: number[], name: string) {
-        markSquareUI(square, name)
+        interfaceMethods.markSquareUI(square, name)
     }
 }
 
