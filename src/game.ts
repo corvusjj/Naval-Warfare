@@ -67,8 +67,8 @@ const userMethods = {
 
     attack: (square: number[]) => {
         const attackState:attackState = gameState.attack(square);
-        console.log(attackState);
-        interfaceOperations.markSquareInterface(square, gameState.defender.name);
+        console.log(attackState, gameState.attacker);
+        interfaceOperations.markSquareInterface(square, gameState.defender.id);
 
         // nextPlayerTurn();
     },

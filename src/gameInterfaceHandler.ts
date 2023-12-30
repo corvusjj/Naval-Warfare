@@ -20,8 +20,8 @@ const interfaceOperations = {
         interfaceMethods.toggleBoardUI(index);
     },
 
-    markSquareInterface(square: number[], name: string) {
-        interfaceMethods.markSquareUI(square, name)
+    markSquareInterface(square: number[], id: string) {
+        interfaceMethods.markSquareUI(square, id)
     }
 }
 
