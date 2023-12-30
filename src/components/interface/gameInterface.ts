@@ -1,5 +1,6 @@
 import { gameOperations } from '../../gameInterfaceHandler';
 import generateBoard from '../../utilities/battleshipBoardInterface';
+import idGenerator from '../../utilities/playerId';
 
 // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
 const boardsPanel = document.querySelector('.boards-panel') as HTMLElement;
@@ -44,6 +45,16 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
         gameOperations.setGameState(false, ['john', 'Fleet_Admiral_Bot']);
         setupBoardGame('john', 'Fleet_Admiral_Bot');
+
+        const playersData = gameOperations.getPlayersData();
+        console.log(playersData);
+    }
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'w') {
+        console.log(idGenerator.setId());
+        console.log(idGenerator.idUsed);
     }
 });
 

@@ -8,6 +8,10 @@ const gameOperations = {
     setGameState(vsComputer:boolean, playerNames:string[]) {
         userMethods.setGameState(vsComputer, playerNames);
     },
+
+    getPlayersData() {
+        return userMethods.playersData();
+    },
     
     attack(square: number[]) {
         userMethods.attack(square);

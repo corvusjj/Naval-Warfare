@@ -1,6 +1,6 @@
 import Player from './gameTemplates/player';
 import AiPlayer from './gameTemplates/aiPlayer';
-import { interfaceOperations } from './gameInterfaceHandler';
+import { gameOperations, interfaceOperations } from './gameInterfaceHandler';
 import './components/style/game.scss';
 import './utilities/controlPanel';
 
@@ -58,23 +58,37 @@ const userMethods = {
         if (vsComputer) gameState.vsComputer = true;
     },
 
+    playersData: () => {
+        const firstPlayerData = [gameState.p1.name, gameState.p1.id];
+        const secondPlayerData = [gameState.p2.name, gameState.p2.id];
+
+        return [ firstPlayerData, secondPlayerData ];
+    },
+
     attack: (square: number[]) => {
         const attackState:attackState = gameState.attack(square);
         console.log(attackState);
         interfaceOperations.markSquareInterface(square, gameState.defender.name);
-        gameState.toggleState();
 
-        if (gameState.vsComputer && gameState.attacker === gameState.p2) {
-            if ('chooseSquare' in gameState.p2) {
-                const coord: number[] = gameState.p2.chooseSquare();
-                userMethods.attack(coord);
-            }
-        }
+        // nextPlayerTurn();
     },
+}
+
+function nextPlayerTurn() {
+    gameState.toggleState();
+
+    //  -------------   AI BLOCK   --------------
+    if (!gameState.vsComputer) return;
+    if (gameState.attacker !== gameState.p2) return;
+
+    if ('chooseSquare' in gameState.p2) {
+        const coord:number[] = gameState.p2.chooseTarget();
+        userMethods.attack(coord);
+    }
 }
 
 export { userMethods }
 
-//  computer attack
+//  playerId
 //  aI choose squares
 //  shipPlacement => findSunkShip() through getting length and through Player

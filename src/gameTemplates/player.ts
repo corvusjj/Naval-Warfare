@@ -1,5 +1,6 @@
 import GameBoard from "./gameboard";
 import Ship from "./ship";
+import idGenerator from "../utilities/playerId";
 type playerShips = Record<string, Ship>;
 
 function setupShips() {
@@ -16,9 +17,11 @@ export default class Player {
     gameBoard: GameBoard;
     ships: playerShips;
     name: string;
+    id: string;
 
     constructor(name:string) {
         this.name = name;
+        this.id = idGenerator.setId();
         this.gameBoard = new GameBoard;
         this.ships = setupShips();
     }
