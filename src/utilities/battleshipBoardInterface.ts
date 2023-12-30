@@ -1,7 +1,6 @@
-export default function generateBoard (name:string) {
+export default function generateBoard() {
     const board = document.createElement('div');
     board.classList.add('board');
-    board.classList.add(name);
 
     const letterAxis = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
     const x = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];

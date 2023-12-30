@@ -6,11 +6,11 @@ const boardsPanel = document.querySelector('.boards-panel') as HTMLElement;
 let board1: HTMLDivElement;
 let board2: HTMLDivElement;
 
-function setupBoardGame(p1Name: string, p2Name: string) {
+function setupBoardGame() {
     // boardsPanel.innerHTML = '';
 
-    board1 = generateBoard(p1Name);
-    board2 = generateBoard(p2Name);
+    board1 = generateBoard();
+    board2 = generateBoard();
 
     board1.setAttribute('data-index', '0');
     board2.setAttribute('data-index', '1');
@@ -51,7 +51,7 @@ document.addEventListener('keydown', (e) => {
         gameOperations.setGameState(false, ['john', 'Fleet_Admiral_Bot']);
         
         //  display board interface
-        setupBoardGame('john', 'Fleet_Admiral_Bot');
+        setupBoardGame();
         interfaceMethods.toggleBoardUI(1);  // player 2 attacker as default
 
         //  add each players data on html board element
