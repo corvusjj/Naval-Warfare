@@ -1,7 +1,6 @@
 import Player from './gameTemplates/player';
 import AiPlayer from './gameTemplates/aiPlayer';
-import { gameOperations, interfaceOperations } from './gameInterfaceHandler';
-import './components/style/game.scss';
+import { interfaceOperations } from './gameInterfaceHandler';
 import './utilities/controlPanel';
 
 interface attackState {
@@ -36,13 +35,20 @@ class GameState {
         }
 
         this.attacker === this.p1? 
-        interfaceOperations.toggleBoardInterface(0): 
-        interfaceOperations.toggleBoardInterface(1);
+        interfaceOperations.toggleBoardInterface(1): 
+        interfaceOperations.toggleBoardInterface(0);
     }
 
     attack(square: number[]):attackState {
         return this.attacker.attack(square, this.defender);
-    }   
+    }
+    
+    //  get defender ship status
+}
+
+function initializeGameState(p1:Player, p2:Player | AiPlayer, vsComputer:boolean) {
+    gameState = new GameState(p1, p2);
+    gameState.vsComputer = vsComputer;
 }
 
 const userMethods = {
@@ -54,8 +60,7 @@ const userMethods = {
         p2 = new AiPlayer('Fleet_Admiral_Bot'):
         p2 = new Player(playerNames[1]);
         
-        gameState = new GameState(p1, p2);
-        if (vsComputer) gameState.vsComputer = true;
+        initializeGameState(p1, p2, vsComputer);
     },
 
     playersData: () => {
@@ -70,7 +75,7 @@ const userMethods = {
         console.log(attackState, gameState.attacker);
         interfaceOperations.markSquareInterface(square, gameState.defender.id);
 
-        // nextPlayerTurn();
+        nextPlayerTurn();
     },
 }
 
@@ -81,7 +86,7 @@ function nextPlayerTurn() {
     if (!gameState.vsComputer) return;
     if (gameState.attacker !== gameState.p2) return;
 
-    if ('chooseSquare' in gameState.p2) {
+    if ('chooseTarget' in gameState.p2) {
         const coord:number[] = gameState.p2.chooseTarget();
         userMethods.attack(coord);
     }
