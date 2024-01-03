@@ -66,7 +66,6 @@ const userMethods = {
     playersData: () => {
         const firstPlayerData = [gameState.p1.name, gameState.p1.id];
         const secondPlayerData = [gameState.p2.name, gameState.p2.id];
-
         return [ firstPlayerData, secondPlayerData ];
     },
 
@@ -74,9 +73,12 @@ const userMethods = {
         const attackState:attackState = gameState.attack(square);
         console.log(attackState, gameState.attacker);
         interfaceOperations.markSquareInterface(square, gameState.defender.id);
-
         nextPlayerTurn();
     },
+
+    getState: () => {
+        return gameState;
+    }
 }
 
 function nextPlayerTurn() {
