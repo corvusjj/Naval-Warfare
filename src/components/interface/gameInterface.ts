@@ -1,5 +1,6 @@
 import { gameOperations } from '../../gameInterfaceHandler';
 import generateBoard from '../../utilities/battleshipBoardInterface';
+import '../style/game.scss';
 
 // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
 const boardsPanel = document.querySelector('.boards-panel') as HTMLElement;
@@ -45,14 +46,12 @@ const interfaceMethods = {
     }
 }
 
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-        //  set initial gameState
-        gameOperations.setGameState(false, ['john', 'Fleet_Admiral_Bot']);
+export function initialize() {
+    gameOperations.setGameState(false, ['john', 'drake']);
         
         //  display board interface
         setupBoardGame();
-        interfaceMethods.toggleBoardUI(1);  // player 2 attacker as default
+        console.log('hi');
 
         //  add each players data on html board element
         const [firstplayerData, secondPlayerData] = gameOperations.getPlayersData();
@@ -60,7 +59,9 @@ document.addEventListener('keydown', (e) => {
         board1.setAttribute('data-player-name', firstplayerData[0]);
         board2.setAttribute('data-player-id', secondPlayerData[1]);
         board2.setAttribute('data-player-name', secondPlayerData[0]);
-    }
-});
+        interfaceMethods.toggleBoardUI(1);  // player 2 defender as default
+
+        console.log(gameOperations.getState());
+}
 
 export { interfaceMethods }
