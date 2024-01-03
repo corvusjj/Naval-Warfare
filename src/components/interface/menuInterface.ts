@@ -37,7 +37,7 @@ function submitName(e:Event) {
     if (firstInput.value.length < 1) return;
     if (singlePlayerMode === false && secondInput.value.length < 1) return;
 
-    sessionStorage.setItem('battleshipPlayerNames', JSON.stringify([firstInput.value, secondInput.value]));
+    sessionStorage.setItem('battleshipPlayerNames', JSON.stringify([singlePlayerMode, [firstInput.value, secondInput.value]]));
     window.location.href = './src/pages/placement.html';
 }
 
