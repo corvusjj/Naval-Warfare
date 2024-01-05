@@ -1,0 +1,255 @@
+$inner-color: #001833;
+$outer-color: #222d38;
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: $outer-color;
+    color: #dfdddd;
+}
+
+main {
+    // border: 1px solid #fff;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    align-items: center;
+    column-gap: 3.5rem;
+    row-gap: 3rem;
+    margin: 3rem auto 0 auto;
+    width: fit-content;
+}
+
+%container {
+    border-radius: 10px;
+    box-shadow: 0 2px 0 hsla(0, 0%, 100%, .15), inset 0 2px 2px hsla(0, 0%, 0%, 0.2);
+    background: $inner-color;
+}
+
+.guide-container {
+    padding: 2rem;
+    @extend %container;
+    height: 5rem;
+    justify-self: flex-end;
+    text-align: center;
+}
+
+.gameboard-container {
+    max-width: 475px;
+    overflow: hidden;
+    grid-column: 2 / 3;
+    grid-row: 1 / 3;
+    @extend %container;
+
+    .boards-panel {
+        display: flex;
+        position: relative;
+        left: 0;
+        transition: left 0.5s ease;
+        margin: 45px;
+    }
+
+    .toggle-panel {
+        left: -430px;
+    }
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+
+    .square {
+        width: 35px;
+        height: 35px;
+        border: 1px solid #ffffff49;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:first-of-type {
+            border-top: none;
+            background: #001833;
+        }
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.178);
+        }
+    }
+
+    .square-axis {
+        pointer-events: none;
+        background: #082547;
+    }
+
+    &:first-of-type {
+        margin-right: 45px;
+    }
+}
+
+.control-container {
+    @extend %container;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 5rem;
+    gap: 2rem;
+    justify-self: start;
+
+    button {
+        color: #dfdddd;
+        border-radius: 50%;
+        padding: 10px;
+        background: $outer-color;
+        border: none;
+        box-shadow: 0 -2px 0 hsla(0, 0%, 100%, .15), 0 1px 3px hsla(0, 0%, 0%, .3);
+        cursor: pointer;
+
+        svg {
+            width: 25px;
+            height: 25px;
+        }
+
+        & * {
+            pointer-events: none;
+        }
+    }
+
+    #music-icon-off { display: none; }
+    #sound-icon-off { display: none; }
+    #wave-sound-icon-off { display: none; }
+
+    .led {
+        width: 10px;
+        height: 10px;
+        background: #333;
+        border-radius: 50%;
+    }
+
+    .led-green {
+        background: #0f0;
+        box-shadow: 0 0 20px 5px #0f0;
+    }
+
+    .led-red {
+        background: #f00;
+        box-shadow: 0 0 20px 5px #f00;
+    }
+}
+
+.ships-container {
+    // border: 1px solid lightgreen;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 3.5rem 1.8rem;
+    max-width: 25rem;
+
+    .ship-container {
+        @extend %container;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+
+        &:nth-of-type(1) { width: 11rem; height: 11rem; }
+        &:nth-of-type(2) { width: 10rem; height: 10rem; }
+        &:nth-of-type(3), &:nth-of-type(4) { width: 8rem; height: 8rem; }
+        &:nth-of-type(5) { width: 5rem; height: 5rem; }
+
+        &::before {
+            position: absolute;
+            bottom: -1.5rem;
+        }
+
+        &:nth-of-type(1)::before { content: 'Carrier'; }
+        &:nth-of-type(2)::before { content: 'Battleship'; }
+        &:nth-of-type(3)::before { content: 'Cruiser'; }
+        &:nth-of-type(4)::before { content: 'Submarine'; }
+        &:nth-of-type(5)::before { content: 'Destroyer'; }
+    }
+}
+
+.ship {
+    // border: 1px solid white;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    & * {
+        pointer-events: none;
+    }
+
+    // ------------------ horizontal ships ------------------------
+
+    &[data-ship="carrier"][data-vertical="false"] { 
+        width: 170px 
+    }
+
+    &[data-ship="battleship"][data-vertical="false"] { 
+        width: 136px
+    }
+
+    &[data-ship="cruiser"][data-vertical="false"], 
+    &[data-ship="submarine"][data-vertical="false"] {
+        width: 102px 
+    }
+
+    &[data-ship="destroyer"][data-vertical="false"] { 
+        width: 68px 
+    }
+
+    // ------------------ vertical ships ------------------------
+
+    &[data-ship="carrier"][data-vertical="true"] { 
+        height: 170px 
+    }
+
+    &[data-ship="battleship"][data-vertical="true"] { 
+        height: 136px;
+        
+        img { transform: translateX(-3px) }; 
+    }
+
+    &[data-ship="cruiser"][data-vertical="true"], 
+    &[data-ship="submarine"][data-vertical="true"] {
+        height: 102px 
+    }
+    
+    &[data-ship="destroyer"][data-vertical="true"] { 
+        height: 68px 
+    }
+}
+
+.ship[data-vertical="false"] {
+    img:nth-of-type(1) { display: inline; }
+    img:nth-of-type(2) { display: none; }
+    height: 34px;
+}
+
+.ship[data-vertical="true"] {
+    img:nth-of-type(1) { display: none; }
+    img:nth-of-type(2) { display: inline; }
+    width: 34px;
+}
+
+.nav-container {
+    padding: 1rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    @extend %container;
+
+    video,
+    img {
+        height: 10rem;
+        border-radius: 10px;
+    }
+} 

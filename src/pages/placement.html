@@ -6,7 +6,55 @@
     <title>Place Ships</title>
 </head>
 <body>
-    <a href="game.html">Play</a>
-    <script type="module" src="../components/interface/placementInterface.ts"></script>
+    <main>
+        <section class="guide-container">Drag ships to game-board. Click to toggle direction</section>
+  
+        <section class="gameboard-container">
+          <div class="boards-panel">
+          </div>
+        </section>
+  
+        <section class="reset-container">
+          <button id="reset-btn">Reset</button>
+        </section>
+  
+        <section class="ships-container">
+          <div class="ship-container">
+            <div class="ship" data-ship="carrier" data-length="5" draggable="true" data-vertical="false">
+              <img src="/carrier.png" alt="">
+              <img src="/carrier-v.png" alt="">
+            </div>
+          </div>
+          <div class="ship-container">
+            <div class="ship" data-ship="battleship" data-length="4" draggable="true" data-vertical="false">`
+              <img src="/battleship.png" alt="">
+              <img src="/battleship-v.png" alt="">
+            </div>
+          </div>
+          <div class="ship-container">
+            <div class="ship" data-ship="cruiser" data-length="3" draggable="true" data-vertical="false">
+              <img src="/cruiser.png" alt="">
+              <img src="/cruiser-v.png" alt="">
+            </div>
+          </div>
+          <div class="ship-container">
+            <div class="ship" data-ship="submarine" data-length="3" draggable="true" data-vertical="false">
+              <img src="/submarine.png" alt="">
+              <img src="/submarine-v.png" alt="">
+            </div>
+          </div>
+          <div class="ship-container">
+            <div class="ship" data-ship="destroyer" data-length="2" draggable="true" data-vertical="false">
+              <img src="/destroyer.png" alt="">
+              <img src="/destroyer-v.png" alt="">
+            </div>
+          </div>
+        </section>
+  
+        <section class="start-game-container">
+            <a href="game.html">Hooyah</a>
+        </section>
+    </main>
+    <script type="module" src="../init/placementInit.ts"></script>
 </body>
 </html>
