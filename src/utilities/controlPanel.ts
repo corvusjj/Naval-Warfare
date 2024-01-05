@@ -6,10 +6,15 @@ const soundBtn = document.querySelector('#sound');
 const soundIconOn = soundBtn?.querySelector('#sound-icon-on') as HTMLElement | null;
 const soundIconOff = soundBtn?.querySelector('#sound-icon-off') as HTMLElement | null;
 
+const waveSoundBtn = document.querySelector('#wave-sound');
+const waveSoundIconOn = waveSoundBtn?.querySelector('#wave-sound-icon-on') as HTMLElement | null;
+const waveSoundIconOff = waveSoundBtn?.querySelector('#wave-sound-icon-off') as HTMLElement | null;
+
 const led = document.querySelector('.led');
 
 let musicIsActive = true;
 let soundIsActive = true;
+let wavesIsActive = true;
 
 function toggleMusic() {
     musicIsActive = !musicIsActive;
@@ -31,8 +36,19 @@ function toggleSound() {
     }
 }
 
+function toggleWaves() {
+    wavesIsActive = !wavesIsActive;
+    waveSoundBtn?.setAttribute('data-active', wavesIsActive.toString());
+
+    if (waveSoundIconOn && waveSoundIconOff) {
+        waveSoundIconOn.style.display = wavesIsActive? 'inline' : 'none';
+        waveSoundIconOff.style.display = wavesIsActive? 'none' : 'inline';
+    }
+}
+
 musicBtn?.addEventListener('click', toggleMusic);
 soundBtn?.addEventListener('click', toggleSound);
+waveSoundBtn?.addEventListener('click', toggleWaves);
 
 export function activateLed(state: string) {
     led?.classList.add(`led-${state}`);

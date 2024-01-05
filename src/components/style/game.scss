@@ -31,11 +31,12 @@ main {
 }
 
 .player {
-    padding: 20px;
+    padding: 2rem;
     @extend %container;
     width: 15rem;
     height: 5rem;
     justify-self: flex-end;
+    text-align: center;
 }
 
 .gameboard-container {
@@ -145,6 +146,7 @@ main {
 
     #music-icon-off { display: none; }
     #sound-icon-off { display: none; }
+    #wave-sound-icon-off { display: none; }
 
     .led {
         width: 10px;
@@ -205,17 +207,10 @@ main {
             animation: bob 2s infinite;
         }
 
-        &:nth-of-type(1) img{
-            animation: none;
-        }
-
-        &:nth-of-type(2) img {
-            animation-delay: 0.3s;
-        }
-
-        &:nth-of-type(3) img {
-            animation-delay: 0.8s;
-        }
+        &:nth-of-type(1) img { animation: none; }
+        &:nth-of-type(2) img { animation-delay: 0.3s; }
+        &:nth-of-type(3) img { animation-delay: 0.8s; }
+        &:nth-of-type(4) img { animation-delay: 1.2s; }
     }
 }
 
