@@ -89,55 +89,40 @@ main {
     }
 }
 
-.control-container {
-    @extend %container;
-    padding: 20px;
+.modify-placement-container {
+    width: 15rem;
+    padding: 1.5rem 0;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    justify-content: space-evenly;
-    width: 100%;
-    height: 5rem;
-    gap: 2rem;
-    justify-self: start;
+    gap: 1rem;
+    @extend %container;
 
     button {
+        background: #222d38;
         color: #dfdddd;
-        border-radius: 50%;
-        padding: 10px;
-        background: $outer-color;
-        border: none;
-        box-shadow: 0 -2px 0 hsla(0, 0%, 100%, .15), 0 1px 3px hsla(0, 0%, 0%, .3);
+        width: 9rem;
+        height: 4rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         cursor: pointer;
 
-        svg {
-            width: 25px;
-            height: 25px;
+        &:hover {
+            filter: brightness(1.1);
         }
 
-        & * {
-            pointer-events: none;
+        &:nth-of-type(1) svg {
+            width: 1.7rem;
+            margin-right: 0.7rem;
         }
-    }
 
-    #music-icon-off { display: none; }
-    #sound-icon-off { display: none; }
-    #wave-sound-icon-off { display: none; }
+        &:nth-of-type(2) svg {
+            width: 2.1rem;
+            margin-right: 0.5rem;
+        }
 
-    .led {
-        width: 10px;
-        height: 10px;
-        background: #333;
-        border-radius: 50%;
-    }
-
-    .led-green {
-        background: #0f0;
-        box-shadow: 0 0 20px 5px #0f0;
-    }
-
-    .led-red {
-        background: #f00;
-        box-shadow: 0 0 20px 5px #f00;
     }
 }
 
@@ -180,6 +165,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
+    background: none;
     cursor: pointer;
 
     & * {
@@ -239,17 +225,26 @@ main {
     width: 34px;
 }
 
-.nav-container {
-    padding: 1rem;
-    overflow: hidden;
+.start-game-container {
+    height: 7rem;
     display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    justify-content: center;
+    align-items: center;
     @extend %container;
 
-    video,
-    img {
-        height: 10rem;
-        border-radius: 10px;
+    button {
+        background: #222d38;
+        color: #dfdddd;
+        clip-path: polygon(72% 1%, 100% 50%, 72% 100%, 0 99%, 0 0);
+        width: 8.5rem;
+        height: 3.5rem;
+        position: relative;
+        text-align: left;
+        padding-left: 1.5rem;
+        cursor: pointer;
+
+        &:hover {
+            filter: brightness(1.1);
+        }
     }
-} 
+}
