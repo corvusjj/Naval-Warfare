@@ -13,6 +13,13 @@ body {
     color: #dfdddd;
 }
 
+@keyframes ship-motion {
+    0% { transform: translate(0,0);}
+    33% { transform: translateY(2px); }
+    67% { transform: translateY(-2px); }
+    100% { transform: translate(0,0);}
+}
+
 main {
     // border: 1px solid #fff;
     display: grid;
@@ -22,6 +29,7 @@ main {
     row-gap: 3rem;
     margin: 3rem auto 0 auto;
     width: fit-content;
+    animation: ship-motion 1.5s linear infinite;
 }
 
 %container {
