@@ -29,8 +29,11 @@ function setupBoardGame() {
     boardsPanel.appendChild(board2);
 
     const squares = document.querySelectorAll('.square[data-coord]');
+    squares.forEach(square => {
+        square.addEventListener('dragenter', dragenter);
+        square.addEventListener('dragleave', dragleave);
+    });
 }
-
 
 function toggleShipDirection() {
     this.dataset.vertical === 'false'?
@@ -38,10 +41,33 @@ function toggleShipDirection() {
     this.setAttribute('data-vertical', 'false');
 }
 
+function dragging(e) {
+    console.log(e.offsetX);
+    this.classList.add('dragging');
+}
+
+function dragend() {
+    this.classList.remove('dragging');
+}
+
+function dragenter() {
+    this.style.background = 'green';
+}
+
+function dragleave() {
+    this.style.background = 'none';
+
+    const ship = document.querySelector('.dragging');
+    this.appendChild(ship);
+}
+
 export function initialize() {
     setupBoardGame();
     console.log(getPlayerData());
+
     ships.forEach(ship => {
         ship.addEventListener('click', toggleShipDirection);
+        ship.addEventListener('dragstart', dragging);
+        ship.addEventListener('dragend', dragend);
     });
 }

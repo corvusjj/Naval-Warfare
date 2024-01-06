@@ -175,7 +175,7 @@ main {
     align-items: center;
     justify-content: center;
     background: none;
-    cursor: pointer;
+    cursor: grab;
 
     & * {
         pointer-events: none;
@@ -234,6 +234,14 @@ main {
     width: 34px;
 }
 
+.ship.dragging {
+    opacity: 0.5;
+}
+
+.ship.dragend {
+    opacity: 1;
+}
+
 .start-game-container {
     height: 7rem;
     display: flex;
@@ -250,6 +258,8 @@ main {
         position: relative;
         text-align: left;
         padding-left: 1.5rem;
+        filter: brightness(0.7);
+        pointer-events: none;
         cursor: pointer;
 
         &:hover {
