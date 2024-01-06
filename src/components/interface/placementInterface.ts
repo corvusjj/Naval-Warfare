@@ -41,8 +41,36 @@ function toggleShipDirection() {
     this.setAttribute('data-vertical', 'false');
 }
 
-function dragging(e) {
-    console.log(e.offsetX);
+function squareOriginData(e:Event) {
+    const shipElement = e.target as HTMLDivElement;
+
+    const totalShipSquares:number = parseInt(shipElement.dataset.length);
+    let direction: string;
+    let shipLength: number;
+    let offset: number;
+
+    shipElement.dataset.vertical === 'true'? direction='top': direction='left';
+
+    if (shipElement.dataset.vertical === 'true') {
+        shipLength = shipElement.offsetHeight;
+        offset = e.offsetY;
+    } else {
+        shipLength = shipElement.offsetWidth;
+        offset = e.offsetX;
+    }
+
+    const offsetPercentage:number = Math.round(offset / shipLength * 100);
+    let shipCurrentSquare:number = Math.round(totalShipSquares * offsetPercentage / 100);
+    if (shipCurrentSquare < 1) shipCurrentSquare = 1;
+
+    console.log(shipCurrentSquare);
+
+    console.log(totalShipSquares, shipLength, offset);
+}
+
+function dragging(e:Event) {
+    squareOriginData(e);
+    
     this.classList.add('dragging');
 }
 
@@ -51,14 +79,11 @@ function dragend() {
 }
 
 function dragenter() {
-    this.style.background = 'green';
+    // this.style.background = 'green';
 }
 
 function dragleave() {
     this.style.background = 'none';
-
-    const ship = document.querySelector('.dragging');
-    this.appendChild(ship);
 }
 
 export function initialize() {
