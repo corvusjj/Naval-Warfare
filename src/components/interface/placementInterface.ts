@@ -1,11 +1,21 @@
 import generateBoard from '../../utilities/battleshipBoardInterface';
 import '../style/placement.scss';
 
-const ships= document.querySelectorAll('.ship');
+interface PlayersData {
+    vsComputer: boolean;
+    players: string[];
+}
 
+const ships= document.querySelectorAll('.ship');
 const boardsPanel = document.querySelector('.boards-panel')!;
 let board1: HTMLDivElement;
 let board2: HTMLDivElement;
+
+function getPlayerData() {
+    const playersDataJson:string = localStorage.getItem('battleship-players-data')!;
+    const playersData:PlayersData = JSON.parse(playersDataJson) as PlayersData;
+    return playersData;
+}
 
 function setupBoardGame() {
     boardsPanel.innerHTML = '';
@@ -30,6 +40,7 @@ function toggleShipDirection() {
 
 export function initialize() {
     setupBoardGame();
+    console.log(getPlayerData());
     ships.forEach(ship => {
         ship.addEventListener('click', toggleShipDirection);
     });

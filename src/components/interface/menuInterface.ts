@@ -1,3 +1,8 @@
+interface PlayersData {
+    vsComputer: boolean;
+    players: string[];
+  }
+
 const chooseOpponentBtn = document.querySelectorAll<HTMLButtonElement>('.btn-opponent');
 const inputNameModal = document.querySelector<HTMLDialogElement>('#input-name-modal')!;
 const firstInputLabel = inputNameModal.querySelector<HTMLLabelElement>('#name-p1 label')!;
@@ -37,7 +42,12 @@ function submitName(e:Event) {
     if (firstInput.value.length < 1) return;
     if (singlePlayerMode === false && secondInput.value.length < 1) return;
 
-    sessionStorage.setItem('battleshipPlayerNames', JSON.stringify([singlePlayerMode, [firstInput.value, secondInput.value]]));
+    const playersData:PlayersData = {
+        vsComputer: singlePlayerMode,
+        players: [firstInput.value, secondInput.value]
+    };
+
+    localStorage.setItem('battleship-players-data', JSON.stringify(playersData));
     window.location.href = './src/pages/placement.html';
 }
 
@@ -52,5 +62,3 @@ export function initialize() {
         if (e.target === inputNameModal) inputNameModal.close();
     });
 }   
-
-// export { initialize }  
