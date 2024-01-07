@@ -1,5 +1,7 @@
 import generateBoard from '../../utilities/battleshipBoardInterface';
-import { coordinateSeeker } from '../../utilities/coordinatesHandler'
+import GameBoard from '../../gameTemplates/gameboard';
+import Ship from '../../gameTemplates/ship';
+import { coordinateSeeker } from '../../utilities/coordinatesHandler';
 import '../style/placement.scss';
 
 interface PlayersData {
@@ -95,6 +97,10 @@ function dragend(this:HTMLDivElement) {
     this.classList.remove('dragging');
 }
 
+const gameBoard = new GameBoard;
+const shipTemplate = new Ship(4);
+shipTemplate.toggleDirection();
+
 function dragenter(e:Event) {
     const offsetData: (string | number | number[] | undefined)[] = getCoordOffsetData(e);
     const squareOrigin:number[] = coordinateSeeker(
@@ -105,11 +111,31 @@ function dragenter(e:Event) {
         
     if (squareOrigin[0] < 1 || squareOrigin[1] < 1) return;
     
-    console.log(squareOrigin);
+    
+
+    const datasetSquareOrigin = squareOrigin.join('-');
+    const { canBePlaced, coordinates } = gameBoard.seekCoordinates(shipTemplate, datasetSquareOrigin);
+
+    const squareNodes = [];
+
+    coordinates.forEach((coord) => {
+        const datasetCoord = coord.join('-');
+        const squareDiv = document.querySelector(`.square[data-coord="${datasetCoord}"]`);
+        squareNodes.push(squareDiv);
+    });
+
+    const squares = document.querySelectorAll('.square');
+    squares.forEach(square => square.removeAttribute('data-placement'));
+
+    canBePlaced? 
+    squareNodes.forEach(square => square.setAttribute('data-placement', 'valid')):
+    squareNodes.forEach(square => square.setAttribute('data-placement', 'invalid'));
+
+    // e.target.setAttribute('data-placement', 'valid');
 }
 
 function dragleave(this:HTMLDivElement) {
-    this.style.background = 'none';
+    // this.style.background = 'none';
 }
 
 export function initialize() {
@@ -123,5 +149,4 @@ export function initialize() {
     });
 }
 
-//  '-' separator problem
 //  highlight dragenter squares
