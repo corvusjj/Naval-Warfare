@@ -97,11 +97,13 @@ function dragend(this:HTMLDivElement) {
 
 function dragenter(e:Event) {
     const offsetData: (string | number | number[] | undefined)[] = getCoordOffsetData(e);
-    const squareOrigin = coordinateSeeker(
+    const squareOrigin:number[] = coordinateSeeker(
         offsetData[0] as number[],
         offsetData[1] as string,
         offsetData[2] as number
     );
+        
+    if (squareOrigin[0] < 1 || squareOrigin[1] < 1) return;
     
     console.log(squareOrigin);
 }

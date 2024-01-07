@@ -19,10 +19,7 @@ function coordinateSeeker(currentCoord:number[], direction:string, span:number) 
             break;
     }
 
-    const appCoord:number[] = coordinates;
-    const interfaceCoord:string = coordinates.join('-');
-
-    return [appCoord, interfaceCoord];
+    return coordinates;
 }
 
 export { coordinateSeeker }
