@@ -6,10 +6,17 @@ interface PlayersData {
     players: string[];
 }
 
+interface shipOffsetData {
+    direction: string;
+    span: number;
+}
+
 const ships= document.querySelectorAll('.ship');
 const boardsPanel = document.querySelector('.boards-panel')!;
 let board1: HTMLDivElement;
 let board2: HTMLDivElement;
+
+let shipOffsetData: shipOffsetData;
 
 function getPlayerData() {
     const playersDataJson:string = localStorage.getItem('battleship-players-data')!;
@@ -41,7 +48,7 @@ function toggleShipDirection() {
     this.setAttribute('data-vertical', 'false');
 }
 
-function squareOriginData(e:Event) {
+function setShipOffsetData(e:Event) {
     const shipElement = e.target as HTMLDivElement;
 
     const totalShipSquares:number = parseInt(shipElement.dataset.length);
@@ -62,15 +69,22 @@ function squareOriginData(e:Event) {
     const offsetPercentage:number = Math.round(offset / shipLength * 100);
     let shipCurrentSquare:number = Math.round(totalShipSquares * offsetPercentage / 100);
     if (shipCurrentSquare < 1) shipCurrentSquare = 1;
+    const span:number = shipCurrentSquare - 1;
 
-    console.log(shipCurrentSquare);
+    shipOffsetData = { direction, span };
+}
 
-    console.log(totalShipSquares, shipLength, offset);
+function getCoordOffsetData(e:Event) {
+    const currentSquareDiv = e.target as HTMLDivElement;
+    const currentCoordinates = currentSquareDiv.dataset.coord?.split('-')
+                              .map(x => parseInt(x));
+    const { direction, span } = shipOffsetData;
+
+    return [ currentCoordinates, direction, span ]; 
 }
 
 function dragging(e:Event) {
-    squareOriginData(e);
-    
+    setShipOffsetData(e);   
     this.classList.add('dragging');
 }
 
@@ -78,8 +92,10 @@ function dragend() {
     this.classList.remove('dragging');
 }
 
-function dragenter() {
+function dragenter(e:Event) {
     // this.style.background = 'green';
+    const offsetData = getCoordOffsetData(e);
+    console.log(offsetData);
 }
 
 function dragleave() {
@@ -96,3 +112,6 @@ export function initialize() {
         ship.addEventListener('dragend', dragend);
     });
 }
+
+//  squareSeeker
+//  highlight dragenter squares
