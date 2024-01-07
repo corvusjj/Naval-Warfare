@@ -1,4 +1,5 @@
 import generateBoard from '../../utilities/battleshipBoardInterface';
+import { coordinateSeeker } from '../../utilities/coordinatesHandler'
 import '../style/placement.scss';
 
 interface PlayersData {
@@ -42,16 +43,18 @@ function setupBoardGame() {
     });
 }
 
-function toggleShipDirection() {
+function toggleShipDirection(this:HTMLDivElement) {
     this.dataset.vertical === 'false'?
     this.setAttribute('data-vertical', 'true'):
     this.setAttribute('data-vertical', 'false');
 }
 
-function setShipOffsetData(e:Event) {
+function setShipOffsetData(e:MouseEvent) {
     const shipElement = e.target as HTMLDivElement;
+    const datasetLength: string | undefined = shipElement.dataset.length;
+    let totalShipSquares = 0;
 
-    const totalShipSquares:number = parseInt(shipElement.dataset.length);
+    if (datasetLength !== undefined) totalShipSquares = parseInt(datasetLength);
     let direction: string;
     let shipLength: number;
     let offset: number;
@@ -83,22 +86,27 @@ function getCoordOffsetData(e:Event) {
     return [ currentCoordinates, direction, span ]; 
 }
 
-function dragging(e:Event) {
-    setShipOffsetData(e);   
+function dragging(this:HTMLDivElement, e:DragEvent | MouseEvent | Event) {
+    setShipOffsetData(e as MouseEvent);   
     this.classList.add('dragging');
 }
 
-function dragend() {
+function dragend(this:HTMLDivElement) {
     this.classList.remove('dragging');
 }
 
 function dragenter(e:Event) {
-    // this.style.background = 'green';
-    const offsetData = getCoordOffsetData(e);
-    console.log(offsetData);
+    const offsetData: (string | number | number[] | undefined)[] = getCoordOffsetData(e);
+    const squareOrigin = coordinateSeeker(
+        offsetData[0] as number[],
+        offsetData[1] as string,
+        offsetData[2] as number
+    );
+    
+    console.log(squareOrigin);
 }
 
-function dragleave() {
+function dragleave(this:HTMLDivElement) {
     this.style.background = 'none';
 }
 
@@ -113,5 +121,5 @@ export function initialize() {
     });
 }
 
-//  squareSeeker
+//  '-' separator problem
 //  highlight dragenter squares
