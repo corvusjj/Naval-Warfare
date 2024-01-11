@@ -6,6 +6,9 @@ import { fleetStandard } from '../../utilities/fleet';
 import { coordinateSeeker } from '../../utilities/coordinatesHandler';
 import '../style/placement.scss';
 
+const ships= document.querySelectorAll('.ship');
+const boardsPanel = document.querySelector('.boards-panel')!;
+
 interface PlayersData {
     vsComputer: boolean;
     players: string[];
@@ -16,12 +19,54 @@ interface shipOffsetData {
     span: number;
 }
 
-const ships= document.querySelectorAll('.ship');
-const boardsPanel = document.querySelector('.boards-panel')!;
-let board1: HTMLDivElement;
-let board2: HTMLDivElement;
+class PlacementState {
+    playersData: PlayersData;
+    player1Board: GameBoard;
+    player2Board: GameBoard;
+    currentBoard: GameBoard;
+
+    constructor() {
+        this.playersData = getPlayerData();
+        this.player1Board = new GameBoard;
+        this.player2Board = new GameBoard;
+        this.currentBoard = this.player1Board;
+    }
+
+    getPlayerData() {
+        const playersDataJson:string = localStorage.getItem('battleship-players-data')!;
+        const playersData:PlayersData = JSON.parse(playersDataJson) as PlayersData;
+        return playersData;
+    }
+
+    setNameOnHeader() {
+        const h1:HTMLHeadingElement = document.querySelector('#player-name')!;
+
+        this.currentBoard === this.player1Board?
+        h1.textContent = `${this.playersData.players[0]}'s Fleet`:
+        h1.textContent = `${this.playersData.players[1]}'s Fleet`;
+    }
+
+    setStartBtnContent() {
+        const btn:HTMLButtonElement = document.querySelector('#start-btn')!;
+        
+        if (this.playersData.vsComputer) {
+            btn.textContent = 'Start Game';
+        } else {
+            this.currentBoard === this.player1Board?
+            btn.textContent = `${this.playersData.players[1]}'s Fleet`:
+            btn.textContent = 'Start Game';
+        }
+    }
+
+    initialize() {
+        this.setNameOnHeader();
+        this.setStartBtnContent();
+    }
+}
 
 const fleet: Record<string, Ship> = fleetStandard();
+const placementState = new PlacementState;
+
 const gameBoard = new GameBoard;
 
 let shipOffsetData: shipOffsetData;
@@ -36,8 +81,8 @@ function getPlayerData() {
 function setupBoardGame() {
     boardsPanel.innerHTML = '';
 
-    board1 = generateBoard();
-    board2 = generateBoard();
+    const board1 = generateBoard();
+    const board2 = generateBoard();
 
     board1.setAttribute('data-index', '0');
     board2.setAttribute('data-index', '1');
@@ -164,7 +209,8 @@ function dragleave(this:HTMLDivElement) {
 
 export function initialize() {
     setupBoardGame();
-    console.log(getPlayerData());
+    console.log(placementState.playersData);
+    placementState.initialize();
 
     // set ship directions to horizontal as default.
     for (const ship in fleet) {
