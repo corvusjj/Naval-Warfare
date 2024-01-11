@@ -46,8 +46,8 @@ function setupBoardGame() {
 
     const squares = document.querySelectorAll('.square[data-coord]');
     squares.forEach(square => {
-        square.addEventListener('dragenter', dragenter);
-        square.addEventListener('dragleave', dragleave);
+        square.addEventListener('dragenter', dragenter as EventListener);
+        square.addEventListener('dragleave', dragleave as EventListener);
     });
 }
 
@@ -57,12 +57,13 @@ function toggleShipDirection(this:HTMLDivElement) {
     this.setAttribute('data-vertical', 'false');
 
     const shipKey:string = this.dataset.character!;
-
     const ship:Ship = fleet[shipKey];
     ship.toggleDirection();
 }
 
-function setShipOffsetData(e:MouseEvent) {
+//  returns the length (num of squares) of the ship dragstart event from the cursor location to 
+//  the left(horizontal) or top(vertical) of the ship div element.
+function setShipOffsetData(e:MouseEvent | DragEvent) {
     const shipElement = e.target as HTMLDivElement;
     const datasetLength: string | undefined = shipElement.dataset.length;
     let totalShipSquares = 0;
@@ -90,6 +91,9 @@ function setShipOffsetData(e:MouseEvent) {
     shipOffsetData = { direction, span };
 }
 
+//  For the valid and invalid square highlights in UI board,  
+//  this returns data for the coordinateSeeker parameters. The current shipOffsetData (dragstart) 
+//  and the current square (dragenter) coordinates.   
 function getCoordOffsetData(e:Event) {
     const currentSquareDiv = e.target as HTMLDivElement;
     const currentCoordinates = currentSquareDiv.dataset.coord?.split('-')
@@ -98,6 +102,40 @@ function getCoordOffsetData(e:Event) {
 
     return [ currentCoordinates, direction, span ]; 
 }
+
+function findSquareOrigin(e: DragEvent | MouseEvent) {
+    const offsetData: (string | number | number[] | undefined)[] = getCoordOffsetData(e);
+    const squareOrigin:number[] = coordinateSeeker(
+        offsetData[0] as number[],
+        offsetData[1] as string,
+        offsetData[2] as number
+    );
+
+    return squareOrigin;
+}
+
+function highlightSquares(currentShip: Ship, squareOrigin:number[]) {
+    const datasetSquareOrigin = squareOrigin.join('-');
+    const { canBePlaced, coordinates } = gameBoard.seekCoordinates(currentShip, datasetSquareOrigin);
+
+    const squareNodes:HTMLDivElement[] = [];
+
+    coordinates.forEach((coord) => {
+        const datasetCoord = coord.join('-');
+        const squareDiv:HTMLDivElement = document.querySelector(`.square[data-coord="${datasetCoord}"]`)!;
+        squareNodes.push(squareDiv);
+    });
+
+    const squares = document.querySelectorAll('.square');
+    squares.forEach(square => square.removeAttribute('data-placement'));
+
+    canBePlaced? 
+    squareNodes.forEach(square => square.setAttribute('data-placement', 'valid')):
+    squareNodes.forEach(square => square.setAttribute('data-placement', 'invalid'));
+}
+
+// ==================================================    EVENTS   =======================================================================
+// ==================================================    EVENTS   =======================================================================
 
 function dragging(this:HTMLDivElement, e:DragEvent | MouseEvent | Event) {
     setShipOffsetData(e as MouseEvent);   
@@ -113,36 +151,11 @@ function dragend(this:HTMLDivElement) {
     this.classList.remove('dragging');
 }
 
-function dragenter(e:Event) {
-    const offsetData: (string | number | number[] | undefined)[] = getCoordOffsetData(e);
-    const squareOrigin:number[] = coordinateSeeker(
-        offsetData[0] as number[],
-        offsetData[1] as string,
-        offsetData[2] as number
-    );
+function dragenter(e:DragEvent | MouseEvent) {
+    const squareOrigin = findSquareOrigin(e);
         
     if (squareOrigin[0] < 1 || squareOrigin[1] < 1) return;
-    
-
-    const datasetSquareOrigin = squareOrigin.join('-');
-    const { canBePlaced, coordinates } = gameBoard.seekCoordinates(currentShipDrag, datasetSquareOrigin);
-
-    const squareNodes = [];
-
-    coordinates.forEach((coord) => {
-        const datasetCoord = coord.join('-');
-        const squareDiv = document.querySelector(`.square[data-coord="${datasetCoord}"]`);
-        squareNodes.push(squareDiv);
-    });
-
-    const squares = document.querySelectorAll('.square');
-    squares.forEach(square => square.removeAttribute('data-placement'));
-
-    canBePlaced? 
-    squareNodes.forEach(square => square.setAttribute('data-placement', 'valid')):
-    squareNodes.forEach(square => square.setAttribute('data-placement', 'invalid'));
-
-    // e.target.setAttribute('data-placement', 'valid');
+    highlightSquares(currentShipDrag, squareOrigin);
 }
 
 function dragleave(this:HTMLDivElement) {
@@ -164,5 +177,3 @@ export function initialize() {
         ship.addEventListener('dragend', dragend);
     });
 }
-
-//  highlight dragenter squares
