@@ -24,12 +24,15 @@ class PlacementState {
     player1Board: GameBoard;
     player2Board: GameBoard;
     currentBoard: GameBoard;
+    currentBoardInterface: HTMLDivElement;
 
     constructor() {
         this.playersData = getPlayerData();
         this.player1Board = new GameBoard;
         this.player2Board = new GameBoard;
         this.currentBoard = this.player1Board;
+
+        this.currentBoardInterface = document.createElement('div');
     }
 
     getPlayerData() {
@@ -58,16 +61,21 @@ class PlacementState {
         }
     }
 
+    setCurrentBoardInterface() {
+        this.currentBoard === this.player1Board?
+        this.currentBoardInterface = document.querySelector('.board[data-index="0"]')!:
+        this.currentBoardInterface = document.querySelector('.board[data-index="1"]')!;
+    }
+
     initialize() {
         this.setNameOnHeader();
         this.setStartBtnContent();
+        this.setCurrentBoardInterface();
     }
 }
 
 const fleet: Record<string, Ship> = fleetStandard();
 const placementState = new PlacementState;
-
-const gameBoard = new GameBoard;
 
 let shipOffsetData: shipOffsetData;
 let currentShipDrag: Ship;
@@ -161,18 +169,22 @@ function findSquareOrigin(e: DragEvent | MouseEvent) {
 
 function highlightSquares(currentShip: Ship, squareOrigin:number[]) {
     const datasetSquareOrigin = squareOrigin.join('-');
-    const { canBePlaced, coordinates } = gameBoard.seekCoordinates(currentShip, datasetSquareOrigin);
+    const currentGameBoard = placementState.currentBoard;
+    const { canBePlaced, coordinates } = currentGameBoard.seekCoordinates(currentShip, datasetSquareOrigin);
 
     const squareNodes:HTMLDivElement[] = [];
 
     coordinates.forEach((coord) => {
         const datasetCoord = coord.join('-');
-        const squareDiv:HTMLDivElement = document.querySelector(`.square[data-coord="${datasetCoord}"]`)!;
+
+        const currentBoardInterface = placementState.currentBoardInterface;
+        const squareDiv:HTMLDivElement = currentBoardInterface.querySelector(`.square[data-coord="${datasetCoord}"]`)!;
         squareNodes.push(squareDiv);
     });
 
     const squares = document.querySelectorAll('.square');
     squares.forEach(square => square.removeAttribute('data-placement'));
+    console.log(squareNodes);
 
     canBePlaced? 
     squareNodes.forEach(square => square.setAttribute('data-placement', 'valid')):
