@@ -19,6 +19,11 @@ interface shipOffsetData {
     span: number;
 }
 
+interface draggedShipValidity {
+    canBePlaced: boolean;
+    coordinates: number[][];
+}
+
 class PlacementState {
     playersData: PlayersData;
     player1Board: GameBoard;
@@ -79,6 +84,8 @@ const placementState = new PlacementState;
 
 let shipOffsetData: shipOffsetData;
 let currentShipDrag: Ship;
+let currentShipDragValidity: draggedShipValidity;
+const dragSquareNodes:HTMLDivElement[] = [];
 
 function getPlayerData() {
     const playersDataJson:string = localStorage.getItem('battleship-players-data')!;
@@ -167,28 +174,31 @@ function findSquareOrigin(e: DragEvent | MouseEvent) {
     return squareOrigin;
 }
 
-function highlightSquares(currentShip: Ship, squareOrigin:number[]) {
+function setShipDragValidity(currentShip: Ship, squareOrigin:number[]) {
     const datasetSquareOrigin = squareOrigin.join('-');
     const currentGameBoard = placementState.currentBoard;
-    const { canBePlaced, coordinates } = currentGameBoard.seekCoordinates(currentShip, datasetSquareOrigin);
+    currentShipDragValidity = currentGameBoard.seekCoordinates(currentShip, datasetSquareOrigin);
+}
 
-    const squareNodes:HTMLDivElement[] = [];
+function highlightActiveSquares() {
+    resetDragSquareNodes();
 
-    coordinates.forEach((coord) => {
+    currentShipDragValidity.coordinates.forEach((coord) => {
         const datasetCoord = coord.join('-');
 
         const currentBoardInterface = placementState.currentBoardInterface;
         const squareDiv:HTMLDivElement = currentBoardInterface.querySelector(`.square[data-coord="${datasetCoord}"]`)!;
-        squareNodes.push(squareDiv);
+        dragSquareNodes.push(squareDiv);
     });
 
-    const squares = document.querySelectorAll('.square');
-    squares.forEach(square => square.removeAttribute('data-placement'));
-    console.log(squareNodes);
+    currentShipDragValidity.canBePlaced? 
+    dragSquareNodes.forEach(square => square.setAttribute('data-placement', 'valid')):
+    dragSquareNodes.forEach(square => square.setAttribute('data-placement', 'invalid'));
+}
 
-    canBePlaced? 
-    squareNodes.forEach(square => square.setAttribute('data-placement', 'valid')):
-    squareNodes.forEach(square => square.setAttribute('data-placement', 'invalid'));
+function resetDragSquareNodes() {
+    dragSquareNodes.forEach(square => square.removeAttribute('data-placement'));
+    dragSquareNodes.length = 0;
 }
 
 // ==================================================    EVENTS   =======================================================================
@@ -206,17 +216,19 @@ function dragging(this:HTMLDivElement, e:DragEvent | MouseEvent | Event) {
 
 function dragend(this:HTMLDivElement) {
     this.classList.remove('dragging');
+    resetDragSquareNodes();
 }
 
 function dragenter(e:DragEvent | MouseEvent) {
     const squareOrigin = findSquareOrigin(e);
         
-    if (squareOrigin[0] < 1 || squareOrigin[1] < 1) return;
-    highlightSquares(currentShipDrag, squareOrigin);
+    if (squareOrigin[0] < 1 || squareOrigin[1] < 1) return resetDragSquareNodes();
+    setShipDragValidity(currentShipDrag, squareOrigin);
+    highlightActiveSquares();
 }
 
-function dragleave(this:HTMLDivElement) {
-    // this.style.background = 'none';
+function dragleave() {
+    // resetDragSquareNodes();
 }
 
 export function initialize() {
