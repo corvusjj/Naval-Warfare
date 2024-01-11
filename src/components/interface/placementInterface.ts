@@ -1,6 +1,8 @@
 import generateBoard from '../../utilities/battleshipBoardInterface';
 import GameBoard from '../../gameTemplates/gameboard';
 import Ship from '../../gameTemplates/ship';
+
+import { fleetStandard } from '../../utilities/fleet';
 import { coordinateSeeker } from '../../utilities/coordinatesHandler';
 import '../style/placement.scss';
 
@@ -18,6 +20,9 @@ const ships= document.querySelectorAll('.ship');
 const boardsPanel = document.querySelector('.boards-panel')!;
 let board1: HTMLDivElement;
 let board2: HTMLDivElement;
+
+const fleet: Record<string, Ship> = fleetStandard();
+const gameBoard = new GameBoard;
 
 let shipOffsetData: shipOffsetData;
 
@@ -49,6 +54,11 @@ function toggleShipDirection(this:HTMLDivElement) {
     this.dataset.vertical === 'false'?
     this.setAttribute('data-vertical', 'true'):
     this.setAttribute('data-vertical', 'false');
+
+    const shipKey:string = this.dataset.character!;
+
+    const ship:Ship = fleet[shipKey];
+    ship.toggleDirection();
 }
 
 function setShipOffsetData(e:MouseEvent) {
@@ -97,10 +107,6 @@ function dragend(this:HTMLDivElement) {
     this.classList.remove('dragging');
 }
 
-const gameBoard = new GameBoard;
-const shipTemplate = new Ship(4);
-shipTemplate.toggleDirection();
-
 function dragenter(e:Event) {
     const offsetData: (string | number | number[] | undefined)[] = getCoordOffsetData(e);
     const squareOrigin:number[] = coordinateSeeker(
@@ -111,10 +117,9 @@ function dragenter(e:Event) {
         
     if (squareOrigin[0] < 1 || squareOrigin[1] < 1) return;
     
-    
 
     const datasetSquareOrigin = squareOrigin.join('-');
-    const { canBePlaced, coordinates } = gameBoard.seekCoordinates(shipTemplate, datasetSquareOrigin);
+    const { canBePlaced, coordinates } = gameBoard.seekCoordinates(fleet.b, datasetSquareOrigin);
 
     const squareNodes = [];
 
@@ -141,6 +146,11 @@ function dragleave(this:HTMLDivElement) {
 export function initialize() {
     setupBoardGame();
     console.log(getPlayerData());
+
+    // set ship directions to horizontal as default.
+    for (const ship in fleet) {
+        fleet[ship].toggleDirection();
+    }
 
     ships.forEach(ship => {
         ship.addEventListener('click', toggleShipDirection);
