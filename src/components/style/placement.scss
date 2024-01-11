@@ -85,6 +85,16 @@ main {
         &:hover {
             background: rgba(255, 255, 255, 0.178);
         }
+
+        &[data-placement="valid"] {
+            background: rgba(120, 244, 120, 0.3);
+            transition: background 0.2s ease;
+        }
+
+        &[data-placement="invalid"] {
+            background: rgba(244, 120, 120, 0.3);
+            transition: background 0.2s ease;
+        }
     }
 
     .square-axis {
@@ -169,7 +179,6 @@ main {
 }
 
 .ship {
-    // border: 1px solid white;
     height: 34px;
     display: flex;
     align-items: center;
@@ -203,12 +212,11 @@ main {
     // ------------------ vertical ships ------------------------
 
     &[data-ship="carrier"][data-vertical="true"] { 
-        height: 170px 
+        height: 170px; 
     }
 
     &[data-ship="battleship"][data-vertical="true"] { 
         height: 136px;
-        
         img { transform: translateX(-3px) }; 
     }
 
@@ -235,7 +243,7 @@ main {
 }
 
 .ship.dragging {
-    opacity: 0.5;
+    opacity: 0.7;
 }
 
 .ship.dragend {
