@@ -25,6 +25,7 @@ const fleet: Record<string, Ship> = fleetStandard();
 const gameBoard = new GameBoard;
 
 let shipOffsetData: shipOffsetData;
+let currentShipDrag: Ship;
 
 function getPlayerData() {
     const playersDataJson:string = localStorage.getItem('battleship-players-data')!;
@@ -101,6 +102,11 @@ function getCoordOffsetData(e:Event) {
 function dragging(this:HTMLDivElement, e:DragEvent | MouseEvent | Event) {
     setShipOffsetData(e as MouseEvent);   
     this.classList.add('dragging');
+
+    const shipKey:string = this.dataset.character!;
+    const currentShip:Ship = fleet[shipKey];
+
+    currentShipDrag = currentShip;
 }
 
 function dragend(this:HTMLDivElement) {
@@ -119,7 +125,7 @@ function dragenter(e:Event) {
     
 
     const datasetSquareOrigin = squareOrigin.join('-');
-    const { canBePlaced, coordinates } = gameBoard.seekCoordinates(fleet.b, datasetSquareOrigin);
+    const { canBePlaced, coordinates } = gameBoard.seekCoordinates(currentShipDrag, datasetSquareOrigin);
 
     const squareNodes = [];
 
