@@ -146,7 +146,6 @@ main {
 }
 
 .ships-container {
-    // border: 1px solid lightgreen;
     display: flex;
     flex-wrap: wrap;
     align-items: end;
@@ -155,9 +154,6 @@ main {
 
     .ship-container {
         @extend %container;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         position: relative;
 
         &:nth-of-type(1) { width: 11rem; height: 11rem; }
@@ -183,8 +179,17 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: absolute;
     background: none;
+    pointer-events: none;
     cursor: grab;
+
+    &.ship-default {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: auto;
+    }
 
     & * {
         pointer-events: none;

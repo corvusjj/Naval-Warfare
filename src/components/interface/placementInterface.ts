@@ -108,6 +108,8 @@ function setupBoardGame() {
     squares.forEach(square => {
         square.addEventListener('dragenter', dragenter as EventListener);
         square.addEventListener('dragleave', dragleave as EventListener);
+        square.addEventListener('dragover', dragover as EventListener);
+        square.addEventListener('drop', drop as EventListener);
     });
 }
 
@@ -170,7 +172,7 @@ function findSquareOrigin(e: DragEvent | MouseEvent) {
         offsetData[1] as string,
         offsetData[2] as number
     );
-
+    
     return squareOrigin;
 }
 
@@ -199,6 +201,21 @@ function highlightActiveSquares() {
 function resetDragSquareNodes() {
     dragSquareNodes.forEach(square => square.removeAttribute('data-placement'));
     dragSquareNodes.length = 0;
+}
+
+function placeShip() {
+    //  interface ship placement
+    const currentShip = document.querySelector<HTMLDivElement>('.dragging')!;
+    const board = placementState.currentBoardInterface;
+    const squareDivOrigin = dragSquareNodes[0];
+    
+    currentShip.classList.remove('ship-default');
+    board.appendChild(currentShip);
+    
+    const squareDistanceLeft = squareDivOrigin.getBoundingClientRect().left - board.getBoundingClientRect().left;
+    const squareDistanceTop = squareDivOrigin.getBoundingClientRect().top - board.getBoundingClientRect().top;
+    currentShip.style.left = squareDistanceLeft + 'px';
+    currentShip.style.top = squareDistanceTop + 'px';
 }
 
 // ==================================================    EVENTS   =======================================================================
@@ -231,6 +248,15 @@ function dragleave() {
     // resetDragSquareNodes();
 }
 
+function dragover(e:DragEvent) {
+    e.preventDefault();
+}
+
+function drop() {
+    const validArea:boolean = currentShipDragValidity.canBePlaced;
+    if (validArea) placeShip();
+}
+
 export function initialize() {
     setupBoardGame();
     console.log(placementState.playersData);
@@ -247,3 +273,5 @@ export function initialize() {
         ship.addEventListener('dragend', dragend);
     });
 }
+
+//  place ships on board
