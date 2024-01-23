@@ -8,6 +8,7 @@ import '../style/placement.scss';
 
 const ships= document.querySelectorAll('.ship');
 const boardsPanel = document.querySelector('.boards-panel')!;
+const resetFleetBtn = document.querySelector('#reset-btn');
 
 interface PlayersData {
     vsComputer: boolean;
@@ -75,6 +76,7 @@ class PlacementState {
     }
 
     resetFleet() {
+        this.currentBoard.reset();
         this.activeFleet = fleetStandard();
 
         // set ship directions to horizontal as default.
@@ -240,6 +242,25 @@ function placeShip() {
     );
 }
 
+function resetPlacement() {
+    placementState.currentBoard.reset();
+    placementState.resetFleet();
+
+    const shipContainers = [...document.querySelectorAll<HTMLDivElement>('.ship-container')];
+    const fleet = [...ships] as HTMLDivElement[];
+
+    shipContainers.forEach(container => {
+        const shipName = container.id;
+        const currentShip = fleet.find(shipDiv => shipDiv.dataset.ship === shipName)!;
+
+        container.appendChild(currentShip);
+        currentShip.style.left = '50%';
+        currentShip.style.top = '50%';
+        currentShip.dataset.vertical = 'false';
+        currentShip.classList.add('ship-default');
+    });
+}
+
 // ==================================================    EVENTS   =======================================================================
 // ==================================================    EVENTS   =======================================================================
 
@@ -289,6 +310,8 @@ export function initialize() {
         ship.addEventListener('dragstart', dragging);
         ship.addEventListener('dragend', dragend);
     });
+
+    resetFleetBtn?.addEventListener('click', resetPlacement);
 }
 
 //  place ships on board
