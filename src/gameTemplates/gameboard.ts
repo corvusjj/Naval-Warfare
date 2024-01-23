@@ -38,17 +38,16 @@ export default class GameBoard {
         let y = parseInt(square.split('-')[1]);
 
         let canBePlaced  = true;    
-        const coordinates = [[x,y]];
+        const coordinates:number[][] = [];
 
-        for(let i = 1; i < length; i++) {
-            direction === 'vertical'? x++: y++;
-            if ( x > 10 ||
-                 y > 10 ||
-                this.board[x][y] !== '.') {
+        for(let i = 0; i < length; i++) {
+            if ( x > 10 || y > 10 ){
                 canBePlaced = false;
                 break;
             }
+            if (this.board[x][y] !== '.') canBePlaced = false;
             coordinates.push([x,y]);
+            direction === 'vertical'? x++: y++;
         }
 
         return {canBePlaced, coordinates};
