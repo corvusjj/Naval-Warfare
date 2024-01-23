@@ -30,6 +30,7 @@ class PlacementState {
     player2Board: GameBoard;
     currentBoard: GameBoard;
     currentBoardInterface: HTMLDivElement;
+    activeFleet: Record<string, Ship>;
 
     constructor() {
         this.playersData = getPlayerData();
@@ -38,6 +39,7 @@ class PlacementState {
         this.currentBoard = this.player1Board;
 
         this.currentBoardInterface = document.createElement('div');
+        this.activeFleet = fleetStandard();
     }
 
     getPlayerData() {
@@ -72,14 +74,23 @@ class PlacementState {
         this.currentBoardInterface = document.querySelector('.board[data-index="1"]')!;
     }
 
+    resetFleet() {
+        this.activeFleet = fleetStandard();
+
+        // set ship directions to horizontal as default.
+        for (const ship in this.activeFleet) {
+            this.activeFleet[ship].toggleDirection();
+        }
+    }
+
     initialize() {
         this.setNameOnHeader();
         this.setStartBtnContent();
         this.setCurrentBoardInterface();
+        this.resetFleet();
     }
 }
 
-const fleet: Record<string, Ship> = fleetStandard();
 const placementState = new PlacementState;
 
 let shipOffsetData: shipOffsetData;
@@ -119,7 +130,7 @@ function toggleShipDirection(this:HTMLDivElement) {
     this.setAttribute('data-vertical', 'false');
 
     const shipKey:string = this.dataset.character!;
-    const ship:Ship = fleet[shipKey];
+    const ship:Ship = placementState.activeFleet[shipKey];
     ship.toggleDirection();
 }
 
@@ -204,7 +215,7 @@ function resetDragSquareNodes() {
 }
 
 function placeShip() {
-    //  interface ship placement
+    //  INTERFACE SHIP PLACEMENT
     const currentShip = document.querySelector<HTMLDivElement>('.dragging')!;
     const board = placementState.currentBoardInterface;
     const squareDivOrigin = dragSquareNodes[0];
@@ -216,6 +227,17 @@ function placeShip() {
     const squareDistanceTop = squareDivOrigin.getBoundingClientRect().top - board.getBoundingClientRect().top;
     currentShip.style.left = squareDistanceLeft + 'px';
     currentShip.style.top = squareDistanceTop + 'px';
+
+    //  GAME-DATA SHIP PLACEMENT
+    const activeShip:Ship = currentShipDrag;
+    const coord:string = squareDivOrigin.dataset.coord!;
+    const shipKey:string = currentShip.dataset.character!;
+
+    placementState.currentBoard.placeShip(
+        activeShip,
+        coord,
+        shipKey
+    );
 }
 
 // ==================================================    EVENTS   =======================================================================
@@ -226,7 +248,7 @@ function dragging(this:HTMLDivElement, e:DragEvent | MouseEvent | Event) {
     this.classList.add('dragging');
 
     const shipKey:string = this.dataset.character!;
-    const currentShip:Ship = fleet[shipKey];
+    const currentShip:Ship = placementState.activeFleet[shipKey];
 
     currentShipDrag = currentShip;
 }
@@ -261,11 +283,6 @@ export function initialize() {
     setupBoardGame();
     console.log(placementState.playersData);
     placementState.initialize();
-
-    // set ship directions to horizontal as default.
-    for (const ship in fleet) {
-        fleet[ship].toggleDirection();
-    }
 
     ships.forEach(ship => {
         ship.addEventListener('click', toggleShipDirection);
