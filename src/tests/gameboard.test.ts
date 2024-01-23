@@ -53,14 +53,14 @@ describe('Seek ship placement', () => {
         );
     });
 
-    it('vertical ship(5) on coordinates 2-9 after placing horizontal ship(2) on coordinates 3-9 should be false with returning coordinates [2,9].', () => {
+    it('vertical ship(5) on coordinates 2-9 after placing horizontal ship(2) on coordinates 3-9 should be false with returning coordinates [2,9], [3,9], [4,9], [5,9], [6,9].', () => {
         const destroyer = new Ship(2);
         destroyer.toggleDirection();
         gameBoard.placeShip(destroyer, '3-9', 'd');
         const carrier = new Ship(5);
 
         expect(gameBoard.seekCoordinates(carrier, '2-9')).toEqual(
-            { canBePlaced:false, coordinates:[[2,9]] }
+            { canBePlaced:false, coordinates:[[2,9], [3,9], [4,9], [5,9], [6,9]] }
         );
     });
 });
