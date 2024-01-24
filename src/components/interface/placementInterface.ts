@@ -9,6 +9,7 @@ import '../style/placement.scss';
 const ships= document.querySelectorAll('.ship');
 const boardsPanel = document.querySelector('.boards-panel')!;
 const resetFleetBtn = document.querySelector('#reset-btn');
+const startBtn:HTMLButtonElement = document.querySelector('#start-btn')!;
 
 interface PlayersData {
     vsComputer: boolean;
@@ -57,16 +58,21 @@ class PlacementState {
         h1.textContent = `${this.playersData.players[1]}'s Fleet`;
     }
 
-    setStartBtnContent() {
-        const btn:HTMLButtonElement = document.querySelector('#start-btn')!;
-        
+    setStartBtnContent() {        
         if (this.playersData.vsComputer) {
-            btn.textContent = 'Start Game';
+            startBtn.textContent = 'Start Game';
         } else {
             this.currentBoard === this.player1Board?
-            btn.textContent = `${this.playersData.players[1]}'s Fleet`:
-            btn.textContent = 'Start Game';
+            startBtn.textContent = `${this.playersData.players[1]}'s Fleet`:
+            startBtn.textContent = 'Start Game';
         }
+    }
+
+    setStartBtnState() {
+        const shipsStatus = placementState.currentBoard.getShipsStatus();
+        const numOfShips:number = Object.keys(shipsStatus).length;
+
+        numOfShips === 5? startBtn.classList.add('active'): startBtn.classList.remove('active');
     }
 
     setCurrentBoardInterface() {
@@ -83,6 +89,21 @@ class PlacementState {
         for (const ship in this.activeFleet) {
             this.activeFleet[ship].toggleDirection();
         }
+
+        this.setStartBtnState();
+    }
+
+    toggleSecondPlayerBoard() {
+        this.currentBoard = this.player2Board;
+        this.setCurrentBoardInterface();
+        this.setNameOnHeader();
+        this.setStartBtnContent();
+        boardsPanel.classList.add('toggle-panel');
+    }
+
+    startGame() {
+        // localStorage
+        console.log('game started');
     }
 
     initialize() {
@@ -261,6 +282,20 @@ function resetPlacement() {
     });
 }
 
+function runStartBtn() {
+    if (placementState.playersData.vsComputer) {
+        //  random ai placement
+        placementState.startGame();
+    } else if (placementState.currentBoard === placementState.player1Board) {
+        placementState.toggleSecondPlayerBoard();
+        resetPlacement();
+
+        console.log(placementState);
+    } else {
+        placementState.startGame();
+    }
+}
+
 // ==================================================    EVENTS   =======================================================================
 // ==================================================    EVENTS   =======================================================================
 
@@ -298,6 +333,8 @@ function dragover(e:DragEvent) {
 function drop() {
     const validArea:boolean = currentShipDragValidity.canBePlaced;
     if (validArea) placeShip();
+
+    placementState.setStartBtnState();
 }
 
 export function initialize() {
@@ -312,6 +349,8 @@ export function initialize() {
     });
 
     resetFleetBtn?.addEventListener('click', resetPlacement);
+    startBtn.addEventListener('click', runStartBtn);
 }
 
-//  place ships on board
+//  activate startGame btn
+//  implement random placement
