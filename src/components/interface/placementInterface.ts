@@ -96,11 +96,14 @@ class PlacementState {
     }
 
     toggleSecondPlayerBoard() {
-        boardsPanel.classList.add('toggle-panel');
         this.currentBoard = this.player2Board;
         this.setCurrentBoardInterface();
-        this.setNameOnHeader();
-        this.setStartBtnContent();
+
+        if (!this.playersData.vsComputer) {
+            boardsPanel.classList.add('toggle-panel');
+            this.setNameOnHeader();
+            this.setStartBtnContent();
+        }
     }
 
     startGame() {
@@ -330,7 +333,8 @@ function resetPlacement() {
 
 function runStartBtn() {
     if (placementState.playersData.vsComputer) {
-        //  random ai placement
+        placementState.toggleSecondPlayerBoard();
+        randomPlacement();
         placementState.startGame();
     } else if (placementState.currentBoard === placementState.player1Board) {
         placementState.toggleSecondPlayerBoard();
@@ -398,4 +402,4 @@ export function initialize() {
 }
 
 //  activate startGame btn
-//  implement random placement
+//  fleet placement on vsComputer
