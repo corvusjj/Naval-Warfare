@@ -4,11 +4,13 @@ import Ship from '../../gameTemplates/ship';
 
 import { fleetStandard } from '../../utilities/fleet';
 import { coordinateSeeker } from '../../utilities/coordinatesHandler';
+import setupAllCoordinates from '../../utilities/battleshipCoordinates';
 import '../style/placement.scss';
 
 const ships= document.querySelectorAll('.ship');
 const boardsPanel = document.querySelector('.boards-panel')!;
 const resetFleetBtn = document.querySelector('#reset-btn');
+const randomFleetBtn = document.querySelector('#random-btn');
 const startBtn:HTMLButtonElement = document.querySelector('#start-btn')!;
 
 interface PlayersData {
@@ -263,6 +265,50 @@ function placeShip() {
     );
 }
 
+function randomPlacement() {
+    resetPlacement();
+    const fleet = [...ships] as HTMLDivElement[];
+    const coordinates:number[][] = setupAllCoordinates();
+
+    fleet.forEach(shipDiv => {
+        //  Random ship direction
+        const isVertical:boolean = Math.random() < 0.5;
+        if (isVertical) shipDiv.click();
+
+        //  Emulate dragging
+        shipDiv.classList.add('dragging');
+        const shipKey:string = shipDiv.dataset.character!;
+        const currentShip:Ship = placementState.activeFleet[shipKey];
+        currentShipDrag = currentShip;
+
+        //  Find available coordinates with recursion, emulate dragenter
+        function chooseValidSquare() {
+            const randomIndex:number = Math.floor(Math.random() * coordinates.length);
+            const chosenCoord:number[] = coordinates[randomIndex];
+
+            const currentGameBoard = placementState.currentBoard;
+            const shipPlacementValidity = currentGameBoard.seekCoordinates(currentShip, chosenCoord.join('-'));
+
+            if (!shipPlacementValidity.canBePlaced) return chooseValidSquare();
+            
+            const datasetCoord = chosenCoord.join('-');
+            const currentBoardInterface = placementState.currentBoardInterface;
+            const squareDiv:HTMLDivElement = currentBoardInterface.querySelector(`.square[data-coord="${datasetCoord}"]`)!;
+            dragSquareNodes.push(squareDiv);
+        }
+        chooseValidSquare();
+        
+        //  Place current ship, emulate drop
+        placeShip();
+        placementState.setStartBtnState();
+
+        //  Emulate dragend
+        const currentShipDiv = document.querySelector<HTMLDivElement>('.dragging')!
+        currentShipDiv.classList.remove('dragging');
+        resetDragSquareNodes();
+    });
+}
+
 function resetPlacement() {
     placementState.currentBoard.reset();
     placementState.resetFleet();
@@ -347,6 +393,7 @@ export function initialize() {
     });
 
     resetFleetBtn?.addEventListener('click', resetPlacement);
+    randomFleetBtn?.addEventListener('click', randomPlacement);
     startBtn.addEventListener('click', runStartBtn);
 }
 
