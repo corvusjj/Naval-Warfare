@@ -94,11 +94,11 @@ class PlacementState {
     }
 
     toggleSecondPlayerBoard() {
+        boardsPanel.classList.add('toggle-panel');
         this.currentBoard = this.player2Board;
         this.setCurrentBoardInterface();
         this.setNameOnHeader();
         this.setStartBtnContent();
-        boardsPanel.classList.add('toggle-panel');
     }
 
     startGame() {
@@ -288,9 +288,7 @@ function runStartBtn() {
         placementState.startGame();
     } else if (placementState.currentBoard === placementState.player1Board) {
         placementState.toggleSecondPlayerBoard();
-        resetPlacement();
-
-        console.log(placementState);
+        setTimeout(() => resetPlacement(), 500);
     } else {
         placementState.startGame();
     }
