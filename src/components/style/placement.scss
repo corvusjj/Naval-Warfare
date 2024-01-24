@@ -68,6 +68,7 @@ main {
 .board {
     display: grid;
     grid-template-columns: repeat(11, 1fr);
+    position: relative;
 
     .square {
         width: 35px;
