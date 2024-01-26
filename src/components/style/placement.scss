@@ -199,7 +199,7 @@ main {
     // ------------------ horizontal ships ------------------------
 
     &[data-ship="carrier"][data-vertical="false"] { 
-        width: 170px 
+        width: 170px
     }
 
     &[data-ship="battleship"][data-vertical="false"] { 
@@ -284,5 +284,9 @@ main {
             pointer-events: auto;
             filter: brightness(1);
         }
+    }
+
+    a {
+        visibility: none;
     }
 }

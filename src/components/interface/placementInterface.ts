@@ -107,8 +107,11 @@ class PlacementState {
     }
 
     startGame() {
-        // localStorage
-        console.log('game started');
+        const playerBoards = [placementState.player1Board, placementState.player2Board];
+        localStorage.setItem('battleship-player-boards', JSON.stringify(playerBoards));
+
+        const gameLink = document.querySelector<HTMLAnchorElement>('#start-game-link')!;
+        gameLink.click();
     }
 
     initialize() {
@@ -400,6 +403,3 @@ export function initialize() {
     randomFleetBtn?.addEventListener('click', randomPlacement);
     startBtn.addEventListener('click', runStartBtn);
 }
-
-//  activate startGame btn
-//  fleet placement on vsComputer
