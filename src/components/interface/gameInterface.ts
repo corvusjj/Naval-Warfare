@@ -1,9 +1,12 @@
 import { gameOperations } from '../../gameInterfaceHandler';
 import generateBoard from '../../utilities/battleshipBoardInterface';
+import { PlayersData } from './placementInterface';
 import '../style/game.scss';
 
 // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
 const boardsPanel = document.querySelector('.boards-panel') as HTMLElement;
+const p1Ships = document.querySelector<HTMLDivElement>('.p1-ships')!;
+const p2Ships = document.querySelector<HTMLDivElement>('.p2-ships')!;
 let board1: HTMLDivElement;
 let board2: HTMLDivElement;
 
@@ -33,9 +36,15 @@ function attack(e: Event) {
 
 const interfaceMethods = {
     toggleBoardUI: (index: number) => {
-        index === 0?
-        boardsPanel.classList.remove('toggle-panel'):
-        boardsPanel.classList.add('toggle-panel');
+        if (index === 0) {
+            boardsPanel.classList.remove('toggle-panel');
+            p2Ships.style.display = 'none';
+            p1Ships.style.display = 'flex';
+        } else {
+            boardsPanel.classList.add('toggle-panel');
+            p1Ships.style.display = 'none';
+            p2Ships.style.display = 'flex';
+        }
     },
 
     markSquareUI: (square: number[], id: string) => {
@@ -47,11 +56,19 @@ const interfaceMethods = {
 }
 
 export function initialize() {
-    gameOperations.setGameState(false, ['john', 'drake']);
+    const playersDataJson = window.localStorage.getItem('battleship-players-data')!;
+    const playersData:PlayersData = JSON.parse(playersDataJson) as PlayersData;
+
+    playersData.vsComputer?
+    gameOperations.setGameState(true, [playersData.players[0]]):
+    gameOperations.setGameState(false, [playersData.players[0], playersData.players[1]]);    
         
         //  display board interface
         setupBoardGame();
         console.log('hi');
+        console.log(gameOperations.getState());
+
+        // localStorage.setItem('gameState', JSON.stringify(state));
 
         //  add each players data on html board element
         const [firstplayerData, secondPlayerData] = gameOperations.getPlayersData();
@@ -60,8 +77,6 @@ export function initialize() {
         board2.setAttribute('data-player-id', secondPlayerData[1]);
         board2.setAttribute('data-player-name', secondPlayerData[0]);
         interfaceMethods.toggleBoardUI(1);  // player 2 defender as default
-
-        console.log(gameOperations.getState());
 }
 
 export { interfaceMethods }

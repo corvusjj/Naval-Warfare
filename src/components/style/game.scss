@@ -175,17 +175,18 @@ main {
 }
 
 .ships-container {
-    // border: 1px solid lightgreen;
-    display: flex;
-    flex-direction: column;
-    gap: 1.8rem;
     width: fit-content;
     justify-self: flex-end;
-    align-items: start;
 
     &::before {
         content: 'ENEMY SHIPS';
         letter-spacing: 2px;
+    }
+
+    & > div {
+        display: flex;
+        flex-direction: column;
+        gap: 1.8rem;
     }
 
     .ship-container {
