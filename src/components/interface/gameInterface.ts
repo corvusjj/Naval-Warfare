@@ -34,6 +34,39 @@ function attack(e: Event) {
     squareNode.style.pointerEvents = 'none';
 }
 
+function setGameState() {
+    const playersDataJson = window.localStorage.getItem('battleship-players-data')!;
+    const playersData:PlayersData = JSON.parse(playersDataJson) as PlayersData;
+
+    playersData.vsComputer?
+    gameOperations.setGameState(true, [playersData.players[0]]):
+    gameOperations.setGameState(false, [playersData.players[0], playersData.players[1]]);
+}
+
+function getPlacementData() {
+    interface Ship {
+        length: number;
+        hits: number;
+        isVertical: boolean;
+        sunk: boolean;
+    }
+        
+    interface Board {
+        board: string[][];
+        ships: Record<string, Ship>;
+        shipCoordinates: Record<string, number[][]>;
+    }
+    
+    interface PlacementData {
+        board: Board;
+    }
+    
+    const boardsDataJson:string = window.localStorage.getItem('battleship-player-boards')!;
+    const playerBoards:PlacementData[] = JSON.parse(boardsDataJson) as PlacementData[];
+
+    console.log(playerBoards);
+}
+
 const interfaceMethods = {
     toggleBoardUI: (index: number) => {
         if (index === 0) {
@@ -51,32 +84,29 @@ const interfaceMethods = {
         const [x, y] = square.map(num => num.toString());
         const board = document.querySelector(`[data-player-id="${id}"]`)!;
         const tileUI = board.querySelector(`[data-coord="${x}-${y}"]`)!;
-        tileUI.textContent = 'X';
+        tileUI.textContent = 'O';
     }
 }
 
 export function initialize() {
-    const playersDataJson = window.localStorage.getItem('battleship-players-data')!;
-    const playersData:PlayersData = JSON.parse(playersDataJson) as PlayersData;
+    setGameState();
+    getPlacementData();
 
-    playersData.vsComputer?
-    gameOperations.setGameState(true, [playersData.players[0]]):
-    gameOperations.setGameState(false, [playersData.players[0], playersData.players[1]]);    
-        
-        //  display board interface
-        setupBoardGame();
-        console.log('hi');
-        console.log(gameOperations.getState());
+    //  display board interface
+    setupBoardGame();
+    console.log('hi');
+    console.log(gameOperations.getState());
 
-        // localStorage.setItem('gameState', JSON.stringify(state));
-
-        //  add each players data on html board element
-        const [firstplayerData, secondPlayerData] = gameOperations.getPlayersData();
-        board1.setAttribute('data-player-id', firstplayerData[1]);
-        board1.setAttribute('data-player-name', firstplayerData[0]);
-        board2.setAttribute('data-player-id', secondPlayerData[1]);
-        board2.setAttribute('data-player-name', secondPlayerData[0]);
-        interfaceMethods.toggleBoardUI(1);  // player 2 defender as default
+    //  add each players data on html board element
+    const [firstplayerData, secondPlayerData] = gameOperations.getPlayersData();
+    board1.setAttribute('data-player-id', firstplayerData[1]);
+    board1.setAttribute('data-player-name', firstplayerData[0]);
+    board2.setAttribute('data-player-id', secondPlayerData[1]);
+    board2.setAttribute('data-player-name', secondPlayerData[0]);
+    interfaceMethods.toggleBoardUI(1);  // player 2 defender as default
 }
 
 export { interfaceMethods }
+
+//  placeShips on both game and interface
+//  display p1Ships if vsPlayer
