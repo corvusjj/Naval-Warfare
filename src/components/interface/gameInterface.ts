@@ -11,7 +11,7 @@ let board1: HTMLDivElement;
 let board2: HTMLDivElement;
 
 function setupBoardGame() {
-    // boardsPanel.innerHTML = '';
+    boardsPanel.innerHTML = '';
 
     board1 = generateBoard();
     board2 = generateBoard();
@@ -36,35 +36,52 @@ function attack(e: Event) {
 
 function setGameState() {
     const playersDataJson = window.localStorage.getItem('battleship-players-data')!;
-    const playersData:PlayersData = JSON.parse(playersDataJson) as PlayersData;
+    const playersData = JSON.parse(playersDataJson) as PlayersData;
 
     playersData.vsComputer?
     gameOperations.setGameState(true, [playersData.players[0]]):
     gameOperations.setGameState(false, [playersData.players[0], playersData.players[1]]);
 }
 
+interface Ship {
+    length: number;
+    hits: number;
+    isVertical: boolean;
+    sunk: boolean;
+}
+    
+interface PlacementData {
+    board: string[][];
+    ships: Record<string, Ship>;
+    shipCoordinates: Record<string, number[][]>;
+}
+
 function getPlacementData() {
-    interface Ship {
-        length: number;
-        hits: number;
-        isVertical: boolean;
-        sunk: boolean;
-    }
-        
-    interface Board {
-        board: string[][];
-        ships: Record<string, Ship>;
-        shipCoordinates: Record<string, number[][]>;
-    }
-    
-    interface PlacementData {
-        board: Board;
-    }
-    
     const boardsDataJson:string = window.localStorage.getItem('battleship-player-boards')!;
     const playerBoards:PlacementData[] = JSON.parse(boardsDataJson) as PlacementData[];
 
-    console.log(playerBoards);
+    return playerBoards;
+}
+
+function placeShips(placementData:PlacementData[]) {
+
+    placementData.forEach(playerBoardData => {
+        const shipCoordinates = playerBoardData.shipCoordinates;
+        const playerShips = playerBoardData.ships;
+        const shipKeys = Object.keys(playerShips);
+
+        shipKeys.forEach(key => {
+            const ship = playerShips[key];
+            const isVertical:boolean = ship.isVertical;
+            const squareOrigin:string = shipCoordinates[key][0].join('-');
+
+            const playerIndex = placementData.indexOf(playerBoardData);
+            
+            playerIndex === 0?
+            gameOperations.placeFirstPlayerShip(key, isVertical, squareOrigin):
+            gameOperations.placeSecondPlayerShip(key, isVertical, squareOrigin);
+        });
+    });
 }
 
 const interfaceMethods = {
@@ -90,7 +107,8 @@ const interfaceMethods = {
 
 export function initialize() {
     setGameState();
-    getPlacementData();
+    const placementData:PlacementData[] = getPlacementData();
+    placeShips(placementData);
 
     //  display board interface
     setupBoardGame();
@@ -108,5 +126,5 @@ export function initialize() {
 
 export { interfaceMethods }
 
-//  placeShips on both game and interface
+//  placeShips on both game (import fleet) and interface
 //  display p1Ships if vsPlayer

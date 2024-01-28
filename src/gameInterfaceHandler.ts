@@ -19,6 +19,14 @@ const gameOperations = {
     getPlayersData() {
         return userMethods.playersData();
     },
+
+    placeFirstPlayerShip: (key:string, isVertical:boolean, coord:string) => {
+        userMethods.placeFirstPlayerShip(key, isVertical, coord);
+    },
+
+    placeSecondPlayerShip: (key:string, isVertical:boolean, coord:string) => {
+        userMethods.placeSecondPlayerShip(key , isVertical , coord);
+    },
     
     attack(square: number[]) {
         userMethods.attack(square);

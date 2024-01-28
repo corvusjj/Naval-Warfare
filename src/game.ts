@@ -69,6 +69,22 @@ const userMethods = {
         return [ firstPlayerData, secondPlayerData ];
     },
 
+    placeFirstPlayerShip: (key:string, isVertical:boolean, coord:string) => {
+        const ship = gameState.p1.ships[key];
+        if (!isVertical) ship.toggleDirection();
+
+        const playerBoard = gameState.p1.gameBoard;     
+        playerBoard.placeShip(ship, coord, key);
+    },
+
+    placeSecondPlayerShip: (key:string, isVertical:boolean, coord:string) => {
+        const ship = gameState.p2.ships[key];
+        if (!isVertical) ship.toggleDirection();
+
+        const playerBoard = gameState.p2.gameBoard;     
+        playerBoard.placeShip(ship, coord, key);
+    },
+
     attack: (square: number[]) => {
         const attackState:attackState = gameState.attack(square);
         console.log(attackState, gameState.attacker);
