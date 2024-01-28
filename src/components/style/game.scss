@@ -255,11 +255,14 @@ section.gameboard-ships {
 .p2-deployed-ship {
     width: 34px;
     height: 34px;
-    display: flex;
     justify-content: center;
     align-items: center;
     position: absolute;
     display: none;
+
+    &.show {
+        display: flex;
+    }
 
     //  horizontal ships
     &[data-ship-key="c"][data-vertical="false"] {

@@ -3,6 +3,8 @@ import generateBoard from '../../utilities/battleshipBoardInterface';
 import { PlayersData } from './placementInterface';
 import '../style/game.scss';
 
+let playersData:PlayersData;
+
 // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
 const boardsPanel = document.querySelector('.boards-panel') as HTMLElement;
 const p1Ships = document.querySelector<HTMLDivElement>('.p1-ships')!;
@@ -36,7 +38,7 @@ function attack(e: Event) {
 
 function setGameState() {
     const playersDataJson = window.localStorage.getItem('battleship-players-data')!;
-    const playersData = JSON.parse(playersDataJson) as PlayersData;
+    playersData = JSON.parse(playersDataJson) as PlayersData;
 
     playersData.vsComputer?
     gameOperations.setGameState(true, [playersData.players[0]]):
@@ -120,9 +122,17 @@ function placeShips(placementData:PlacementData[]) {
             const squareDistanceTop = squareDivOrigin.getBoundingClientRect().top - currentBoard.getBoundingClientRect().top;
             shipDiv.style.left = squareDistanceLeft + 'px';
             shipDiv.style.top = squareDistanceTop + 'px';
+
+            //  reveal player 1 ships if vsComputer
+            if (playerIndex === 0 && playersData.vsComputer) revealShip(shipDiv, false);
         });
     });
 }
+
+function revealShip(shipDiv:HTMLDivElement, isSunk:boolean) {
+    console.log(shipDiv, isSunk);
+    shipDiv.classList.add('show');
+} 
 
 const interfaceMethods = {
     toggleBoardUI: (index: number) => {
