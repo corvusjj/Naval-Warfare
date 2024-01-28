@@ -92,6 +92,7 @@ main {
 .board {
     display: grid;
     grid-template-columns: repeat(11, 1fr);
+    position: relative;
 
     .square {
         width: 35px;
@@ -243,3 +244,56 @@ main {
         border-radius: 10px;
     }
 } 
+
+section.gameboard-ships {
+    max-width: 0px;
+    max-height: 0px;
+    position: absolute;
+}
+
+.p1-deployed-ship,
+.p2-deployed-ship {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    display: none;
+
+    //  horizontal ships
+    &[data-ship-key="c"][data-vertical="false"] {
+        width: 170px
+    }
+
+    &[data-ship-key="b"][data-vertical="false"] {
+        width: 136px
+    }
+
+    &[data-ship-key="r"][data-vertical="false"],
+    &[data-ship-key="s"][data-vertical="false"] {
+        width: 102px
+    }
+
+    &[data-ship-key="d"][data-vertical="false"] {
+        width: 68px
+    }
+
+    //  vertical ships
+    &[data-ship-key="c"][data-vertical="true"] {
+        height: 170px
+    }
+
+    &[data-ship-key="b"][data-vertical="true"] {
+        height: 136px
+    }
+
+    &[data-ship-key="r"][data-vertical="true"],
+    &[data-ship-key="s"][data-vertical="true"] {
+        height: 102px
+    }
+
+    &[data-ship-key="d"][data-vertical="true"] {
+        height: 68px
+    }
+}

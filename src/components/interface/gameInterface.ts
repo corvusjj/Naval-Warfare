@@ -43,6 +43,15 @@ function setGameState() {
     gameOperations.setGameState(false, [playersData.players[0], playersData.players[1]]);
 }
 
+function setPLayersDataOnBoards() {
+    const [firstplayerData, secondPlayerData] = gameOperations.getPlayersData();
+    board1.setAttribute('data-player-id', firstplayerData[1]);
+    board1.setAttribute('data-player-name', firstplayerData[0]);
+    board2.setAttribute('data-player-id', secondPlayerData[1]);
+    board2.setAttribute('data-player-name', secondPlayerData[0]);
+    interfaceMethods.toggleBoardUI(1);  // player 2 defender as default
+}
+
 interface Ship {
     length: number;
     hits: number;
@@ -64,8 +73,9 @@ function getPlacementData() {
 }
 
 function placeShips(placementData:PlacementData[]) {
-
     placementData.forEach(playerBoardData => {
+        const playerIndex = placementData.indexOf(playerBoardData);
+
         const shipCoordinates = playerBoardData.shipCoordinates;
         const playerShips = playerBoardData.ships;
         const shipKeys = Object.keys(playerShips);
@@ -74,12 +84,42 @@ function placeShips(placementData:PlacementData[]) {
             const ship = playerShips[key];
             const isVertical:boolean = ship.isVertical;
             const squareOrigin:string = shipCoordinates[key][0].join('-');
-
-            const playerIndex = placementData.indexOf(playerBoardData);
             
+            //  place ships on game-data
             playerIndex === 0?
             gameOperations.placeFirstPlayerShip(key, isVertical, squareOrigin):
             gameOperations.placeSecondPlayerShip(key, isVertical, squareOrigin);
+
+            //  --------------  INTERFACE  ---------------
+            //  handle ship div element
+            let shipDiv:HTMLDivElement;
+
+            playerIndex === 0?
+            shipDiv = document.querySelector(`.p1-deployed-ship[data-ship-key=${key}]`)!:
+            shipDiv = document.querySelector(`.p2-deployed-ship[data-ship-key=${key}]`)!;
+
+            const horizontalShipImage:HTMLImageElement = shipDiv.children[0] as HTMLImageElement;
+            const verticalShipImage:HTMLImageElement = shipDiv.children[1] as HTMLImageElement;
+
+            if (isVertical) {
+                horizontalShipImage.style.display = 'none';
+                shipDiv?.setAttribute('data-vertical', 'true');
+            } else {
+                verticalShipImage.style.display = 'none';
+                shipDiv?.setAttribute('data-vertical', 'false');
+            }
+
+            //  place ship div on board
+            let currentBoard:HTMLDivElement;
+            playerIndex === 0? currentBoard = board1: currentBoard = board2;
+
+            currentBoard.appendChild(shipDiv);
+            const squareDivOrigin = currentBoard.querySelector(`[data-coord="${squareOrigin}"]`)!;
+
+            const squareDistanceLeft = squareDivOrigin.getBoundingClientRect().left - currentBoard.getBoundingClientRect().left;
+            const squareDistanceTop = squareDivOrigin.getBoundingClientRect().top - currentBoard.getBoundingClientRect().top;
+            shipDiv.style.left = squareDistanceLeft + 'px';
+            shipDiv.style.top = squareDistanceTop + 'px';
         });
     });
 }
@@ -106,25 +146,17 @@ const interfaceMethods = {
 }
 
 export function initialize() {
-    setGameState();
-    const placementData:PlacementData[] = getPlacementData();
-    placeShips(placementData);
-
     //  display board interface
     setupBoardGame();
     console.log('hi');
-    console.log(gameOperations.getState());
 
-    //  add each players data on html board element
-    const [firstplayerData, secondPlayerData] = gameOperations.getPlayersData();
-    board1.setAttribute('data-player-id', firstplayerData[1]);
-    board1.setAttribute('data-player-name', firstplayerData[0]);
-    board2.setAttribute('data-player-id', secondPlayerData[1]);
-    board2.setAttribute('data-player-name', secondPlayerData[0]);
-    interfaceMethods.toggleBoardUI(1);  // player 2 defender as default
+    setGameState();
+    setPLayersDataOnBoards();
+
+    const placementData:PlacementData[] = getPlacementData();
+    placeShips(placementData);
 }
 
 export { interfaceMethods }
 
-//  placeShips on both game (import fleet) and interface
 //  display p1Ships if vsPlayer
