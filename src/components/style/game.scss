@@ -52,10 +52,10 @@ main {
     overflow: hidden;
     grid-column: 2 / 3;
     grid-row: 1 / 3;
+    position: relative;
     @extend %container;
 
     .boards-panel {
-        // border: 1px solid red;
         display: flex;
         position: relative;
         left: 0;
@@ -67,25 +67,29 @@ main {
         left: -430px;
     }
 
-    #destroyer {
+    .attack-highlight {
+        background: rgba(255, 255, 255, 0.3);
         position: absolute;
-        top: 77px;
-        left: 36px;
-        // transform: rotate(90deg);
-    }
-    
-    #cruiser {
-        position: absolute;
-        left: 70px;
-        top: 177px;
-    }
-    
-    #fire {
-        position: absolute;
-        width: 72px;
-        height: auto;
-        left: 84px;
-        top: 55px;
+        transition: transform 0.5s ease-out;
+        opacity: 0;
+
+        &.vertical {
+            top: 0;
+            left: -32px;
+            width: 32px;
+            height: 100%;
+        }
+
+        &.horizontal {
+            top: -32px;
+            left: 0;
+            width: 100%;
+            height: 32px;
+        }
+
+        &.show {
+            opacity: 1;
+        }
     }
 }
 
@@ -106,6 +110,12 @@ main {
         &:first-of-type {
             border-top: none;
             background: #001833;
+        }
+
+        &[data-coord] {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #c8dfe9cc;
         }
 
         &:hover {
@@ -298,5 +308,33 @@ section.gameboard-ships {
 
     &[data-ship-key="d"][data-vertical="true"] {
         height: 68px
+    }
+}
+
+div.miss-icon {
+    width: 30px;
+    height: 30px;
+    display: none;
+
+    &.show {
+        display: block;
+    }
+}
+
+div.fire-gif {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+
+    &.show {
+        display: flex;
+    }
+     
+    img {
+        object-fit: cover;
+        transform: translateY(-5px);
     }
 }

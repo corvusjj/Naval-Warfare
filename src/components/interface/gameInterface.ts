@@ -146,8 +146,8 @@ function runAttackHighlights(squareDiv:HTMLDivElement) {
     const squareDistanceLeft = squareDiv.getBoundingClientRect().left - gameBoardContainer?.getBoundingClientRect().left;
     const squareDistanceTop = squareDiv.getBoundingClientRect().top - gameBoardContainer?.getBoundingClientRect().top;
     attackHighlights.forEach(div => div.classList.add('show'));
-    attackHighlightX.style.transform = `translateX(${squareDistanceLeft + 1}px)`;
-    attackHighlightY.style.transform = `translateY(${squareDistanceTop + 1}px)`;
+    attackHighlightX.style.transform = `translateX(${squareDistanceLeft + 33}px)`;
+    attackHighlightY.style.transform = `translateY(${squareDistanceTop + 33}px)`;
 
     setTimeout(() => {
         attackHighlights.forEach(div => div.classList.remove('show'));
