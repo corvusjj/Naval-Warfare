@@ -6,8 +6,8 @@ const interfaceOperations = {
         interfaceMethods.toggleBoardUI(index);
     },
 
-    markSquareInterface(square: number[], id: string) {
-        interfaceMethods.markSquareUI(square, id);
+    markSquareInterface(square: number[], boardId: string, state:string) {
+        interfaceMethods.markSquareUI(square, boardId, state);
     }
 }
 
@@ -30,7 +30,6 @@ const gameOperations = {
     
     attack(square: number[]) {
         userMethods.attack(square);
-        console.log(square);
     },
 
     getState() {

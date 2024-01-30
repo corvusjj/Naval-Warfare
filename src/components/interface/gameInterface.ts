@@ -9,7 +9,13 @@ const gameBoardContainer = document.querySelector('.gameboard-container')!;
 const boardsPanel = document.querySelector('.boards-panel')!;
 const p1Ships = document.querySelector<HTMLDivElement>('.p1-ships')!;
 const p2Ships = document.querySelector<HTMLDivElement>('.p2-ships')!;
-const missIcon = document.querySelector('.miss-icon')!
+
+const attackHighlights = document.querySelectorAll<HTMLDivElement>('.attack-highlight')!
+const attackHighlightX = document.querySelector<HTMLDivElement>('.attack-highlight.vertical')!;
+const attackHighlightY = document.querySelector<HTMLDivElement>('.attack-highlight.horizontal')!;
+
+const errorIcon = document.querySelector('.miss-icon')!
+const fireGif = document.querySelector('.fire-gif')!;
 
 let board1: HTMLDivElement;
 let board2: HTMLDivElement;
@@ -137,10 +143,6 @@ function attack(e: Event) {
 }
 
 function runAttackHighlights(squareDiv:HTMLDivElement) {
-    const attackHighlights = document.querySelectorAll<HTMLDivElement>('.attack-highlight')!
-    const attackHighlightX = document.querySelector<HTMLDivElement>('.attack-highlight.vertical')!;
-    const attackHighlightY = document.querySelector<HTMLDivElement>('.attack-highlight.horizontal')!;
-
     const squareDistanceLeft = squareDiv.getBoundingClientRect().left - gameBoardContainer?.getBoundingClientRect().left;
     const squareDistanceTop = squareDiv.getBoundingClientRect().top - gameBoardContainer?.getBoundingClientRect().top;
     attackHighlights.forEach(div => div.classList.add('show'));
@@ -152,6 +154,22 @@ function runAttackHighlights(squareDiv:HTMLDivElement) {
         attackHighlightX.style.transform = 'translateX(0)';
         attackHighlightY.style.transform = 'translateY(0)';
     }, 800);
+}
+
+function generateIconElement(state:string) {
+    switch (state) {
+        case 'miss': {
+            const newErrorIcon:HTMLDivElement = errorIcon.cloneNode(true) as HTMLDivElement;
+            newErrorIcon.classList.add('show');
+            return newErrorIcon;
+        }
+            
+        case 'hit': {
+            const newFireGif:HTMLDivElement = fireGif.cloneNode(true) as HTMLDivElement;   
+            newFireGif.classList.add('show');
+            return newFireGif;
+        }
+    }
 }
 
 const interfaceMethods = {
@@ -170,21 +188,19 @@ const interfaceMethods = {
         requestAnimationFrame(toggleBoard);
     },
 
-    markSquareUI: (square: number[], id: string) => {
+    markSquareUI: (square: number[], boardId: string, state:string) => {
         const [x, y] = square.map(num => num.toString());
-        const board:HTMLDivElement = document.querySelector(`[data-player-id="${id}"]`)!;
+        const board:HTMLDivElement = document.querySelector(`[data-player-id="${boardId}"]`)!;
         const tileUI:HTMLDivElement = board.querySelector(`[data-coord="${x}-${y}"]`)!;
 
-        const newMissIcon:HTMLDivElement = missIcon.cloneNode(true) as HTMLDivElement;
-        newMissIcon.classList.add('show');
-        
-        setTimeout(() => {tileUI.appendChild(newMissIcon)}, 600);
         requestAnimationFrame(() => runAttackHighlights(tileUI));
+
+        const markIcon:HTMLDivElement = generateIconElement(state)!; 
+        setTimeout(() => { tileUI.appendChild(markIcon)}, 600);
     }
 }
 
 export function initialize() {
-    //  display board interface
     setupBoardGame();
     console.log('hi');
 
