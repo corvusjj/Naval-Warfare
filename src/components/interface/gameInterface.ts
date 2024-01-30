@@ -5,6 +5,7 @@ import '../style/game.scss';
 
 let playersData:PlayersData;
 
+const gameBoardContainer = document.querySelector('.gameboard-container')!;
 const boardsPanel = document.querySelector('.boards-panel')!;
 const p1Ships = document.querySelector<HTMLDivElement>('.p1-ships')!;
 const p2Ships = document.querySelector<HTMLDivElement>('.p2-ships')!;
@@ -135,6 +136,24 @@ function attack(e: Event) {
     squareNode.style.pointerEvents = 'none';
 }
 
+function runAttackHighlights(squareDiv:HTMLDivElement) {
+    const attackHighlights = document.querySelectorAll<HTMLDivElement>('.attack-highlight')!
+    const attackHighlightX = document.querySelector<HTMLDivElement>('.attack-highlight.vertical')!;
+    const attackHighlightY = document.querySelector<HTMLDivElement>('.attack-highlight.horizontal')!;
+
+    const squareDistanceLeft = squareDiv.getBoundingClientRect().left - gameBoardContainer?.getBoundingClientRect().left;
+    const squareDistanceTop = squareDiv.getBoundingClientRect().top - gameBoardContainer?.getBoundingClientRect().top;
+    attackHighlights.forEach(div => div.classList.add('show'));
+    attackHighlightX.style.transform = `translateX(${squareDistanceLeft + 1}px)`;
+    attackHighlightY.style.transform = `translateY(${squareDistanceTop + 1}px)`;
+
+    setTimeout(() => {
+        attackHighlights.forEach(div => div.classList.remove('show'));
+        attackHighlightX.style.transform = 'translateX(0)';
+        attackHighlightY.style.transform = 'translateY(0)';
+    }, 800);
+}
+
 const interfaceMethods = {
     toggleBoardUI: (index: number) => {
         function toggleBoard() {
@@ -153,12 +172,14 @@ const interfaceMethods = {
 
     markSquareUI: (square: number[], id: string) => {
         const [x, y] = square.map(num => num.toString());
-        const board = document.querySelector(`[data-player-id="${id}"]`)!;
-        const tileUI = board.querySelector(`[data-coord="${x}-${y}"]`)!;
+        const board:HTMLDivElement = document.querySelector(`[data-player-id="${id}"]`)!;
+        const tileUI:HTMLDivElement = board.querySelector(`[data-coord="${x}-${y}"]`)!;
 
         const newMissIcon:HTMLDivElement = missIcon.cloneNode(true) as HTMLDivElement;
         newMissIcon.classList.add('show');
-        tileUI.appendChild(newMissIcon);
+        
+        setTimeout(() => {tileUI.appendChild(newMissIcon)}, 600);
+        requestAnimationFrame(() => runAttackHighlights(tileUI));
     }
 }
 

@@ -89,13 +89,11 @@ const userMethods = {
         const attackState:attackState = gameState.attack(square);
         console.log(attackState, gameState.attacker);
 
-        setTimeout(() => {
-            interfaceOperations.markSquareInterface(square, gameState.defender.id);
-        }, 1000);
+        interfaceOperations.markSquareInterface(square, gameState.defender.id);
 
         setTimeout(() => {
             nextPlayerTurn();
-        }, 2000);
+        }, 1200);
     },
 
     getState: () => {
