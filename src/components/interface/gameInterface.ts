@@ -5,10 +5,11 @@ import '../style/game.scss';
 
 let playersData:PlayersData;
 
-// eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-const boardsPanel = document.querySelector('.boards-panel') as HTMLElement;
+const boardsPanel = document.querySelector('.boards-panel')!;
 const p1Ships = document.querySelector<HTMLDivElement>('.p1-ships')!;
 const p2Ships = document.querySelector<HTMLDivElement>('.p2-ships')!;
+const missIcon = document.querySelector('.miss-icon')!
+
 let board1: HTMLDivElement;
 let board2: HTMLDivElement;
 
@@ -25,15 +26,6 @@ function setupBoardGame() {
 
     const squares = document.querySelectorAll('.square[data-coord]');
     squares.forEach(square => square.addEventListener('click', attack));
-}
-
-function attack(e: Event) {
-    const squareNode = e.target as HTMLDivElement; 
-    const stringCoord = squareNode.dataset.coord!;
-    const coordinates = stringCoord.split('-');
-
-    gameOperations.attack(coordinates.map(x => parseInt(x)));
-    squareNode.style.pointerEvents = 'none';
 }
 
 function setGameState() {
@@ -132,26 +124,41 @@ function placeShips(placementData:PlacementData[]) {
 function revealShip(shipDiv:HTMLDivElement, isSunk:boolean) {
     console.log(shipDiv, isSunk);
     shipDiv.classList.add('show');
-} 
+}
+
+function attack(e: Event) {
+    const squareNode = e.target as HTMLDivElement; 
+    const stringCoord = squareNode.dataset.coord!;
+    const coordinates = stringCoord.split('-');
+
+    gameOperations.attack(coordinates.map(x => parseInt(x)));
+    squareNode.style.pointerEvents = 'none';
+}
 
 const interfaceMethods = {
     toggleBoardUI: (index: number) => {
-        if (index === 0) {
-            boardsPanel.classList.remove('toggle-panel');
-            p2Ships.style.display = 'none';
-            p1Ships.style.display = 'flex';
-        } else {
-            boardsPanel.classList.add('toggle-panel');
-            p1Ships.style.display = 'none';
-            p2Ships.style.display = 'flex';
+        function toggleBoard() {
+            if (index === 0) {
+                boardsPanel.classList.remove('toggle-panel');
+                p2Ships.style.display = 'none';
+                p1Ships.style.display = 'flex';
+            } else {
+                boardsPanel.classList.add('toggle-panel');
+                p1Ships.style.display = 'none';
+                p2Ships.style.display = 'flex';
+            }
         }
+        requestAnimationFrame(toggleBoard);
     },
 
     markSquareUI: (square: number[], id: string) => {
         const [x, y] = square.map(num => num.toString());
         const board = document.querySelector(`[data-player-id="${id}"]`)!;
         const tileUI = board.querySelector(`[data-coord="${x}-${y}"]`)!;
-        tileUI.textContent = 'O';
+
+        const newMissIcon:HTMLDivElement = missIcon.cloneNode(true) as HTMLDivElement;
+        newMissIcon.classList.add('show');
+        tileUI.appendChild(newMissIcon);
     }
 }
 
@@ -169,4 +176,5 @@ export function initialize() {
 
 export { interfaceMethods }
 
-//  display p1Ships if vsPlayer
+//  animate attack
+//  sounds

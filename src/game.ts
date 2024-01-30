@@ -85,11 +85,17 @@ const userMethods = {
         playerBoard.placeShip(ship, coord, key);
     },
 
-    attack: (square: number[]) => {
+    attack(square: number[]) {
         const attackState:attackState = gameState.attack(square);
         console.log(attackState, gameState.attacker);
-        interfaceOperations.markSquareInterface(square, gameState.defender.id);
-        nextPlayerTurn();
+
+        setTimeout(() => {
+            interfaceOperations.markSquareInterface(square, gameState.defender.id);
+        }, 1000);
+
+        setTimeout(() => {
+            nextPlayerTurn();
+        }, 2000);
     },
 
     getState: () => {
