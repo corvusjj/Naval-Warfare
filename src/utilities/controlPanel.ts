@@ -15,6 +15,8 @@ const splashAudio:HTMLAudioElement = document.querySelector('#splash-audio')!;
 const explosionAudio:HTMLAudioElement = document.querySelector('#explosion-audio')!;
 
 activateAttackAudio.volume = 0.15;
+splashAudio.volume = 0.2;
+explosionAudio.volume = 0.2;
 
 const led = document.querySelector('.led');
 
@@ -67,6 +69,18 @@ export function runAttackAudio(state:string) {
             void explosionAudio.play();
             explosionAudio.currentTime = 0;
             break;
+    }
+}
+
+export const squareHitEffect = {
+    runOptimal() {
+        led?.classList.add('optimal');
+        setTimeout(() => {led?.classList.remove('optimal')}, 500);
+    },
+
+    runAlert() {
+        led?.classList.add('alert');
+        setTimeout(() => { led?.classList.remove('alert') }, 500);
     }
 }
 

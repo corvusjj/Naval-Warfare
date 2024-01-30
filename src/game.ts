@@ -1,7 +1,7 @@
 import Player from './gameTemplates/player';
 import AiPlayer from './gameTemplates/aiPlayer';
 import { interfaceOperations } from './gameInterfaceHandler';
-import { runActivateAudio, runAttackAudio } from './utilities/controlPanel';
+import { runActivateAudio, runAttackAudio, squareHitEffect } from './utilities/controlPanel';
 
 interface attackState {
     state: string;
@@ -87,9 +87,22 @@ const userMethods = {
 
     attack(square: number[]) {
         const attackState:attackState = gameState.attack(square);
-        interfaceOperations.markSquareInterface(square, gameState.defender.id, attackState.state);
+        const state = attackState.state;
+        interfaceOperations.markSquareInterface(square, gameState.defender.id, state);
 
         runActivateAudio();
+
+        if (state === 'hit' || state === 'sunk') {
+            setTimeout(() => {
+                if (!gameState.vsComputer) {
+                    squareHitEffect.runOptimal();
+                } else {
+                    gameState.attacker === gameState.p2?
+                    squareHitEffect.runAlert():
+                    squareHitEffect.runOptimal();
+                }
+            }, 300);
+        }
 
         setTimeout(() => { runAttackAudio(attackState.state) }, 500);
 
