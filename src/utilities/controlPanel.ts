@@ -10,6 +10,12 @@ const waveSoundBtn = document.querySelector('#wave-sound');
 const waveSoundIconOn = waveSoundBtn?.querySelector('#wave-sound-icon-on') as HTMLElement | null;
 const waveSoundIconOff = waveSoundBtn?.querySelector('#wave-sound-icon-off') as HTMLElement | null;
 
+const activateAttackAudio:HTMLAudioElement = document.querySelector('#activate-audio')!;
+const splashAudio:HTMLAudioElement = document.querySelector('#splash-audio')!;
+const explosionAudio:HTMLAudioElement = document.querySelector('#explosion-audio')!;
+
+activateAttackAudio.volume = 0.15;
+
 const led = document.querySelector('.led');
 
 let musicIsActive = true;
@@ -43,6 +49,24 @@ function toggleWaves() {
     if (waveSoundIconOn && waveSoundIconOff) {
         waveSoundIconOn.style.display = wavesIsActive? 'inline' : 'none';
         waveSoundIconOff.style.display = wavesIsActive? 'none' : 'inline';
+    }
+}
+
+export function runActivateAudio() {
+    void activateAttackAudio.play();
+    activateAttackAudio.currentTime = 0;
+}
+
+export function runAttackAudio(state:string) {
+    switch(state) {
+        case 'miss':
+            void splashAudio.play();
+            splashAudio.currentTime = 0;
+            break;
+        case 'hit':
+            void explosionAudio.play();
+            explosionAudio.currentTime = 0;
+            break;
     }
 }
 

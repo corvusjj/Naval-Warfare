@@ -1,7 +1,7 @@
 import Player from './gameTemplates/player';
 import AiPlayer from './gameTemplates/aiPlayer';
 import { interfaceOperations } from './gameInterfaceHandler';
-import './utilities/controlPanel';
+import { runActivateAudio, runAttackAudio } from './utilities/controlPanel';
 
 interface attackState {
     state: string;
@@ -88,6 +88,10 @@ const userMethods = {
     attack(square: number[]) {
         const attackState:attackState = gameState.attack(square);
         interfaceOperations.markSquareInterface(square, gameState.defender.id, attackState.state);
+
+        runActivateAudio();
+
+        setTimeout(() => { runAttackAudio(attackState.state) }, 500);
 
         setTimeout(() => { nextPlayerTurn() }, 1200);
     },
