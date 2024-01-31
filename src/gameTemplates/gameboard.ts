@@ -86,10 +86,10 @@ export default class GameBoard {
 
         if (this.ships[char].isSunk()) {
             return this.checkAllSunk()?
-            {state: 'game-over', coordinates: this.getShipCoordinates(char)}:
-            {state: 'sunk', coordinates: this.getShipCoordinates(char)};
+            {state: 'game-over', coordinates: this.getShipCoordinates(char), squareKey: char}:
+            {state: 'sunk', coordinates: this.getShipCoordinates(char), squareKey: char};
         } else {
-            return { state: 'hit', coordinates: [square] }
+            return { state: 'hit', coordinates: [square], squareKey: char }
         }
     }
 
@@ -103,7 +103,7 @@ export default class GameBoard {
 
         if (hitChar === '.') {
             this.markBoard('o', square);
-            return { state:'miss', coordinates: [[x, y]] };
+            return { state:'miss', coordinates: [[x, y]], squareKey: hitChar };
         } else {
             this.markBoard('x', square);
             return this.hitShip(hitChar, [x,y]);
