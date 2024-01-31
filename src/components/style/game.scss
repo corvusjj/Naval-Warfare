@@ -28,7 +28,7 @@ main {
     row-gap: 3rem;
     margin: 3rem auto 0 auto;
     width: fit-content;
-    animation: ship-motion 1.5s linear infinite;
+    // animation: ship-motion 1.5s linear infinite;
 }
 
 %container {
@@ -188,6 +188,11 @@ main {
     }
 }
 
+@keyframes eliminated {
+    0% { background: $inner-color; }
+    100% { background: rgba(255, 0, 0, 0.233); }
+}
+
 .ships-container {
     width: fit-content;
     justify-self: flex-end;
@@ -213,6 +218,14 @@ main {
 
         &.sunk {
             filter: brightness(0.5);
+
+            & > img {
+                animation: none;
+            }
+        }
+
+        &.animate-eliminated {
+            animation: eliminated 0.3s 2;
         }
 
         &::before {
@@ -230,7 +243,6 @@ main {
             animation: bob 2s infinite;
         }
 
-        &:nth-of-type(1) img { animation: none; }
         &:nth-of-type(2) img { animation-delay: 0.3s; }
         &:nth-of-type(3) img { animation-delay: 0.8s; }
         &:nth-of-type(4) img { animation-delay: 1.2s; }
@@ -239,7 +251,7 @@ main {
 
 @keyframes bob {
     0% { transform: translateY(0); }
-    50% { transform: translateY(1px); }
+    50% { transform: translateY(2px); }
     100% { transform: translateY(-1px); }
 }
 
@@ -264,6 +276,12 @@ section.gameboard-ships {
     position: absolute;
 }
 
+@keyframes ship-reveal {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+
 .p1-deployed-ship,
 .p2-deployed-ship {
     width: 34px;
@@ -275,6 +293,7 @@ section.gameboard-ships {
 
     &.show {
         display: flex;
+        animation: ship-reveal 1.2s ease;
     }
 
     &.sunk {
@@ -335,6 +354,7 @@ div.fire-gif {
     justify-content: center;
     align-items: center;
     display: none;
+    z-index: 1;
 
     &.show {
         display: flex;

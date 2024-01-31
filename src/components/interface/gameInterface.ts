@@ -235,9 +235,12 @@ const interfaceMethods = {
         setTimeout(() => {
             revealShip(deployedSunkShip, true);
             sideBarEnemyShip.classList.add('sunk');
+            sideBarEnemyShip.classList.add('animate-eliminated');
         }, 600);
 
-        //  remove icons
+        setTimeout(() => sideBarEnemyShip.classList.remove('animate-eliminated'), 1200);
+
+        //  remove hit icons
         setTimeout(() => {
             coordinates.forEach(square => {
                 const dataCoord = square.join('-');
