@@ -13,10 +13,12 @@ const waveSoundIconOff = waveSoundBtn?.querySelector('#wave-sound-icon-off') as 
 const activateAttackAudio:HTMLAudioElement = document.querySelector('#activate-audio')!;
 const splashAudio:HTMLAudioElement = document.querySelector('#splash-audio')!;
 const explosionAudio:HTMLAudioElement = document.querySelector('#explosion-audio')!;
+const optimalAudio:HTMLAudioElement = document.querySelector('#optimal-audio')!;
+const alertAudio:HTMLAudioElement = document.querySelector('#alert-audio')!;
 
 activateAttackAudio.volume = 0.15;
 splashAudio.volume = 0.2;
-explosionAudio.volume = 0.2;
+explosionAudio.volume = 0.8;
 
 const led = document.querySelector('.led');
 
@@ -74,11 +76,15 @@ export function runAttackAudio(state:string) {
 
 export const squareHitEffect = {
     runOptimal() {
+        void optimalAudio.play();
+        optimalAudio.currentTime = 0;
         led?.classList.add('optimal');
         setTimeout(() => {led?.classList.remove('optimal')}, 500);
     },
 
     runAlert() {
+        void alertAudio.play();
+        alertAudio.currentTime = 0;
         led?.classList.add('alert');
         setTimeout(() => { led?.classList.remove('alert') }, 500);
     }
