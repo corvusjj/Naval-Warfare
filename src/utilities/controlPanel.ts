@@ -10,6 +10,9 @@ const waveSoundBtn = document.querySelector('#wave-sound');
 const waveSoundIconOn = waveSoundBtn?.querySelector('#wave-sound-icon-on') as HTMLElement | null;
 const waveSoundIconOff = waveSoundBtn?.querySelector('#wave-sound-icon-off') as HTMLElement | null;
 
+const backgroundMusic:HTMLAudioElement = document.querySelector('#background-music')!;
+const wavesAudio:HTMLAudioElement = document.querySelector('#waves-audio')!;
+
 const activateAttackAudio:HTMLAudioElement = document.querySelector('#activate-audio')!;
 const splashAudio:HTMLAudioElement = document.querySelector('#splash-audio')!;
 const explosionAudio:HTMLAudioElement = document.querySelector('#explosion-audio')!;
@@ -17,10 +20,15 @@ const sunkAudio:HTMLAudioElement = document.querySelector('#sunk-audio')!;
 const optimalAudio:HTMLAudioElement = document.querySelector('#optimal-audio')!;
 const alertAudio:HTMLAudioElement = document.querySelector('#alert-audio')!;
 
-activateAttackAudio.volume = 0.15;
+backgroundMusic.volume = 0.2;
+wavesAudio.volume = 0.7;
+
+activateAttackAudio.volume = 0.3;
 splashAudio.volume = 0.2;
-explosionAudio.volume = 0.8;
-sunkAudio.volume = 0.7;
+explosionAudio.volume = 0.5;
+sunkAudio.volume = 0.3;
+optimalAudio.volume = 0.3;
+alertAudio.volume = 0.3;
 
 const led = document.querySelector('.led');
 
@@ -99,3 +107,8 @@ export const squareHitEffect = {
 musicBtn?.addEventListener('click', toggleMusic);
 soundBtn?.addEventListener('click', toggleSound);
 waveSoundBtn?.addEventListener('click', toggleWaves);
+
+export function audioInit() {
+    void backgroundMusic.play();
+    void wavesAudio.play();
+}

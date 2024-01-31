@@ -1,6 +1,7 @@
 import { gameOperations } from '../../gameInterfaceHandler';
 import generateBoard from '../../utilities/battleshipBoardInterface';
 import { PlayersData } from './placementInterface';
+import { audioInit } from '../../utilities/controlPanel';
 import '../style/game.scss';
 
 let playersData:PlayersData;
@@ -259,6 +260,8 @@ export function initialize() {
 
     const placementData:PlacementData[] = getPlacementData();
     placeShips(placementData);
+
+    audioInit();
 }
 
 export { interfaceMethods }
