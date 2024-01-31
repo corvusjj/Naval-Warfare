@@ -6,6 +6,7 @@ import { runActivateAudio, runAttackAudio, squareHitEffect } from './utilities/c
 interface attackState {
     state: string;
     coordinates: number[][];
+    squareKey: string;
 }
 
 let gameState: GameState;
@@ -61,6 +62,13 @@ function playHitEffects() {
     }
 }
 
+function reportSunkShip(shipKey:string, coordinates:number[][]) {
+    let playerIndex:number;
+    gameState.attacker === gameState.p2? playerIndex = 0: playerIndex = 1;
+
+    interfaceOperations.handleSunkShip(playerIndex, shipKey, coordinates);
+}
+
 const userMethods = {
     setGameState: (vsComputer:boolean, playerNames:string[]) => {
         const p1 = new Player(playerNames[0]);
@@ -105,6 +113,8 @@ const userMethods = {
         if (state !== 'miss') {
             setTimeout(() => playHitEffects(), 300);
             setTimeout(() => interfaceOperations.setPanelUiToActive(), 600);
+
+            if (state === 'sunk') reportSunkShip(attackState.squareKey, attackState.coordinates);
         } else {
             setTimeout(() => interfaceOperations.setPanelUiToActive(), 1200);
             setTimeout(() => { nextPlayerTurn() }, 1200);
@@ -133,7 +143,5 @@ function nextPlayerTurn() {
 
 export { userMethods }
 
-//  pointerEvents board to none if attacking
-//  don't toggle if ship is hit
 //  sunk ship animation
 //  shipPlacement => findSunkShip() through getting length and through Player

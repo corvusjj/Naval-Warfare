@@ -129,7 +129,7 @@ function placeShips(placementData:PlacementData[]) {
 }
 
 function revealShip(shipDiv:HTMLDivElement, isSunk:boolean) {
-    console.log(shipDiv, isSunk);
+    if (isSunk) shipDiv.classList.add('sunk');
     shipDiv.classList.add('show');
 }
 
@@ -209,6 +209,24 @@ const interfaceMethods = {
 
     setBoardPanelToActive: () => {
         setBoardPanelState(true);
+    },
+
+    handleSunkShip: (playerIndex:number, shipKey:string, coordinates:number[][]) => {
+        let deployedSunkShip:HTMLDivElement;
+        let sideBarEnemyShip:HTMLDivElement;
+
+        if (playerIndex === 0) {    
+            deployedSunkShip = document.querySelector(`.p1-deployed-ship[data-ship-key=${shipKey}]`)!;
+            sideBarEnemyShip = document.querySelector(`.p1-ships > [data-ship-key=${shipKey}]`)!;
+        } else {
+            deployedSunkShip = document.querySelector(`.p2-deployed-ship[data-ship-key=${shipKey}]`)!;
+            sideBarEnemyShip = document.querySelector(`.p2-ships > [data-ship-key=${shipKey}]`)!;
+        }
+
+        setTimeout(() => {
+            revealShip(deployedSunkShip, true);
+            sideBarEnemyShip.classList.add('sunk');
+        }, 600);
     }
 }
 

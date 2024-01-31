@@ -12,6 +12,10 @@ const interfaceOperations = {
 
     setPanelUiToActive() {
         interfaceMethods.setBoardPanelToActive();
+    },
+
+    handleSunkShip(playerIndex:number, shipKey:string, coordinates:number[][]) {
+        interfaceMethods.handleSunkShip(playerIndex, shipKey, coordinates);
     }
 }
 

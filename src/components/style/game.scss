@@ -15,13 +15,12 @@ body {
 
 @keyframes ship-motion {
     0% { transform: translate(0,0);}
-    33% { transform: translateY(2px); }
-    67% { transform: translateY(-2px); }
+    33% { transform: translateY(20px); }
+    67% { transform: translateY(-20px); }
     100% { transform: translate(0,0);}
 }
 
 main {
-    // border: 1px solid #fff;
     display: grid;
     grid-template-columns: repeat(3, auto);
     align-items: center;
@@ -61,6 +60,10 @@ main {
         left: 0;
         transition: left 0.5s ease;
         margin: 45px;
+
+        &.inactive {
+            pointer-events: none;
+        }
     }
 
     .toggle-panel {
@@ -172,16 +175,16 @@ main {
         height: 10px;
         background: #333;
         border-radius: 50%;
-    }
 
-    .led-green {
-        background: #0f0;
-        box-shadow: 0 0 20px 5px #0f0;
-    }
+        &.optimal {
+            background: #0f0;
+            box-shadow: 0 0 20px 5px #0f0;
+        }
 
-    .led-red {
-        background: #f00;
-        box-shadow: 0 0 20px 5px #f00;
+        &.alert {
+            background: #f00;
+            box-shadow: 0 0 20px 5px #f00;
+        }
     }
 }
 
@@ -208,7 +211,7 @@ main {
         align-items: center;
         position: relative;
 
-        &:nth-of-type(1) {
+        &.sunk {
             filter: brightness(0.5);
         }
 
@@ -272,6 +275,10 @@ section.gameboard-ships {
 
     &.show {
         display: flex;
+    }
+
+    &.sunk {
+        filter: brightness(0.6);
     }
 
     //  horizontal ships
