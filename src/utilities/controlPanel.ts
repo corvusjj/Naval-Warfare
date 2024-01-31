@@ -13,12 +13,14 @@ const waveSoundIconOff = waveSoundBtn?.querySelector('#wave-sound-icon-off') as 
 const activateAttackAudio:HTMLAudioElement = document.querySelector('#activate-audio')!;
 const splashAudio:HTMLAudioElement = document.querySelector('#splash-audio')!;
 const explosionAudio:HTMLAudioElement = document.querySelector('#explosion-audio')!;
+const sunkAudio:HTMLAudioElement = document.querySelector('#sunk-audio')!;
 const optimalAudio:HTMLAudioElement = document.querySelector('#optimal-audio')!;
 const alertAudio:HTMLAudioElement = document.querySelector('#alert-audio')!;
 
 activateAttackAudio.volume = 0.15;
 splashAudio.volume = 0.2;
 explosionAudio.volume = 0.8;
+sunkAudio.volume = 0.7;
 
 const led = document.querySelector('.led');
 
@@ -71,6 +73,10 @@ export function runAttackAudio(state:string) {
             void explosionAudio.play();
             explosionAudio.currentTime = 0;
             break;
+        case 'sunk':
+            void sunkAudio.play();
+            sunkAudio.currentTime = 0;
+            break;
     }
 }
 
@@ -93,10 +99,3 @@ export const squareHitEffect = {
 musicBtn?.addEventListener('click', toggleMusic);
 soundBtn?.addEventListener('click', toggleSound);
 waveSoundBtn?.addEventListener('click', toggleWaves);
-
-export function activateLed(state: string) {
-    led?.classList.add(`led-${state}`);
-    setTimeout(() => {
-        led?.classList.remove(`led-${state}`);
-    }, 500);
-}
