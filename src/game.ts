@@ -63,10 +63,8 @@ function playHitEffects() {
 }
 
 function reportSunkShip(shipKey:string, coordinates:number[][]) {
-    let playerIndex:number;
-    gameState.attacker === gameState.p2? playerIndex = 0: playerIndex = 1;
-
-    interfaceOperations.handleSunkShip(playerIndex, shipKey, coordinates);
+    const defenderId:string = gameState.defender.id;
+    interfaceOperations.handleSunkShip(defenderId, shipKey, coordinates);
 }
 
 const userMethods = {

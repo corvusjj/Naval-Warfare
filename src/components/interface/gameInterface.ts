@@ -177,6 +177,11 @@ function generateIconElement(state:string) {
             newFireGif.classList.add('show');
             return newFireGif;
         }
+
+        case 'sunk': {
+            const emptyDiv:HTMLDivElement = document.createElement('div');
+            return emptyDiv;
+        }
     }
 }
 
@@ -211,11 +216,14 @@ const interfaceMethods = {
         setBoardPanelState(true);
     },
 
-    handleSunkShip: (playerIndex:number, shipKey:string, coordinates:number[][]) => {
+    handleSunkShip: (defenderId:string, shipKey:string, coordinates:number[][]) => {
+        const p1Id = gameOperations.getPlayersData()[0][1];
+
+        const defenderBoard:HTMLDivElement = document.querySelector(`.board[data-player-id="${defenderId}"]`)!;
         let deployedSunkShip:HTMLDivElement;
         let sideBarEnemyShip:HTMLDivElement;
 
-        if (playerIndex === 0) {    
+        if (defenderId === p1Id) {    
             deployedSunkShip = document.querySelector(`.p1-deployed-ship[data-ship-key=${shipKey}]`)!;
             sideBarEnemyShip = document.querySelector(`.p1-ships > [data-ship-key=${shipKey}]`)!;
         } else {
@@ -226,6 +234,18 @@ const interfaceMethods = {
         setTimeout(() => {
             revealShip(deployedSunkShip, true);
             sideBarEnemyShip.classList.add('sunk');
+        }, 600);
+
+        //  remove icons
+        setTimeout(() => {
+            coordinates.forEach(square => {
+                const dataCoord = square.join('-');
+                const tileUI = defenderBoard.querySelector(`.square[data-coord="${dataCoord}"]`);
+    
+                while(tileUI?.firstChild) {
+                    tileUI.removeChild(tileUI.firstChild);
+                }
+            });
         }, 600);
     }
 }
@@ -242,6 +262,3 @@ export function initialize() {
 }
 
 export { interfaceMethods }
-
-//  animate attack
-//  sounds
