@@ -133,6 +133,12 @@ function revealShip(shipDiv:HTMLDivElement, isSunk:boolean) {
     shipDiv.classList.add('show');
 }
 
+function setBoardPanelState(active:boolean) {
+    active === true? 
+    boardsPanel.classList.remove('inactive'):
+    boardsPanel.classList.add('inactive');
+}
+
 function attack(e: Event) {
     const squareNode = e.target as HTMLDivElement; 
     const stringCoord = squareNode.dataset.coord!;
@@ -140,6 +146,8 @@ function attack(e: Event) {
 
     gameOperations.attack(coordinates.map(x => parseInt(x)));
     squareNode.style.pointerEvents = 'none';
+
+    setBoardPanelState(false);
 }
 
 function runAttackHighlights(squareDiv:HTMLDivElement) {
@@ -197,6 +205,10 @@ const interfaceMethods = {
 
         const markIcon:HTMLDivElement = generateIconElement(state)!; 
         setTimeout(() => { tileUI.appendChild(markIcon)}, 600);
+    },
+
+    setBoardPanelToActive: () => {
+        setBoardPanelState(true);
     }
 }
 

@@ -8,6 +8,10 @@ const interfaceOperations = {
 
     markSquareInterface(square: number[], boardId: string, state:string) {
         interfaceMethods.markSquareUI(square, boardId, state);
+    },
+
+    setPanelUiToActive() {
+        interfaceMethods.setBoardPanelToActive();
     }
 }
 

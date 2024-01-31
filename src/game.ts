@@ -51,6 +51,16 @@ function initializeGameState(p1:Player, p2:Player | AiPlayer, vsComputer:boolean
     gameState.vsComputer = vsComputer;
 }
 
+function playHitEffects() {
+    if (!gameState.vsComputer) {
+        squareHitEffect.runOptimal();
+    } else {
+        gameState.attacker === gameState.p2?
+        squareHitEffect.runAlert():
+        squareHitEffect.runOptimal();
+    }
+}
+
 const userMethods = {
     setGameState: (vsComputer:boolean, playerNames:string[]) => {
         const p1 = new Player(playerNames[0]);
@@ -92,21 +102,15 @@ const userMethods = {
 
         runActivateAudio();
 
-        if (state === 'hit' || state === 'sunk') {
-            setTimeout(() => {
-                if (!gameState.vsComputer) {
-                    squareHitEffect.runOptimal();
-                } else {
-                    gameState.attacker === gameState.p2?
-                    squareHitEffect.runAlert():
-                    squareHitEffect.runOptimal();
-                }
-            }, 300);
+        if (state !== 'miss') {
+            setTimeout(() => playHitEffects(), 300);
+            setTimeout(() => interfaceOperations.setPanelUiToActive(), 600);
+        } else {
+            setTimeout(() => interfaceOperations.setPanelUiToActive(), 1200);
+            setTimeout(() => { nextPlayerTurn() }, 1200);
         }
 
-        setTimeout(() => { runAttackAudio(attackState.state) }, 500);
-
-        setTimeout(() => { nextPlayerTurn() }, 1200);
+        setTimeout(() => { runAttackAudio(state) }, 500);
     },
 
     getState: () => {
@@ -129,6 +133,7 @@ function nextPlayerTurn() {
 
 export { userMethods }
 
-//  playerId
-//  aI choose squares
+//  pointerEvents board to none if attacking
+//  don't toggle if ship is hit
+//  sunk ship animation
 //  shipPlacement => findSunkShip() through getting length and through Player
