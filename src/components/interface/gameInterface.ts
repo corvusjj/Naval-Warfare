@@ -15,6 +15,8 @@ const attackHighlights = document.querySelectorAll<HTMLDivElement>('.attack-high
 const attackHighlightX = document.querySelector<HTMLDivElement>('.attack-highlight.vertical')!;
 const attackHighlightY = document.querySelector<HTMLDivElement>('.attack-highlight.horizontal')!;
 
+const attackingPlayerSpan = document.querySelector<HTMLSpanElement>('#attacking-player')!;
+
 const errorIcon = document.querySelector('.miss-icon')!
 const fireGif = document.querySelector('.fire-gif')!;
 
@@ -190,16 +192,19 @@ const interfaceMethods = {
     toggleBoardUI: (index: number) => {
         function toggleBoard() {
             if (index === 0) {
+                attackingPlayerSpan.textContent = playersData.players[1];
                 boardsPanel.classList.remove('toggle-panel');
                 p2Ships.style.display = 'none';
                 p1Ships.style.display = 'flex';
             } else {
+                attackingPlayerSpan.textContent = playersData.players[0];
                 boardsPanel.classList.add('toggle-panel');
                 p1Ships.style.display = 'none';
                 p2Ships.style.display = 'flex';
             }
         }
         requestAnimationFrame(toggleBoard);
+        console.log(playersData);
     },
 
     markSquareUI: (square: number[], boardId: string, state:string) => {
