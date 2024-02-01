@@ -36,6 +36,26 @@ let musicIsActive = true;
 let soundIsActive = true;
 let wavesIsActive = true;
 
+interface AudioStates {
+    musicIsActive: boolean;
+    soundIsActive: boolean;
+    wavesIsActive: boolean;
+}
+
+function saveAudioStates() {
+    const audioStates = { musicIsActive, soundIsActive, wavesIsActive }
+    window.localStorage.setItem('bs-audio-states', JSON.stringify(audioStates));
+}
+
+function retrieveAudioStates() {
+    const audioStatesJSON:string = window.localStorage.getItem('bs-audio-states')!;
+    const audioStates:AudioStates = JSON.parse(audioStatesJSON) as AudioStates;
+
+    if (!audioStates.musicIsActive) toggleMusic();
+    if (!audioStates.soundIsActive) toggleSound();
+    if (!audioStates.wavesIsActive) toggleWaves();
+}
+
 function toggleMusic() {
     musicIsActive = !musicIsActive;
     musicBtn?.setAttribute('data-active', musicIsActive.toString());
@@ -44,6 +64,9 @@ function toggleMusic() {
         musicIconOn.style.display = musicIsActive ? 'inline' : 'none';
         musicIconOff.style.display = musicIsActive ? 'none' : 'inline';
     }
+
+    musicIsActive? void backgroundMusic.play(): backgroundMusic.pause();
+    saveAudioStates();
 }
 
 function toggleSound() {
@@ -54,6 +77,8 @@ function toggleSound() {
         soundIconOn.style.display = soundIsActive ? 'inline' : 'none';
         soundIconOff.style.display = soundIsActive? 'none' : 'inline';
     }
+
+    saveAudioStates();
 }
 
 function toggleWaves() {
@@ -64,14 +89,19 @@ function toggleWaves() {
         waveSoundIconOn.style.display = wavesIsActive? 'inline' : 'none';
         waveSoundIconOff.style.display = wavesIsActive? 'none' : 'inline';
     }
+
+    wavesIsActive? void wavesAudio.play(): wavesAudio.pause();
+    saveAudioStates();
 }
 
 export function runActivateAudio() {
+    if (!soundIsActive) return;
     void activateAttackAudio.play();
     activateAttackAudio.currentTime = 0;
 }
 
 export function runAttackAudio(state:string) {
+    if (!soundIsActive) return;
     switch(state) {
         case 'miss':
             void splashAudio.play();
@@ -90,17 +120,21 @@ export function runAttackAudio(state:string) {
 
 export const squareHitEffect = {
     runOptimal() {
-        void optimalAudio.play();
-        optimalAudio.currentTime = 0;
         led?.classList.add('optimal');
         setTimeout(() => {led?.classList.remove('optimal')}, 500);
+
+        if (!soundIsActive) return;
+        void optimalAudio.play();
+        optimalAudio.currentTime = 0;
     },
 
     runAlert() {
-        void alertAudio.play();
-        alertAudio.currentTime = 0;
         led?.classList.add('alert');
         setTimeout(() => { led?.classList.remove('alert') }, 500);
+
+        if (!soundIsActive) return;
+        void alertAudio.play();
+        alertAudio.currentTime = 0;
     }
 }
 
@@ -109,6 +143,6 @@ soundBtn?.addEventListener('click', toggleSound);
 waveSoundBtn?.addEventListener('click', toggleWaves);
 
 export function audioInit() {
-    void backgroundMusic.play();
-    void wavesAudio.play();
+    retrieveAudioStates();
+    if (musicIsActive) void backgroundMusic.play();
 }
