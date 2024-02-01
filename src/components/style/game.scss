@@ -337,6 +337,11 @@ section.gameboard-ships {
     }
 }
 
+@keyframes fade-out {
+    from { opacity: 1 }
+    to { opacity: 0.5 }
+}
+
 div.miss-icon {
     width: 30px;
     height: 30px;
@@ -344,6 +349,7 @@ div.miss-icon {
 
     &.show {
         display: block;
+        animation: fade-out 2s ease forwards;
     }
 }
 
