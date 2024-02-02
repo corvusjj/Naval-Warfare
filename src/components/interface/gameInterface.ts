@@ -163,11 +163,16 @@ function runAttackHighlights(squareDiv:HTMLDivElement) {
     attackHighlightX.style.transform = `translateX(${squareDistanceLeft + 33}px)`;
     attackHighlightY.style.transform = `translateY(${squareDistanceTop + 33}px)`;
 
-    setTimeout(() => {
+    function highlightsToRandomOrigin() {
+        const rightOrigin:boolean = Math.random() < 0.5;
+        const bottomOrigin:boolean = Math.random() < 0.5;
+
         attackHighlights.forEach(div => div.classList.remove('show'));
-        attackHighlightX.style.transform = 'translateX(0)';
-        attackHighlightY.style.transform = 'translateY(0)';
-    }, 800);
+        rightOrigin? attackHighlightX.style.transform = 'translateX(507px)': attackHighlightX.style.transform = 'translateX(0)';
+        bottomOrigin? attackHighlightY.style.transform = 'translateY(507px)': attackHighlightY.style.transform = 'translateX(0)';
+    }
+
+    setTimeout(highlightsToRandomOrigin, 800);
 }
 
 function generateIconElement(state:string) {
@@ -290,7 +295,6 @@ export function initialize() {
 
 export { interfaceMethods }
 
-//  attack highlights random origin
 //  sunk sound on game-over
 //  game-over append icon problem
 //  show player board on gameOver
