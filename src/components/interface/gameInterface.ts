@@ -139,7 +139,6 @@ function revealShip(shipDiv:HTMLDivElement, isSunk:boolean) {
 }
 
 function setBoardPanelState(active:boolean) {
-    console.log(active);
     active === true? 
     boardsPanel.classList.remove('inactive'):
     boardsPanel.classList.add('inactive');
@@ -189,7 +188,7 @@ function generateIconElement(state:string) {
             return newFireGif;
         }
 
-        case 'sunk': {
+        default: {
             const emptyDiv:HTMLDivElement = document.createElement('div');
             return emptyDiv;
         }
@@ -296,6 +295,5 @@ export function initialize() {
 export { interfaceMethods }
 
 //  sunk sound on game-over
-//  game-over append icon problem
 //  show player board on gameOver
 //  ship-motion feature
