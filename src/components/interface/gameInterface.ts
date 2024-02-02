@@ -195,6 +195,23 @@ function generateIconElement(state:string) {
     }
 }
 
+function revealRemainingShips(attackerId:string) {
+    const p1Id = gameOperations.getPlayersData()[0][1];
+    const remainingShips = gameOperations.getState().attacker.ships;
+    const shipKeys = Object.keys(remainingShips);
+    let shipDiv: HTMLDivElement;
+
+    shipKeys.forEach(key => {
+        if (!remainingShips[key].isSunk()) {
+            p1Id === attackerId?
+            shipDiv = document.querySelector(`.p1-deployed-ship[data-ship-key=${key}]`)!:
+            shipDiv = document.querySelector(`.p2-deployed-ship[data-ship-key=${key}]`)!;
+
+            revealShip(shipDiv, false);
+        }
+    });
+}
+
 gameOverModal.addEventListener('click', (e) => {
     if (e.target === gameOverModal) gameOverModal.close();
 });
@@ -268,9 +285,11 @@ const interfaceMethods = {
         }, 600);
     },
 
-    handleGameOver: (winnerName:string) => {
+    handleGameOver: (winnerName:string, attackerId:string) => {
         winnerSpan.textContent = winnerName;
         setTimeout(setBoardPanelState, 700, false);
+
+        revealRemainingShips(attackerId);
 
         setTimeout(() => {
             gameOverModal.showModal();
@@ -296,4 +315,5 @@ export { interfaceMethods }
 
 //  sunk sound on game-over
 //  show player board on gameOver
+//  attacker text animation
 //  ship-motion feature

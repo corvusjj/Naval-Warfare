@@ -16,6 +16,10 @@ const interfaceOperations = {
 
     handleSunkShip(defenderId:string, shipKey:string, coordinates:number[][]) {
         interfaceMethods.handleSunkShip(defenderId, shipKey, coordinates);
+    },
+
+    handleGameOver(winnerName:string, attackerId:string) {
+        interfaceMethods.handleGameOver(winnerName, attackerId);
     }
 }
 

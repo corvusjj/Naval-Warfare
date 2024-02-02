@@ -67,6 +67,10 @@ function reportSunkShip(shipKey:string, coordinates:number[][]) {
     interfaceOperations.handleSunkShip(defenderId, shipKey, coordinates);
 }
 
+function gameOver(winnerName:string, attackerId:string) {
+    interfaceOperations.handleGameOver(winnerName, attackerId);
+}
+
 const userMethods = {
     setGameState: (vsComputer:boolean, playerNames:string[]) => {
         const p1 = new Player(playerNames[0]);
@@ -112,7 +116,8 @@ const userMethods = {
             setTimeout(() => playHitEffects(), 300);
             setTimeout(() => interfaceOperations.setPanelUiToActive(), 600);
 
-            if (state === 'sunk') reportSunkShip(attackState.squareKey, attackState.coordinates);
+            if (state === 'sunk' || state === 'game-over') reportSunkShip(attackState.squareKey, attackState.coordinates);
+            if (state === 'game-over') gameOver(gameState.attacker.name, gameState.attacker.id);
         } else {
             setTimeout(() => interfaceOperations.setPanelUiToActive(), 1200);
             setTimeout(() => { nextPlayerTurn() }, 1200);
