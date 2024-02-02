@@ -371,3 +371,44 @@ div.fire-gif {
         transform: translateY(-5px);
     }
 }
+
+.modal {
+    border: none;
+    @extend %container;
+    color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: fit-content;
+
+    &::backdrop {
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    div.container {
+        padding: 3rem;
+
+        h2 {
+            display: block;
+            margin-bottom: 2rem;
+        }
+    
+        a {
+            display: inline-block;
+            background: #222d38;
+            color: #dfdddd;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            outline: none;
+
+            &:nth-of-type(2) {
+                margin-left: 2rem;
+            }
+
+            &:hover {
+                filter: brightness(1.1);
+            }
+        }
+    }
+}

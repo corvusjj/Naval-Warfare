@@ -16,6 +16,7 @@ const attackHighlightX = document.querySelector<HTMLDivElement>('.attack-highlig
 const attackHighlightY = document.querySelector<HTMLDivElement>('.attack-highlight.horizontal')!;
 
 const attackingPlayerSpan = document.querySelector<HTMLSpanElement>('#attacking-player')!;
+const gameOverModal = document.querySelector<HTMLDialogElement>('#game-over-modal')!;
 
 const errorIcon = document.querySelector('.miss-icon')!
 const fireGif = document.querySelector('.fire-gif')!;
@@ -188,6 +189,10 @@ function generateIconElement(state:string) {
     }
 }
 
+gameOverModal.addEventListener('click', (e) => {
+    if (e.target === gameOverModal) gameOverModal.close();
+});
+
 const interfaceMethods = {
     toggleBoardUI: (index: number) => {
         function toggleBoard() {
@@ -204,7 +209,6 @@ const interfaceMethods = {
             }
         }
         requestAnimationFrame(toggleBoard);
-        console.log(playersData);
     },
 
     markSquareUI: (square: number[], boardId: string, state:string) => {
@@ -270,6 +274,10 @@ export function initialize() {
     placeShips(placementData);
 
     audioInit();
+    gameOverModal.showModal();
 }
 
 export { interfaceMethods }
+
+//  game-over modal
+//  ship-motion feature

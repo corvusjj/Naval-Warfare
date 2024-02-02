@@ -162,19 +162,27 @@
       <div class="fire-gif">
         <img src="/fire.gif" alt="">
       </div>
+    </main>
 
-      <!-- ================================================  AUDIO  =================================================== -->
-      <audio id="background-music" src="/background.mp3" loop></audio>
-      <audio id="waves-audio" src="/waves-bg.mp3" loop></audio>
-      
-      <audio id="activate-audio" src="/activate.mp3"></audio>
-      <audio id="splash-audio" src="/splash-bs.mp3"></audio>
-      <audio id="explosion-audio" src="/explosion.mp3"></audio>
-      <audio id="sunk-audio" src="/sunk.mp3"></audio>
-      <audio id="optimal-audio" src="/optimal.mp3"></audio>
-      <audio id="alert-audio" src="/alert.mp3"></audio>
+    <!-- ================================================  AUDIO  =================================================== -->
+    <audio id="background-music" src="/background.mp3" loop></audio>
+    <audio id="waves-audio" src="/waves-bg.mp3" loop></audio>
+    
+    <audio id="activate-audio" src="/activate.mp3"></audio>
+    <audio id="splash-audio" src="/splash-bs.mp3"></audio>
+    <audio id="explosion-audio" src="/explosion.mp3"></audio>
+    <audio id="sunk-audio" src="/sunk.mp3"></audio>
+    <audio id="optimal-audio" src="/optimal.mp3"></audio>
+    <audio id="alert-audio" src="/alert.mp3"></audio>
 
-      </main>
+    <!-- ================================================  GAME-OVER MODAL  =================================================== -->
+    <dialog id="game-over-modal" class="modal">
+      <div class="container">
+        <h2>GAME-OVER, John Wins</h2>
+        <a href="./placement.html">Play Again</a>
+        <a href="../../index.html">Main Menu</a>
+      </div>
+    </dialog>
 
       <script type="module" src="../init/gameInit.ts"></script>
 </body>
