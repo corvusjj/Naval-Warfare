@@ -17,6 +17,7 @@ const attackHighlightY = document.querySelector<HTMLDivElement>('.attack-highlig
 
 const attackingPlayerSpan = document.querySelector<HTMLSpanElement>('#attacking-player')!;
 const gameOverModal = document.querySelector<HTMLDialogElement>('#game-over-modal')!;
+const winnerSpan = document.querySelector<HTMLSpanElement>('#winner-name')!;
 
 const errorIcon = document.querySelector('.miss-icon')!
 const fireGif = document.querySelector('.fire-gif')!;
@@ -138,6 +139,7 @@ function revealShip(shipDiv:HTMLDivElement, isSunk:boolean) {
 }
 
 function setBoardPanelState(active:boolean) {
+    console.log(active);
     active === true? 
     boardsPanel.classList.remove('inactive'):
     boardsPanel.classList.add('inactive');
@@ -260,6 +262,15 @@ const interfaceMethods = {
                 }
             });
         }, 600);
+    },
+
+    handleGameOver: (winnerName:string) => {
+        winnerSpan.textContent = winnerName;
+        setTimeout(setBoardPanelState, 700, false);
+
+        setTimeout(() => {
+            gameOverModal.showModal();
+        }, 1500);
     }
 }
 
@@ -279,5 +290,8 @@ export function initialize() {
 
 export { interfaceMethods }
 
-//  game-over modal
+//  attack highlights random origin
+//  sunk sound on game-over
+//  game-over append icon problem
+//  show player board on gameOver
 //  ship-motion feature
