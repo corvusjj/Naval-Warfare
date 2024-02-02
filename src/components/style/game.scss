@@ -372,6 +372,11 @@ div.fire-gif {
     }
 }
 
+@keyframes modal-grow {
+    from { transform: translate(-50%, -50%) scale(0.8); }
+    to { transform: translate(-50%, -50%) scale(1); }
+}
+
 .modal {
     border: none;
     @extend %container;
@@ -381,6 +386,7 @@ div.fire-gif {
     left: 50%;
     transform: translate(-50%, -50%);
     height: fit-content;
+    animation: modal-grow 0.3s ease-in-out;
 
     &::backdrop {
         background: rgba(0, 0, 0, 0.5);
