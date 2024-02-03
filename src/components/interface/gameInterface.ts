@@ -18,6 +18,8 @@ const attackHighlightY = document.querySelector<HTMLDivElement>('.attack-highlig
 const attackingPlayerSpan = document.querySelector<HTMLSpanElement>('#attacking-player')!;
 const gameOverModal = document.querySelector<HTMLDialogElement>('#game-over-modal')!;
 const winnerSpan = document.querySelector<HTMLSpanElement>('#winner-name')!;
+const p1FleetModal = document.querySelector<HTMLDivElement>('.fleet-modal[data-player="1"]')!;
+const p2FleetModal = document.querySelector<HTMLDivElement>('.fleet-modal[data-player="2"]')!;
 
 const errorIcon = document.querySelector('.miss-icon')!
 const fireGif = document.querySelector('.fire-gif')!;
@@ -212,6 +214,20 @@ function revealRemainingShips(attackerId:string) {
     });
 }
 
+function setupFleetsInGameOverModal(attackerId:string) {
+    revealRemainingShips(attackerId);
+    const p2Fleet = board2.cloneNode(true);
+    const p1Fleet = board1.cloneNode(true);
+
+    p1FleetModal.appendChild(p1Fleet);
+    p2FleetModal.appendChild(p2Fleet);
+
+    const p1FleetH3 = p1FleetModal.querySelector<HTMLHeadingElement>('h3')!;
+    const p2FleetH3 = p2FleetModal.querySelector<HTMLHeadingElement>('h3')!;
+    p1FleetH3.textContent = playersData.players[0] + '\'s Fleet';
+    p2FleetH3.textContent = playersData.players[1] + '\'s Fleet';
+}
+
 gameOverModal.addEventListener('click', (e) => {
     if (e.target === gameOverModal) gameOverModal.close();
 });
@@ -288,12 +304,8 @@ const interfaceMethods = {
     handleGameOver: (winnerName:string, attackerId:string) => {
         winnerSpan.textContent = winnerName;
         setTimeout(setBoardPanelState, 700, false);
-
-        revealRemainingShips(attackerId);
-
-        setTimeout(() => {
-            gameOverModal.showModal();
-        }, 1500);
+        setTimeout(() => setupFleetsInGameOverModal(attackerId), 700);
+        setTimeout(() => gameOverModal.showModal(), 1500);
     }
 }
 
@@ -314,6 +326,6 @@ export function initialize() {
 export { interfaceMethods }
 
 //  sunk sound on game-over
-//  show player board on gameOver
+//  morse code audio in game-over
 //  attacker text animation
 //  ship-motion feature
