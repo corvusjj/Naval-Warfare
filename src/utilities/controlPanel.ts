@@ -50,12 +50,16 @@ function saveAudioStates() {
 }
 
 function retrieveAudioStates() {
-    const audioStatesJSON:string = window.localStorage.getItem('bs-audio-states')!;
-    const audioStates:AudioStates = JSON.parse(audioStatesJSON) as AudioStates;
+    const audioStatesJSON:string | null = window.localStorage.getItem('bs-audio-states');
 
-    if (!audioStates.musicIsActive) toggleMusic();
-    if (!audioStates.soundIsActive) toggleSound();
-    if (!audioStates.wavesIsActive) toggleWaves();
+    if (audioStatesJSON !== null) {
+        const audioStates = JSON.parse(audioStatesJSON) as AudioStates;
+        if (!audioStates.musicIsActive) toggleMusic();
+        if (!audioStates.soundIsActive) toggleSound();
+        if (!audioStates.wavesIsActive) toggleWaves();
+    } else {
+        saveAudioStates();
+    }
 }
 
 function toggleMusic() {
