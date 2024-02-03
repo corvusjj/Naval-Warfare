@@ -6,6 +6,7 @@ import '../style/game.scss';
 
 let playersData:PlayersData;
 
+const main = document.querySelector('main');
 const gameBoardContainer = document.querySelector('.gameboard-container')!;
 const boardsPanel = document.querySelector('.boards-panel')!;
 const p1Ships = document.querySelector<HTMLDivElement>('.p1-ships')!;
@@ -27,6 +28,7 @@ const p2FleetModal = document.querySelector<HTMLDivElement>('.fleet-modal[data-p
 
 const settingsModal = document.querySelector<HTMLDialogElement>('#settings-modal')!;
 const settingsBtn = document.querySelector<HTMLButtonElement>('#settings-btn')!;
+const shipMotionBtn = document.querySelector<HTMLButtonElement>('#ui-motion-btn')!;
 
 const errorIcon = document.querySelector('.miss-icon')!
 const fireGif = document.querySelector('.fire-gif')!;
@@ -251,6 +253,16 @@ function setupFleetsInGameOverModal(attackerId:string) {
     p2FleetH3.textContent = playersData.players[1] + '\'s Fleet';
 }
 
+function toggleShipMotion() {
+    if (shipMotionBtn.dataset.active === 'true') {
+        shipMotionBtn.setAttribute('data-active', 'false');
+        main?.classList.remove('ship-motion');
+    } else {
+        shipMotionBtn.setAttribute('data-active', 'true');
+        main?.classList.add('ship-motion');
+    }
+}
+
 const interfaceMethods = {
     toggleBoardUI: (index: number) => {
         function toggleBoard() {
@@ -347,6 +359,7 @@ export function initialize() {
 
     seeFleetBtn.addEventListener('click', () => gameOverModal.showModal());
     settingsBtn.addEventListener('click', () => settingsModal.showModal());
+    shipMotionBtn.addEventListener('click', toggleShipMotion);
 
     modals.forEach(modal => modal.addEventListener('click', (e) => {
         if (e.target === modal) modal.close();
