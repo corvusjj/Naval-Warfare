@@ -1,7 +1,7 @@
 import Player from './gameTemplates/player';
 import AiPlayer from './gameTemplates/aiPlayer';
 import { interfaceOperations } from './gameInterfaceHandler';
-import { runActivateAudio, runAttackAudio, squareHitEffect } from './utilities/controlPanel';
+import { runActivateAudio, runAttackAudio, squareHitEffect, handleGameOverAudio } from './utilities/controlPanel';
 
 interface attackState {
     state: string;
@@ -69,6 +69,7 @@ function reportSunkShip(shipKey:string, coordinates:number[][]) {
 
 function gameOver(winnerName:string, attackerId:string) {
     interfaceOperations.handleGameOver(winnerName, attackerId);
+    handleGameOverAudio();
 }
 
 const userMethods = {

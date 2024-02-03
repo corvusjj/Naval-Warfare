@@ -19,6 +19,7 @@ const explosionAudio:HTMLAudioElement = document.querySelector('#explosion-audio
 const sunkAudio:HTMLAudioElement = document.querySelector('#sunk-audio')!;
 const optimalAudio:HTMLAudioElement = document.querySelector('#optimal-audio')!;
 const alertAudio:HTMLAudioElement = document.querySelector('#alert-audio')!;
+const morseAudio:HTMLAudioElement = document.querySelector('#morse-audio')!;
 
 backgroundMusic.volume = 0.2;
 wavesAudio.volume = 0.7;
@@ -29,6 +30,7 @@ explosionAudio.volume = 0.5;
 sunkAudio.volume = 0.3;
 optimalAudio.volume = 0.3;
 alertAudio.volume = 0.3;
+morseAudio.volume = 0.3;
 
 const led = document.querySelector('.led');
 
@@ -115,6 +117,10 @@ export function runAttackAudio(state:string) {
             void sunkAudio.play();
             sunkAudio.currentTime = 0;
             break;
+        case 'game-over':
+            void sunkAudio.play();
+            sunkAudio.currentTime = 0;
+            break;
     }
 }
 
@@ -138,6 +144,11 @@ export const squareHitEffect = {
     }
 }
 
+export function handleGameOverAudio() {
+    backgroundMusic.volume = 0;
+    setTimeout(() => void morseAudio.play(), 1200);
+}
+
 musicBtn?.addEventListener('click', toggleMusic);
 soundBtn?.addEventListener('click', toggleSound);
 waveSoundBtn?.addEventListener('click', toggleWaves);
@@ -145,4 +156,5 @@ waveSoundBtn?.addEventListener('click', toggleWaves);
 export function audioInit() {
     retrieveAudioStates();
     if (musicIsActive) void backgroundMusic.play();
+    if (wavesIsActive) void wavesAudio.play();
 }
