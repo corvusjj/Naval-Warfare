@@ -199,6 +199,22 @@ function generateIconElement(state:string) {
     }
 }
 
+function animateAttackerText(text:string) {
+    attackingPlayerSpan.textContent = '';
+    let currentIndex = 0;
+    const content = text.split('');
+
+    function addText() {
+        if (currentIndex > content.length - 1) return;
+        attackingPlayerSpan.textContent += content[currentIndex];
+        currentIndex += 1;
+
+        setTimeout(addText, 70);
+    }
+
+    addText();
+}
+
 function revealRemainingShips(attackerId:string) {
     const p1Id = gameOperations.getPlayersData()[0][1];
     const remainingShips = gameOperations.getState().attacker.ships;
@@ -238,12 +254,12 @@ const interfaceMethods = {
     toggleBoardUI: (index: number) => {
         function toggleBoard() {
             if (index === 0) {
-                attackingPlayerSpan.textContent = playersData.players[1] + ' to attack...';
+                animateAttackerText(playersData.players[1] + ' to attack...');
                 boardsPanel.classList.remove('toggle-panel');
                 p2Ships.style.display = 'none';
                 p1Ships.style.display = 'flex';
             } else {
-                attackingPlayerSpan.textContent = playersData.players[0] + ' to attack...';
+                animateAttackerText(playersData.players[0] + ' to attack...');
                 boardsPanel.classList.add('toggle-panel');
                 p1Ships.style.display = 'none';
                 p2Ships.style.display = 'flex';
@@ -333,7 +349,6 @@ export function initialize() {
 
 export { interfaceMethods }
 
-//  see fleet btn
 //  attacker text animation
 //  ship-motion feature
 //  audioStates error handling
