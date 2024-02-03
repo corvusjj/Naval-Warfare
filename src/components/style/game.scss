@@ -43,7 +43,17 @@ main {
     width: 15rem;
     height: 5rem;
     justify-self: flex-end;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    #see-fleet-btn {
+        background: #222d38;
+        color: #dfdddd;
+        padding: 1rem 2rem;
+        cursor: pointer;
+        display: none;
+    }
 }
 
 .gameboard-container {

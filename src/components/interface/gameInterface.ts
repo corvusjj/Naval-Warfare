@@ -16,6 +16,8 @@ const attackHighlightX = document.querySelector<HTMLDivElement>('.attack-highlig
 const attackHighlightY = document.querySelector<HTMLDivElement>('.attack-highlight.horizontal')!;
 
 const attackingPlayerSpan = document.querySelector<HTMLSpanElement>('#attacking-player')!;
+const seeFleetBtn = document.querySelector<HTMLButtonElement>('#see-fleet-btn')!;
+
 const gameOverModal = document.querySelector<HTMLDialogElement>('#game-over-modal')!;
 const winnerSpan = document.querySelector<HTMLSpanElement>('#winner-name')!;
 const p1FleetModal = document.querySelector<HTMLDivElement>('.fleet-modal[data-player="1"]')!;
@@ -236,12 +238,12 @@ const interfaceMethods = {
     toggleBoardUI: (index: number) => {
         function toggleBoard() {
             if (index === 0) {
-                attackingPlayerSpan.textContent = playersData.players[1];
+                attackingPlayerSpan.textContent = playersData.players[1] + ' to attack...';
                 boardsPanel.classList.remove('toggle-panel');
                 p2Ships.style.display = 'none';
                 p1Ships.style.display = 'flex';
             } else {
-                attackingPlayerSpan.textContent = playersData.players[0];
+                attackingPlayerSpan.textContent = playersData.players[0] + ' to attack...';
                 boardsPanel.classList.add('toggle-panel');
                 p1Ships.style.display = 'none';
                 p2Ships.style.display = 'flex';
@@ -305,7 +307,12 @@ const interfaceMethods = {
         winnerSpan.textContent = winnerName;
         setTimeout(setBoardPanelState, 700, false);
         setTimeout(() => setupFleetsInGameOverModal(attackerId), 700);
-        setTimeout(() => gameOverModal.showModal(), 1500);
+
+        setTimeout(() => {
+            gameOverModal.showModal();
+            attackingPlayerSpan.style.display = 'none';
+            seeFleetBtn.style.display = 'block';
+        }, 1500);
     }
 }
 
@@ -320,12 +327,13 @@ export function initialize() {
     placeShips(placementData);
 
     audioInit();
-    gameOverModal.showModal();
+
+    seeFleetBtn.addEventListener('click', () => gameOverModal.showModal());
 }
 
 export { interfaceMethods }
 
-//  sunk sound on game-over
-//  morse code audio in game-over
+//  see fleet btn
 //  attacker text animation
 //  ship-motion feature
+//  audioStates error handling
