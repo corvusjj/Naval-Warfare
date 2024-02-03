@@ -18,10 +18,15 @@ const attackHighlightY = document.querySelector<HTMLDivElement>('.attack-highlig
 const attackingPlayerSpan = document.querySelector<HTMLSpanElement>('#attacking-player')!;
 const seeFleetBtn = document.querySelector<HTMLButtonElement>('#see-fleet-btn')!;
 
+const modals = document.querySelectorAll<HTMLDialogElement>('.modal')!;
+
 const gameOverModal = document.querySelector<HTMLDialogElement>('#game-over-modal')!;
 const winnerSpan = document.querySelector<HTMLSpanElement>('#winner-name')!;
 const p1FleetModal = document.querySelector<HTMLDivElement>('.fleet-modal[data-player="1"]')!;
 const p2FleetModal = document.querySelector<HTMLDivElement>('.fleet-modal[data-player="2"]')!;
+
+const settingsModal = document.querySelector<HTMLDialogElement>('#settings-modal')!;
+const settingsBtn = document.querySelector<HTMLButtonElement>('#settings-btn')!;
 
 const errorIcon = document.querySelector('.miss-icon')!
 const fireGif = document.querySelector('.fire-gif')!;
@@ -246,10 +251,6 @@ function setupFleetsInGameOverModal(attackerId:string) {
     p2FleetH3.textContent = playersData.players[1] + '\'s Fleet';
 }
 
-gameOverModal.addEventListener('click', (e) => {
-    if (e.target === gameOverModal) gameOverModal.close();
-});
-
 const interfaceMethods = {
     toggleBoardUI: (index: number) => {
         function toggleBoard() {
@@ -345,10 +346,13 @@ export function initialize() {
     audioInit();
 
     seeFleetBtn.addEventListener('click', () => gameOverModal.showModal());
+    settingsBtn.addEventListener('click', () => settingsModal.showModal());
+
+    modals.forEach(modal => modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.close();
+    }));
 }
 
 export { interfaceMethods }
 
-//  attacker text animation
 //  ship-motion feature
-//  audioStates error handling

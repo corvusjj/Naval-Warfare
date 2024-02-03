@@ -15,8 +15,8 @@ body {
 
 @keyframes ship-motion {
     0% { transform: translate(0,0);}
-    33% { transform: translateY(20px); }
-    67% { transform: translateY(-20px); }
+    33% { transform: translateY(10px); }
+    67% { transform: translateY(-10px); }
     100% { transform: translate(0,0);}
 }
 
@@ -26,8 +26,9 @@ main {
     align-items: center;
     column-gap: 3.5rem;
     row-gap: 3rem;
-    margin: 3rem auto 0 auto;
+    margin: 5rem auto 0 auto;
     width: fit-content;
+    position: relative;
     // animation: ship-motion 1.5s linear infinite;
 }
 
@@ -35,6 +36,25 @@ main {
     border-radius: 10px;
     box-shadow: 0 2px 0 hsla(0, 0%, 100%, .15), inset 0 2px 2px hsla(0, 0%, 0%, 0.2);
     background: $inner-color;
+}
+
+button#settings-btn {
+    background: none;
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    top: -3.5rem;
+    cursor: pointer;
+    border: none;
+    outline: none;
+
+    svg {
+        transition: transform 0.3s ease;
+    }
+
+    &:hover {
+        svg { transform: rotate(20deg); }
+    }
 }
 
 .player {
@@ -418,15 +438,29 @@ div.fire-gif {
             text-decoration: none;
             outline: none;
 
-            &:nth-of-type(1) {
-                margin-left: 30%;
-                margin-right: 2rem;
-            }
-
             &:hover {
                 filter: brightness(1.1);
             }
         }
+    }
+}
+
+#game-over-modal {
+    a {
+        &:nth-of-type(1) {
+            margin-left: 30%;
+            margin-right: 2rem;
+        }
+    }
+}
+
+#settings-modal {
+    width: fit-content;
+
+    a {
+        display: block;
+        margin-top: 1rem;
+        text-align: center;
     }
 }
 
