@@ -6,7 +6,6 @@ interface attackState {
     coordinates: number[][];
 }
 
-
 export default class AiPlayer extends Player {
     enemySquares: number[][];
     squaresInDiagonal: number[][];
@@ -38,12 +37,25 @@ export default class AiPlayer extends Player {
         return coordinates;
     }
 
-    receiveAttackState({ state, coordinates }:attackState) {
+    handleAttackState({ state, coordinates }:attackState) {
         console.log(state, coordinates);
     }
 
+    removeCoordinate(diagonalRandomIndex:number, targetedSquare:number[]) {
+        this.squaresInDiagonal.splice(diagonalRandomIndex, 1);
+
+        const x = (targetedSquare[0] - 1) * 10;
+        const y = targetedSquare[1] - 1;
+        this.enemySquares.splice((x + y), 1);
+    }
+
     chooseTarget() {
-        console.log(this.squaresInDiagonal);
-        return this.enemySquares[3];
+        const remainingDiagonalSquares = this.squaresInDiagonal.length;
+        const diagonalRandomIndex = Math.round(Math.random() * (remainingDiagonalSquares - 1));
+        const target = this.squaresInDiagonal[diagonalRandomIndex];
+
+        this.removeCoordinate(diagonalRandomIndex, target);
+
+        return target;
     }
 }

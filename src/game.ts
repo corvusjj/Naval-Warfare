@@ -128,7 +128,7 @@ const userMethods = {
 
         //  -------------   AI BLOCK   --------------
         if (vsComputerTurn && gameState.p2 instanceof AiPlayer) {
-            gameState.p2.receiveAttackState(attackState);
+            gameState.p2.handleAttackState(attackState);
         }
     },
 
@@ -151,3 +151,5 @@ function nextPlayerTurn() {
 }
 
 export { userMethods }
+
+// continue attack when computer hits
