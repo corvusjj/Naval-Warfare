@@ -72,6 +72,21 @@ function gameOver(winnerName:string, attackerId:string) {
     handleGameOverAudio();
 }
 
+const aiHandler = {
+    attack: () => {
+        if (gameState.p2 instanceof AiPlayer) {
+            const coord:number[] = gameState.p2.chooseTarget();
+            setTimeout(() => userMethods.attack(coord, true), 1200);
+        }
+    },
+
+    updateAttackState: (attackState:attackState) => {
+        if (gameState.p2 instanceof AiPlayer) {
+            gameState.p2.handleAttackState(attackState);
+        }
+    }
+}
+
 const userMethods = {
     setGameState: (vsComputer:boolean, playerNames:string[]) => {
         const p1 = new Player(playerNames[0]);
@@ -118,7 +133,10 @@ const userMethods = {
             setTimeout(() => interfaceOperations.setPanelUiToActive(), 600);
 
             if (state === 'sunk' || state === 'game-over') reportSunkShip(attackState.squareKey, attackState.coordinates);
-            if (state === 'game-over') gameOver(gameState.attacker.name, gameState.attacker.id);
+            if (state === 'game-over') return gameOver(gameState.attacker.name, gameState.attacker.id);
+
+            //  -------------   AI BLOCK   --------------
+            if (vsComputerTurn) aiHandler.attack();
         } else {
             setTimeout(() => interfaceOperations.setPanelUiToActive(), 1200);
             setTimeout(() => { nextPlayerTurn() }, 1200);
@@ -127,9 +145,7 @@ const userMethods = {
         setTimeout(() => { runAttackAudio(state) }, 500);
 
         //  -------------   AI BLOCK   --------------
-        if (vsComputerTurn && gameState.p2 instanceof AiPlayer) {
-            gameState.p2.handleAttackState(attackState);
-        }
+        if (vsComputerTurn) aiHandler.updateAttackState(attackState);
     },
 
     getState: () => {
@@ -143,11 +159,7 @@ function nextPlayerTurn() {
     //  -------------   AI BLOCK   --------------
     if (!gameState.vsComputer) return;
     if (gameState.attacker !== gameState.p2) return;
-
-    if (gameState.p2 instanceof AiPlayer) {
-        const coord:number[] = gameState.p2.chooseTarget();
-        setTimeout(() => userMethods.attack(coord, true), 1200);
-    }
+    aiHandler.attack();
 }
 
 export { userMethods }
