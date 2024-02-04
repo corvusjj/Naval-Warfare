@@ -48,7 +48,7 @@ function setupBoardGame() {
     boardsPanel.appendChild(board2);
 
     const squares = document.querySelectorAll('.square[data-coord]');
-    squares.forEach(square => square.addEventListener('click', attack));
+    squares.forEach(square => square.addEventListener('click', (e) => attack(e, false)));
 }
 
 function setGameState() {
@@ -155,12 +155,12 @@ function setBoardPanelState(active:boolean) {
     boardsPanel.classList.add('inactive');
 }
 
-function attack(e: Event) {
+function attack(e: Event, vsComputerTurn:boolean) {
     const squareNode = e.target as HTMLDivElement; 
     const stringCoord = squareNode.dataset.coord!;
     const coordinates = stringCoord.split('-');
 
-    gameOperations.attack(coordinates.map(x => parseInt(x)));
+    gameOperations.attack(coordinates.map(x => parseInt(x)), vsComputerTurn);
     squareNode.style.pointerEvents = 'none';
 
     setBoardPanelState(false);
@@ -367,5 +367,3 @@ export function initialize() {
 }
 
 export { interfaceMethods }
-
-//  ship-motion feature

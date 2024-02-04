@@ -106,7 +106,7 @@ const userMethods = {
         playerBoard.placeShip(ship, coord, key);
     },
 
-    attack(square: number[]) {
+    attack(square: number[], vsComputerTurn:boolean) {
         const attackState:attackState = gameState.attack(square);
         const state = attackState.state;
         interfaceOperations.markSquareInterface(square, gameState.defender.id, state);
@@ -125,6 +125,11 @@ const userMethods = {
         }
 
         setTimeout(() => { runAttackAudio(state) }, 500);
+
+        //  -------------   AI BLOCK   --------------
+        if (vsComputerTurn && gameState.p2 instanceof AiPlayer) {
+            gameState.p2.receiveAttackState(attackState);
+        }
     },
 
     getState: () => {
@@ -139,13 +144,10 @@ function nextPlayerTurn() {
     if (!gameState.vsComputer) return;
     if (gameState.attacker !== gameState.p2) return;
 
-    if ('chooseTarget' in gameState.p2) {
+    if (gameState.p2 instanceof AiPlayer) {
         const coord:number[] = gameState.p2.chooseTarget();
-        userMethods.attack(coord);
+        setTimeout(() => userMethods.attack(coord, true), 1200);
     }
 }
 
 export { userMethods }
-
-//  sunk ship animation
-//  shipPlacement => findSunkShip() through getting length and through Player

@@ -40,8 +40,8 @@ const gameOperations = {
         userMethods.placeSecondPlayerShip(key , isVertical , coord);
     },
     
-    attack(square: number[]) {
-        userMethods.attack(square);
+    attack(square: number[], vsComputerTurn:boolean) {
+        userMethods.attack(square, vsComputerTurn);
     },
 
     getState() {

@@ -1,6 +1,12 @@
 import Player from './player';
 import setupAllCoordinates from "../utilities/battleshipCoordinates";
 
+interface attackState {
+    state: string;
+    coordinates: number[][];
+}
+
+
 export default class AiPlayer extends Player {
     enemySquares: number[][];
     squaresInDiagonal: number[][];
@@ -30,6 +36,10 @@ export default class AiPlayer extends Player {
         }
 
         return coordinates;
+    }
+
+    receiveAttackState({ state, coordinates }:attackState) {
+        console.log(state, coordinates);
     }
 
     chooseTarget() {
