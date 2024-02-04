@@ -1,3 +1,21 @@
+/* black-ops-one-regular - latin */
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Black Ops One';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../../fonts/black-ops-one-v20-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* oswald-regular - latin */
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Oswald';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../../fonts/oswald-v53-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
 $inner-color: #001833;
 $outer-color: #222d38;
 
@@ -10,6 +28,7 @@ $outer-color: #222d38;
 body {
     background: $outer-color;
     color: #dfdddd;
+    font-family: 'Oswald', sans-serif;
 }
 
 @keyframes ship-motion {
@@ -40,6 +59,11 @@ main {
     border-radius: 10px;
     box-shadow: 0 2px 0 hsla(0, 0%, 100%, .15), inset 0 2px 2px hsla(0, 0%, 0%, 0.2);
     background: $inner-color;
+}
+
+button {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
 }
 
 button#settings-btn {
@@ -230,10 +254,13 @@ button#settings-btn {
 .ships-container {
     width: fit-content;
     justify-self: flex-end;
+    position: relative;
 
     &::before {
         content: 'ENEMY SHIPS';
         letter-spacing: 2px;
+        position: absolute;
+        top: -2rem;
     }
 
     & > div {
@@ -425,6 +452,12 @@ div.fire-gif {
         background: rgba(0, 0, 0, 0.5);
     }
 
+    h2 {
+        font-family: 'Black Ops One', serif;
+        letter-spacing: 1px;
+        font-weight: lighter;
+    }
+
     div.container {
         padding: 3rem;
 
@@ -450,6 +483,10 @@ div.fire-gif {
 }
 
 #game-over-modal {
+    h3 {
+        letter-spacing: 1px;
+    }
+
     a {
         &:nth-of-type(1) {
             margin-left: 30%;
