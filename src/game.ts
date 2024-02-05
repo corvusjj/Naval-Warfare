@@ -96,7 +96,7 @@ const userMethods = {
         let p2: Player | AiPlayer;
     
         vsComputer?
-        p2 = new AiPlayer('Fleet_Admiral_Bot'):
+        p2 = new AiPlayer(playerNames[1]):
         p2 = new Player(playerNames[1]);
         
         initializeGameState(p1, p2, vsComputer);

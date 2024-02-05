@@ -56,8 +56,8 @@ function setGameState() {
     playersData = JSON.parse(playersDataJson) as PlayersData;
 
     playersData.vsComputer?
-    gameOperations.setGameState(true, [playersData.players[0]]):
-    gameOperations.setGameState(false, [playersData.players[0], playersData.players[1]]);
+    gameOperations.setGameState(true, playersData.players):
+    gameOperations.setGameState(false, playersData.players);
 }
 
 function setPLayersDataOnBoards() {

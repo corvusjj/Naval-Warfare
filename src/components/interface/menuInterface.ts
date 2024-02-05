@@ -1,7 +1,7 @@
 interface PlayersData {
     vsComputer: boolean;
     players: string[];
-  }
+ }
 
 const chooseOpponentBtn = document.querySelectorAll<HTMLButtonElement>('.btn-opponent');
 const inputNameModal = document.querySelector<HTMLDialogElement>('#input-name-modal')!;
@@ -40,7 +40,9 @@ function submitName(e:Event) {
     const secondInput = inputNameModal.querySelector<HTMLInputElement>('#name-p2 input')!;
 
     if (firstInput.value.length < 1) return;
-    if (singlePlayerMode === false && secondInput.value.length < 1) return;
+    if (!singlePlayerMode && secondInput.value.length < 1) return;
+
+    if (singlePlayerMode) secondInput.value = 'Admiral Bot';
 
     const playersData:PlayersData = {
         vsComputer: singlePlayerMode,
