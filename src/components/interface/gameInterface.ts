@@ -67,6 +67,8 @@ function setPLayersDataOnBoards() {
     board2.setAttribute('data-player-id', secondPlayerData[1]);
     board2.setAttribute('data-player-name', secondPlayerData[0]);
     interfaceMethods.toggleBoardUI(1);  // player 2 defender as default
+
+    if (playersData.vsComputer) board1.style.pointerEvents = 'none';
 }
 
 interface Ship {
