@@ -9,11 +9,13 @@ interface attackState {
 export default class AiPlayer extends Player {
     enemySquares: number[][];
     squaresInDiagonal: number[][];
+    hitQueue: number[][];
 
     constructor(name:string) {
         super(name);
         this.enemySquares = setupAllCoordinates();
         this.squaresInDiagonal = this.getDiagonalCoordinates();
+        this.hitQueue = [];
     }
 
     getDiagonalCoordinates() {
@@ -38,7 +40,7 @@ export default class AiPlayer extends Player {
     }
 
     handleAttackState({ state, coordinates }:attackState) {
-        console.log(state, coordinates);
+        if (state === 'hit') this.hitQueue.push(...coordinates);
     }
 
     removeCoordinate(diagonalRandomIndex:number, targetedSquare:number[]) {
