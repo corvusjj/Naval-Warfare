@@ -56,9 +56,12 @@ function playHitEffects() {
     if (!gameState.vsComputer) {
         squareHitEffect.runOptimal();
     } else {
-        gameState.attacker === gameState.p2?
-        squareHitEffect.runAlert():
-        squareHitEffect.runOptimal();
+        if (gameState.attacker === gameState.p2) {
+            squareHitEffect.runAlert();
+            setTimeout(() => void interfaceOperations.animateHitByComputer(), 200);
+        } else {
+            squareHitEffect.runOptimal();
+        }
     }
 }
 
@@ -127,6 +130,7 @@ const userMethods = {
         interfaceOperations.markSquareInterface(square, gameState.defender.id, state);
 
         runActivateAudio();
+        setTimeout(() => { runAttackAudio(state) }, 500);
 
         if (state !== 'miss') {
             setTimeout(() => playHitEffects(), 300);
@@ -141,8 +145,6 @@ const userMethods = {
             setTimeout(() => interfaceOperations.setPanelUiToActive(), 1200);
             setTimeout(() => { nextPlayerTurn() }, 1200);
         }
-
-        setTimeout(() => { runAttackAudio(state) }, 500);
 
         //  -------------   AI BLOCK   --------------
         if (vsComputerTurn) aiHandler.updateAttackState(attackState);
@@ -163,5 +165,3 @@ function nextPlayerTurn() {
 }
 
 export { userMethods }
-
-// continue attack when computer hits

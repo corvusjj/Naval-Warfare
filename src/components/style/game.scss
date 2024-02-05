@@ -40,6 +40,12 @@ body {
     100% { transform: translate(0,0);}
 }
 
+@keyframes ship-hit {
+    0% { transform: translate(0,0); }
+    50% { transform: translate(0, 8px) }
+    100% { transform: translate(0, 0); }
+}
+
 main {
     display: grid;
     grid-template-columns: repeat(3, auto);
@@ -52,6 +58,10 @@ main {
     
     &.ship-motion {
         animation: ship-motion 2.5s linear infinite;
+    }
+
+    &.ship-hit {
+        animation: ship-hit 0.1s 3;
     }
 }
 

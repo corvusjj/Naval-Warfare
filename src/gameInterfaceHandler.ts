@@ -14,6 +14,10 @@ const interfaceOperations = {
         interfaceMethods.setBoardPanelToActive();
     },
 
+    animateHitByComputer() {
+        interfaceMethods.animateHitByComputer();
+    },
+
     handleSunkShip(defenderId:string, shipKey:string, coordinates:number[][]) {
         interfaceMethods.handleSunkShip(defenderId, shipKey, coordinates);
     },

@@ -296,6 +296,12 @@ const interfaceMethods = {
         setBoardPanelState(true);
     },
 
+    animateHitByComputer: () => {
+        if (!main?.classList.contains('ship-motion')) return;
+        main?.classList.add('ship-hit');
+        setTimeout(() => main.classList.remove('ship-hit'), 300);
+    },
+
     handleSunkShip: (defenderId:string, shipKey:string, coordinates:number[][]) => {
         const p1Id = gameOperations.getPlayersData()[0][1];
 
@@ -367,3 +373,6 @@ export function initialize() {
 }
 
 export { interfaceMethods }
+
+//  ship hit ui animation
+//  computer name
