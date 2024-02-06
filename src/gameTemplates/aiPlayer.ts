@@ -6,16 +6,45 @@ interface attackState {
     coordinates: number[][];
 }
 
+class Seeker {
+    focusedTarget: number[];
+    directions: string[];
+    currentDirection: string;
+
+    constructor() {
+        this.focusedTarget = [];
+        this.directions = ['vertical', 'horizontal'];
+        this.currentDirection = 'vertical';
+    }
+
+    setCurrentDirection(direction:string) {
+        const directionIndex = this.directions.indexOf(direction);
+        this.directions.splice(directionIndex, 1);
+        this.currentDirection = direction;
+    }
+
+    reset() {
+        this.focusedTarget = [];
+        this.directions = ['vertical', 'horizontal'];
+        this.currentDirection = 'vertical';
+    }
+}
+
 export default class AiPlayer extends Player {
     enemySquares: number[][];
     squaresInDiagonal: number[][];
     hitQueue: number[][];
+    enemyShipLengths: number[];
+    seeker: Seeker;
 
     constructor(name:string) {
         super(name);
         this.enemySquares = setupAllCoordinates();
         this.squaresInDiagonal = this.getDiagonalCoordinates();
+        
         this.hitQueue = [];
+        this.enemyShipLengths = [5, 4, 3, 3, 2];
+        this.seeker = new Seeker;
     }
 
     getDiagonalCoordinates() {
@@ -45,7 +74,7 @@ export default class AiPlayer extends Player {
 
     removeCoordinate(diagonalRandomIndex:number, targetedSquare:number[]) {
         this.squaresInDiagonal.splice(diagonalRandomIndex, 1);
-        
+
         const enemySquare = this.enemySquares.find(square => {
             return square.toString() === targetedSquare.toString();
         });
@@ -95,7 +124,7 @@ export default class AiPlayer extends Player {
 //          A. If a direction is available, choose one and check if placement is possible with the lowest ship length.
 //              a. if placement is possible, let focusedTarget as potentialNextTarget and proceed to 4.
 //              b. if not, eliminate the direction used and go back to A.
-//          B. If both directions are used, eliminate all the scanned coordinates including the focusedTarget. Go back to 3.2
+//          B. If both directions are used, remove the coordinate focusedTarget. Go back to 3.2
 
 //  4. return potentialNextTarget;
 
