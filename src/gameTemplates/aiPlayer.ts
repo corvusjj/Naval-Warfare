@@ -45,10 +45,15 @@ export default class AiPlayer extends Player {
 
     removeCoordinate(diagonalRandomIndex:number, targetedSquare:number[]) {
         this.squaresInDiagonal.splice(diagonalRandomIndex, 1);
+        
+        const enemySquare = this.enemySquares.find(square => {
+            return square.toString() === targetedSquare.toString();
+        });
 
-        const x = (targetedSquare[0] - 1) * 10;
-        const y = targetedSquare[1] - 1;
-        this.enemySquares.splice((x + y), 1);
+        if (enemySquare) {
+            const enemySquareIndex = this.enemySquares.indexOf(enemySquare);
+            this.enemySquares.splice(enemySquareIndex, 1);
+        }
     }
 
     chooseTarget() {
