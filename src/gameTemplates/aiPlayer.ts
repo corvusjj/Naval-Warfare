@@ -7,8 +7,8 @@ interface attackState {
     coordinates: number[][];
 }
 
-//  every time the computer selects a focusedTarget, this object will be responsible for processing if 
-//  a ship's placement is possible in both y and x axis from the enemy ships' lowest length. Will reset 
+//  every time the computer selects a focusedTarget, this object will be responsible for the
+//  checkPlacement method in both y and x axis from the enemy ships' minimum length. Will reset 
 //  on the the next focused target.
 class Seeker {
     focusedTarget: number[];
@@ -18,7 +18,7 @@ class Seeker {
     constructor() {
         this.focusedTarget = [];
         this.directions = ['vertical', 'horizontal'];
-        this.currentDirection = 'vertical';
+        this.currentDirection = '';
     }
 
     setCurrentDirection(direction:string) {
@@ -27,10 +27,16 @@ class Seeker {
         this.currentDirection = direction;
     }
 
+    setRandomDirection() {
+        Math.random() < 0.5? 
+        this.setCurrentDirection(this.directions[0]): 
+        this.setCurrentDirection(this.directions[1]);
+    }
+
     reset() {
         this.focusedTarget = [];
         this.directions = ['vertical', 'horizontal'];
-        this.currentDirection = 'vertical';
+        this.currentDirection = '';
     }
 }
 
@@ -111,6 +117,12 @@ export default class AiPlayer extends Player {
 
             dirIndex++;
         }
+
+        return null;
+    }
+
+    checkPlacement(direction: string | null) {
+        return direction;
     }
 
     damagedTargetFinder() {
@@ -121,7 +133,9 @@ export default class AiPlayer extends Player {
         const target = this.squaresInDiagonal[diagonalRandomIndex];
         this.removeCoordinate(diagonalRandomIndex, target);
 
-        this.findAdjacentHit();
+        const probableDirection = this.findAdjacentHit();
+        this.checkPlacement(probableDirection);
+
         return target;
     }
 
