@@ -1,11 +1,15 @@
 import Player from './player';
 import setupAllCoordinates from "../utilities/battleshipCoordinates";
+import { coordinateSeeker } from '../utilities/coordinatesHandler';
 
 interface attackState {
     state: string;
     coordinates: number[][];
 }
 
+//  every time the computer selects a focusedTarget, this object will be responsible for processing if 
+//  a ship's placement is possible in both y and x axis from the enemy ships' lowest length. Will reset 
+//  on the the next focused target.
 class Seeker {
     focusedTarget: number[];
     directions: string[];
@@ -41,7 +45,7 @@ export default class AiPlayer extends Player {
         super(name);
         this.enemySquares = setupAllCoordinates();
         this.squaresInDiagonal = this.getDiagonalCoordinates();
-        
+
         this.hitQueue = [];
         this.enemyShipLengths = [5, 4, 3, 3, 2];
         this.seeker = new Seeker;
@@ -85,14 +89,60 @@ export default class AiPlayer extends Player {
         }
     }
 
-    chooseTarget() {
+    coordInHitQueue(coordinates:number[]) {
+        return this.hitQueue.some(arr => {
+            return arr.every((val, index) => arr.length === coordinates.length && val === coordinates[index]);
+        });
+    }
+
+    findAdjacentHit() {
+        const originSquare = this.seeker.focusedTarget;
+
+        const directions = ['top', 'right', 'bottom', 'left'];
+        let dirIndex = 0;
+
+        while(dirIndex < directions.length) {
+            const square = coordinateSeeker(originSquare, directions[dirIndex], 1);
+
+            if (this.coordInHitQueue(square)) {
+                return directions[dirIndex] === 'top' || directions[dirIndex] === 'bottom'?
+                'vertical' : 'horizontal';
+            }
+
+            dirIndex++;
+        }
+    }
+
+    damagedTargetFinder() {
+        this.seeker.focusedTarget = this.hitQueue[0];
+
         const remainingDiagonalSquares = this.squaresInDiagonal.length;
         const diagonalRandomIndex = Math.round(Math.random() * (remainingDiagonalSquares - 1));
         const target = this.squaresInDiagonal[diagonalRandomIndex];
+        this.removeCoordinate(diagonalRandomIndex, target);
 
+        this.findAdjacentHit();
+        return target;
+    }
+
+    randomTargetFinder() {
+        const remainingDiagonalSquares = this.squaresInDiagonal.length;
+        const diagonalRandomIndex = Math.round(Math.random() * (remainingDiagonalSquares - 1));
+        const target = this.squaresInDiagonal[diagonalRandomIndex];
         this.removeCoordinate(diagonalRandomIndex, target);
 
         return target;
+    }
+
+    chooseTarget() {
+        this.seeker.reset();
+        let chosenTarget: number[] = [];
+
+        this.hitQueue.length > 0?
+        chosenTarget = this.damagedTargetFinder(): 
+        chosenTarget = this.randomTargetFinder();
+
+        return chosenTarget;        
     }
 }
 
@@ -110,8 +160,8 @@ export default class AiPlayer extends Player {
 //  function damagedShipTargetPursuit => should return a coordinate as potentialNextTarget based from the arguments: (direction, focusedTarget)
 
 //  3.1. if hitQueue isn't empty, choose the first coordinate as the focusedTarget and scan 
-//       each of the 4 directions (maximum squares of the highest ship length) for linear hits. 
-//          A. if there's a linear hit, choose that direction and check if placement is possible with the lowest ship length.
+//       each of the 4 directions in 1 span for adjacent hits. 
+//          A. if there's an adjacent hit, choose that direction and check if placement is possible with the lowest ship length.
 //              a. if placement is possible, choose that direction and proceed to c.
 //              b. otherwise, choose the other direction.
 //              c. run damagedShipTargetPursuit and proceed to 4.
@@ -131,3 +181,6 @@ export default class AiPlayer extends Player {
 
 
 //  figure out checkPlacement 
+//  linear hit can only be firstLevel
+//  currentDirection to randomDirectionIndex
+//  removeCurrentDirection in seeker method
