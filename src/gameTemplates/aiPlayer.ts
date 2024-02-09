@@ -101,6 +101,12 @@ export default class AiPlayer extends Player {
         });
     }
 
+    coordNotAttacked(coordinates: number[]) {
+        return this.enemySquares.some(arr => {
+            return arr.every((val, index) => arr.length === coordinates.length && val === coordinates[index]);
+        });
+    }
+
     findAdjacentHit() {
         const originSquare = this.seeker.focusedTarget;
 
@@ -121,8 +127,53 @@ export default class AiPlayer extends Player {
         return null;
     }
 
-    checkPlacement(direction: string | null) {
-        return direction;
+    checkPlacement() {
+        let verticalSquareStates: string[];
+        let horizontalSquareStates: string[];
+
+        if (this.coordInHitQueue(this.seeker.focusedTarget)) {
+            verticalSquareStates = ['hit'];
+            horizontalSquareStates = ['hit'];
+        } else {
+            verticalSquareStates = ['free'];
+            horizontalSquareStates = ['free'];
+        }
+
+        function placeSquareState(direction:string, state:string) {
+            console.log(direction, state);
+        }
+
+        const originSquare = this.seeker.focusedTarget;
+        const maxEnemyShip = this.enemyShipLengths[0];
+        // const minEnemyShip = this.enemyShipLengths[this.enemyShipLengths.length - 1];
+        
+        const directions = ['top', 'right', 'bottom', 'left'];
+        let squareSpan = 1;
+
+        //  increment seekSquare span / current level order 
+        for (squareSpan; squareSpan < maxEnemyShip; squareSpan++) {
+            let dirIndex = 0;
+
+            //  seek squares on all 4 directions in current level order / span.
+            while (dirIndex < directions.length) {
+                const [x, y] = coordinateSeeker(originSquare, directions[dirIndex], squareSpan);
+
+                //  if square over the board, skip the direction.
+                if ((x < 1 || x > 10) || (y < 1 || y > 10)) {
+                    directions.splice(dirIndex, 1);
+                    continue;
+                }
+
+                //  if square is already attacked, skip the direction.
+                if (!this.coordNotAttacked([x, y])) {
+                    directions.splice(dirIndex, 1);
+                    continue;
+                }
+
+                console.log([x, y], directions[dirIndex]);
+                dirIndex++;
+            }
+        }
     }
 
     damagedTargetFinder() {
@@ -133,9 +184,9 @@ export default class AiPlayer extends Player {
         const target = this.squaresInDiagonal[diagonalRandomIndex];
         this.removeCoordinate(diagonalRandomIndex, target);
 
-        const probableDirection = this.findAdjacentHit();
-        this.checkPlacement(probableDirection);
-
+        // const probableDirection = this.findAdjacentHit();
+        // const selectedDirection = this.checkPlacement(probableDirection);
+        this.checkPlacement();
         return target;
     }
 
@@ -195,6 +246,5 @@ export default class AiPlayer extends Player {
 
 
 //  figure out checkPlacement 
-//  linear hit can only be firstLevel
-//  currentDirection to randomDirectionIndex
-//  removeCurrentDirection in seeker method
+//  might remove adjacentHit
+//  optimize checkPlacement
