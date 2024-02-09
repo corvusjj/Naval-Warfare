@@ -132,15 +132,28 @@ export default class AiPlayer extends Player {
         let horizontalSquareStates: string[];
 
         if (this.coordInHitQueue(this.seeker.focusedTarget)) {
-            verticalSquareStates = ['hit'];
-            horizontalSquareStates = ['hit'];
+            verticalSquareStates = ['origin-hit'];
+            horizontalSquareStates = ['origin-hit'];
         } else {
-            verticalSquareStates = ['free'];
-            horizontalSquareStates = ['free'];
+            verticalSquareStates = ['origin-free'];
+            horizontalSquareStates = ['origin-free'];
         }
 
         function placeSquareState(direction:string, state:string) {
-            console.log(direction, state);
+            switch (direction) {
+                case 'top':
+                    verticalSquareStates.push(state);
+                    break;
+                case 'right':
+                    horizontalSquareStates.push(state);
+                    break;
+                case 'bottom':
+                    verticalSquareStates.unshift(state);
+                    break;
+                case 'left':
+                    horizontalSquareStates.unshift(state);
+                    break;
+            }
         }
 
         const originSquare = this.seeker.focusedTarget;
@@ -170,10 +183,17 @@ export default class AiPlayer extends Player {
                     continue;
                 }
 
-                console.log([x, y], directions[dirIndex]);
+                // console.log([x, y], directions[dirIndex]);
+                this.coordInHitQueue([x, y])?
+                placeSquareState(directions[dirIndex], 'hit'):
+                placeSquareState(directions[dirIndex], 'free');
+
                 dirIndex++;
             }
         }
+
+        console.log(verticalSquareStates);
+        console.log(horizontalSquareStates);
     }
 
     damagedTargetFinder() {
