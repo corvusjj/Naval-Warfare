@@ -107,48 +107,28 @@ export default class AiPlayer extends Player {
         });
     }
 
-    findAdjacentHit() {
-        const originSquare = this.seeker.focusedTarget;
-
-        const directions = ['top', 'right', 'bottom', 'left'];
-        let dirIndex = 0;
-
-        while(dirIndex < directions.length) {
-            const square = coordinateSeeker(originSquare, directions[dirIndex], 1);
-
-            if (this.coordInHitQueue(square)) {
-                return directions[dirIndex] === 'top' || directions[dirIndex] === 'bottom'?
-                'vertical' : 'horizontal';
-            }
-
-            dirIndex++;
-        }
-
-        return null;
-    }
-
-    checkPlacement() {
+    getVerticalAndHorizontalTargetStates(damagedTarget:boolean) {
         let verticalSquareStates: string[];
         let horizontalSquareStates: string[];
 
-        if (this.coordInHitQueue(this.seeker.focusedTarget)) {
+        if (damagedTarget) {
             verticalSquareStates = ['origin-hit'];
             horizontalSquareStates = ['origin-hit'];
         } else {
-            verticalSquareStates = ['origin-free'];
-            horizontalSquareStates = ['origin-free'];
+            verticalSquareStates = ['free'];
+            horizontalSquareStates = ['free'];
         }
 
         function placeSquareState(direction:string, state:string) {
             switch (direction) {
                 case 'top':
-                    verticalSquareStates.push(state);
+                    verticalSquareStates.unshift(state);
                     break;
                 case 'right':
                     horizontalSquareStates.push(state);
                     break;
                 case 'bottom':
-                    verticalSquareStates.unshift(state);
+                    verticalSquareStates.push(state);
                     break;
                 case 'left':
                     horizontalSquareStates.unshift(state);
@@ -183,7 +163,6 @@ export default class AiPlayer extends Player {
                     continue;
                 }
 
-                // console.log([x, y], directions[dirIndex]);
                 this.coordInHitQueue([x, y])?
                 placeSquareState(directions[dirIndex], 'hit'):
                 placeSquareState(directions[dirIndex], 'free');
@@ -192,8 +171,7 @@ export default class AiPlayer extends Player {
             }
         }
 
-        console.log(verticalSquareStates);
-        console.log(horizontalSquareStates);
+        return [verticalSquareStates, horizontalSquareStates];
     }
 
     damagedTargetFinder() {
@@ -204,9 +182,11 @@ export default class AiPlayer extends Player {
         const target = this.squaresInDiagonal[diagonalRandomIndex];
         this.removeCoordinate(diagonalRandomIndex, target);
 
-        // const probableDirection = this.findAdjacentHit();
-        // const selectedDirection = this.checkPlacement(probableDirection);
-        this.checkPlacement();
+        //   ----------------  BLOCK  ----------------------
+        const [verticalSquareStates, horizontalSquareStates] = this.getVerticalAndHorizontalTargetStates(true);
+        console.log(verticalSquareStates, horizontalSquareStates);
+        //   ----------------  BLOCK  ----------------------
+
         return target;
     }
 
@@ -230,7 +210,6 @@ export default class AiPlayer extends Player {
         return chosenTarget;        
     }
 }
-
 
 
 //  Algorithm for choosing a target
@@ -268,3 +247,5 @@ export default class AiPlayer extends Player {
 //  figure out checkPlacement 
 //  might remove adjacentHit
 //  optimize checkPlacement
+
+//  apply damagedShipTargetPursuit. front, behind, in-between
