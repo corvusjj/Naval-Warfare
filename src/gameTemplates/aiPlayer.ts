@@ -28,7 +28,7 @@ class Seeker {
     }
 
     setRandomDirection() {
-        Math.random() < 0.5? 
+        Math.random() < 0.5?
         this.setCurrentDirection(this.directions[0]): 
         this.setCurrentDirection(this.directions[1]);
     }
@@ -82,17 +82,12 @@ export default class AiPlayer extends Player {
         if (state === 'hit') this.hitQueue.push(...coordinates);
     }
 
-    removeCoordinate(diagonalRandomIndex:number, targetedSquare:number[]) {
-        this.squaresInDiagonal.splice(diagonalRandomIndex, 1);
+    removeCoordinate(coord:number[]) {
+        const diagonalRandomIndex = this.squaresInDiagonal.findIndex(square => square.toString() === coord.toString());
+        if (diagonalRandomIndex !== -1) this.squaresInDiagonal.splice(diagonalRandomIndex, 1);
 
-        const enemySquare = this.enemySquares.find(square => {
-            return square.toString() === targetedSquare.toString();
-        });
-
-        if (enemySquare) {
-            const enemySquareIndex = this.enemySquares.indexOf(enemySquare);
-            this.enemySquares.splice(enemySquareIndex, 1);
-        }
+        const enemySquareIndex = this.enemySquares.findIndex(square => square.toString() === coord.toString());
+        this.enemySquares.splice(enemySquareIndex, 1);
     }
 
     coordInHitQueue(coordinates:number[]) {
@@ -137,9 +132,7 @@ export default class AiPlayer extends Player {
         }
 
         const originSquare = this.seeker.focusedTarget;
-        const maxEnemyShip = this.enemyShipLengths[0];
-        // const minEnemyShip = this.enemyShipLengths[this.enemyShipLengths.length - 1];
-        
+        const maxEnemyShip = this.enemyShipLengths[0];        
         const directions = ['top', 'right', 'bottom', 'left'];
         let squareSpan = 1;
 
@@ -157,8 +150,8 @@ export default class AiPlayer extends Player {
                     continue;
                 }
 
-                //  if square is already attacked, skip the direction.
-                if (!this.coordNotAttacked([x, y])) {
+                //  if square is already attacked but not in hitQueue, skip the direction.
+                if (!this.coordNotAttacked([x, y]) && !this.coordInHitQueue([x, y])) {
                     directions.splice(dirIndex, 1);
                     continue;
                 }
@@ -174,18 +167,77 @@ export default class AiPlayer extends Player {
         return [verticalSquareStates, horizontalSquareStates];
     }
 
+    damagedShipTargetPursuit(verticalSquares:string[], horizontalSquares:string[]) {
+        const directions = [verticalSquares, horizontalSquares];
+        let currentDirection:string[] = [];
+
+        Math.random() < 0.5? currentDirection = directions[0]: currentDirection = directions[1];
+        const originHitIndex:number = currentDirection.findIndex(state => state === 'origin-hit');
+
+        function seekBehind(spanIndex:number) {
+            const currentIndex = originHitIndex - spanIndex;
+            const state:string = currentDirection[currentIndex];
+
+            if (currentIndex < 0) return undefined;
+            if (state === 'free') return spanIndex;
+
+            return seekBehind(spanIndex + 1);
+        }
+
+        function seekFront(spanIndex:number) {
+            const currentIndex = originHitIndex + spanIndex;
+            const state:string = currentDirection[currentIndex];
+
+            if (currentIndex >= currentDirection.length) return undefined;
+            if (state === 'free') return spanIndex;
+
+            return seekFront(spanIndex + 1);
+        }
+
+        const seekNextTarget = () => {
+            const focusedTarget = this.seeker.focusedTarget;
+            let direction = '';
+            let span = 0;
+
+            let linearDirections:string[];
+
+            currentDirection === verticalSquares?
+            linearDirections = ['top', 'bottom']:
+            linearDirections = ['left', 'right'];
+
+            const spansBehind = seekBehind(1);
+            const spansFront = seekFront(1);
+
+            if (spansBehind !== undefined && spansFront !== undefined) {
+                if (Math.random() < 0.5) {
+                    span = spansBehind;
+                    direction = linearDirections[0];
+                } else {
+                    span = spansFront;
+                    direction = linearDirections[1];
+                }
+            } else if (spansBehind !== undefined) {
+                span = spansBehind;
+                direction = linearDirections[0];
+            } else if (spansFront !== undefined) {
+                span = spansFront;
+                direction = linearDirections[1];
+            } else {
+                return console.log('change ship direction');
+            }
+
+            const nextTarget = coordinateSeeker(focusedTarget, direction, span);
+            return nextTarget;
+        }
+
+        return seekNextTarget();
+    }
+
     damagedTargetFinder() {
         this.seeker.focusedTarget = this.hitQueue[0];
-
-        const remainingDiagonalSquares = this.squaresInDiagonal.length;
-        const diagonalRandomIndex = Math.round(Math.random() * (remainingDiagonalSquares - 1));
-        const target = this.squaresInDiagonal[diagonalRandomIndex];
-        this.removeCoordinate(diagonalRandomIndex, target);
-
-        //   ----------------  BLOCK  ----------------------
         const [verticalSquareStates, horizontalSquareStates] = this.getVerticalAndHorizontalTargetStates(true);
-        console.log(verticalSquareStates, horizontalSquareStates);
-        //   ----------------  BLOCK  ----------------------
+        const target =  this.damagedShipTargetPursuit(verticalSquareStates, horizontalSquareStates)!;
+        this.removeCoordinate(target);
 
         return target;
     }
@@ -194,9 +246,10 @@ export default class AiPlayer extends Player {
         const remainingDiagonalSquares = this.squaresInDiagonal.length;
         const diagonalRandomIndex = Math.round(Math.random() * (remainingDiagonalSquares - 1));
         const target = this.squaresInDiagonal[diagonalRandomIndex];
-        this.removeCoordinate(diagonalRandomIndex, target);
+        this.removeCoordinate(target);
 
-        return target;
+        // return target;
+        return [8, 9];
     }
 
     chooseTarget() {
@@ -244,8 +297,5 @@ export default class AiPlayer extends Player {
 
 
 
-//  figure out checkPlacement 
-//  might remove adjacentHit
-//  optimize checkPlacement
-
-//  apply damagedShipTargetPursuit. front, behind, in-between
+//  detect adjacentHit
+//  handle sunkShip
