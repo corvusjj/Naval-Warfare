@@ -80,6 +80,16 @@ export default class AiPlayer extends Player {
 
     handleAttackState({ state, coordinates }:attackState) {
         if (state === 'hit') this.hitQueue.push(...coordinates);
+        if (state === 'sunk') {
+            coordinates.forEach(coord => {
+                const hitIndex = this.hitQueue.findIndex(hitSquare => hitSquare.toString() === coord.toString());
+                this.hitQueue.splice(hitIndex, 1);
+            });
+
+            const lengthIndex = this.enemyShipLengths.findIndex(length => length === coordinates.length);
+            this.enemyShipLengths.splice(lengthIndex, 1);
+        }
+        console.log(this.enemyShipLengths);
     }
 
     removeCoordinate(coord:number[]) {
@@ -172,7 +182,7 @@ export default class AiPlayer extends Player {
         let currentDirection:string[] = [];
 
         Math.random() < 0.5? currentDirection = directions[0]: currentDirection = directions[1];
-        const originHitIndex:number = currentDirection.findIndex(state => state === 'origin-hit');
+        let originHitIndex = 0;
 
         function seekBehind(spanIndex:number) {
             const currentIndex = originHitIndex - spanIndex;
@@ -194,8 +204,12 @@ export default class AiPlayer extends Player {
             return seekFront(spanIndex + 1);
         }
 
-        const seekNextTarget = () => {
-            const focusedTarget = this.seeker.focusedTarget;
+        type seekCoordParams = [number[], string, number];
+
+        const seekNextTarget = (): seekCoordParams => {
+            originHitIndex = currentDirection.findIndex(state => state === 'origin-hit');
+
+            const focusedTarget:number[] = this.seeker.focusedTarget;
             let direction = '';
             let span = 0;
 
@@ -223,20 +237,23 @@ export default class AiPlayer extends Player {
                 span = spansFront;
                 direction = linearDirections[1];
             } else {
-                return console.log('change ship direction');
+                currentDirection === directions[0]? currentDirection = directions[1]: currentDirection = directions[0];
+                return seekNextTarget() as seekCoordParams;
             }
 
-            const nextTarget = coordinateSeeker(focusedTarget, direction, span);
-            return nextTarget;
+            const seekCoordParams:seekCoordParams = [focusedTarget, direction, span];
+            return seekCoordParams;
         }
 
-        return seekNextTarget();
+        const params = seekNextTarget() as seekCoordParams;
+        const nextTarget:number[] = coordinateSeeker(...params);
+        return nextTarget;
     }
 
     damagedTargetFinder() {
         this.seeker.focusedTarget = this.hitQueue[0];
         const [verticalSquareStates, horizontalSquareStates] = this.getVerticalAndHorizontalTargetStates(true);
-        const target =  this.damagedShipTargetPursuit(verticalSquareStates, horizontalSquareStates)!;
+        const target:number[] =  this.damagedShipTargetPursuit(verticalSquareStates, horizontalSquareStates)!;
         this.removeCoordinate(target);
 
         return target;
@@ -248,8 +265,8 @@ export default class AiPlayer extends Player {
         const target = this.squaresInDiagonal[diagonalRandomIndex];
         this.removeCoordinate(target);
 
-        // return target;
-        return [8, 9];
+        return target;
+        // return [3, 8];
     }
 
     chooseTarget() {
@@ -298,4 +315,5 @@ export default class AiPlayer extends Player {
 
 
 //  detect adjacentHit
-//  handle sunkShip
+//  checkPlacement for random hits
+//  check successiveHits length
