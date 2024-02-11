@@ -186,7 +186,7 @@ export default class AiPlayer extends Player {
 
         //  check for length
         if (verticalSquares.length < this.enemyShipLengths[this.enemyShipLengths.length - 1]) probableDirection.splice(0, 1);
-        if (horizontalSquares.length < this.enemyShipLengths[this.enemyShipLengths.length - 1]) probableDirection.splice(0, 1);
+        if (horizontalSquares.length < this.enemyShipLengths[this.enemyShipLengths.length - 1]) probableDirection.splice(1, 1);
 
         if (probableDirection.length === 0) return false;
         if (probableDirection.length === 1) return probableDirection[0];
@@ -281,7 +281,7 @@ export default class AiPlayer extends Player {
         return nextTarget;
     }
 
-    damagedTargetFinder() {
+    damagedTargetFinder():number[] {
         this.seeker.focusedTarget = this.hitQueue[0];
         const [verticalSquareStates, horizontalSquareStates] = this.getVerticalAndHorizontalTargetStates(true);
 
@@ -292,14 +292,19 @@ export default class AiPlayer extends Player {
         return target;
     }
 
-    randomTargetFinder() {
+    randomTargetFinder():number[] {
         const remainingDiagonalSquares = this.squaresInDiagonal.length;
         const diagonalRandomIndex = Math.round(Math.random() * (remainingDiagonalSquares - 1));
         const target = this.squaresInDiagonal[diagonalRandomIndex];
+
+        this.seeker.focusedTarget = target;
         this.removeCoordinate(target);
 
+        const [verticalSquareStates, horizontalSquareStates] = this.getVerticalAndHorizontalTargetStates(false);
+        const canBePlaced: false | string[] | null = this.checkPlacement(verticalSquareStates, horizontalSquareStates);
+        if (canBePlaced === false) return this.randomTargetFinder();
+
         return target;
-        // return [3, 8];
     }
 
     chooseTarget() {
@@ -310,7 +315,6 @@ export default class AiPlayer extends Player {
         chosenTarget = this.damagedTargetFinder(): 
         chosenTarget = this.randomTargetFinder();
 
-        console.log(this.hitQueue);
         return chosenTarget;        
     }
 }
