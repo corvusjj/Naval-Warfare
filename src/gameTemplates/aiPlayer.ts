@@ -177,6 +177,28 @@ export default class AiPlayer extends Player {
         return [verticalSquareStates, horizontalSquareStates];
     }
 
+    //  will return =>
+    //      false: both directions are impossible
+    //      null: both are possible && no hits
+    //      string[]: only one is possible || both are possible but one has hits
+    checkPlacement(verticalSquares:string[], horizontalSquares:string[]) {
+        const probableDirection = [verticalSquares, horizontalSquares];
+
+        //  check for length
+        if (verticalSquares.length < this.enemyShipLengths[this.enemyShipLengths.length - 1]) probableDirection.splice(0, 1);
+        if (horizontalSquares.length < this.enemyShipLengths[this.enemyShipLengths.length - 1]) probableDirection.splice(0, 1);
+
+        if (probableDirection.length === 0) return false;
+        if (probableDirection.length === 1) return probableDirection[0];
+
+        //  if it can be placed on both directions, now check for successive hits.
+        const verticalHits = verticalSquares.filter(state => state === 'hit').length;
+        const horizontalHits = horizontalSquares.filter(state => state === 'hit').length;
+
+        if (verticalHits === horizontalHits) return null;
+        return verticalHits > horizontalHits? probableDirection[0]: probableDirection[1];
+    }
+
     damagedShipTargetPursuit(verticalSquares:string[], horizontalSquares:string[]) {
         const directions = [verticalSquares, horizontalSquares];
         let currentDirection:string[] = [];
@@ -253,6 +275,10 @@ export default class AiPlayer extends Player {
     damagedTargetFinder() {
         this.seeker.focusedTarget = this.hitQueue[0];
         const [verticalSquareStates, horizontalSquareStates] = this.getVerticalAndHorizontalTargetStates(true);
+
+        const probableDirection: false | string[] | null = this.checkPlacement(verticalSquareStates, horizontalSquareStates);
+        console.log(probableDirection);
+
         const target:number[] =  this.damagedShipTargetPursuit(verticalSquareStates, horizontalSquareStates)!;
         this.removeCoordinate(target);
 
@@ -280,39 +306,6 @@ export default class AiPlayer extends Player {
         return chosenTarget;        
     }
 }
-
-
-//  Algorithm for choosing a target
-
-//  let potentialNextTarget;
-
-//  1. get the highest and lowest length of unsunk enemy ship.
-//  2. state the object 'seeker' with the properties focusedTarget and directions: [vertical, horizontal];
-//      A. apply a property 'currentDirection'.
-//      B. apply a method 'reset'. ( Before executing any of the number 3, this object should be reset).
-
-//  function damagedShipTargetPursuit => should return a coordinate as potentialNextTarget based from the arguments: (direction, focusedTarget)
-
-//  3.1. if hitQueue isn't empty, choose the first coordinate as the focusedTarget and scan 
-//       each of the 4 directions in 1 span for adjacent hits. 
-//          A. if there's an adjacent hit, choose that direction and check if placement is possible with the lowest ship length.
-//              a. if placement is possible, choose that direction and proceed to c.
-//              b. otherwise, choose the other direction.
-//              c. run damagedShipTargetPursuit and proceed to 4.
-//          B. otherwise, choose a direction and check if placement is possible with the lowest ship length.
-//              a. if placement is possible, choose that direction and proceed to c.
-//              b. otherwise, choose the other direction.
-//              c. run damagedShipTargetPursuit and proceed to 4.
-
-//  3.2. otherwise, choose a coordinate from the diagonalCoordinates as the focusedTarget.
-//          A. If a direction is available, choose one and check if placement is possible with the lowest ship length.
-//              a. if placement is possible, let focusedTarget as potentialNextTarget and proceed to 4.
-//              b. if not, eliminate the direction used and go back to A.
-//          B. If both directions are used, remove the coordinate focusedTarget. Go back to 3.2
-
-//  4. return potentialNextTarget;
-
-
 
 //  detect adjacentHit
 //  checkPlacement for random hits
