@@ -83,13 +83,13 @@ export default class AiPlayer extends Player {
         if (state === 'sunk') {
             coordinates.forEach(coord => {
                 const hitIndex = this.hitQueue.findIndex(hitSquare => hitSquare.toString() === coord.toString());
+                if (hitIndex === -1) return;
                 this.hitQueue.splice(hitIndex, 1);
             });
 
             const lengthIndex = this.enemyShipLengths.findIndex(length => length === coordinates.length);
             this.enemyShipLengths.splice(lengthIndex, 1);
         }
-        console.log(this.enemyShipLengths);
     }
 
     removeCoordinate(coord:number[]) {
@@ -199,11 +199,20 @@ export default class AiPlayer extends Player {
         return verticalHits > horizontalHits? probableDirection[0]: probableDirection[1];
     }
 
-    damagedShipTargetPursuit(verticalSquares:string[], horizontalSquares:string[]) {
+    damagedShipTargetPursuit(
+        verticalSquares:string[], 
+        horizontalSquares:string[], 
+        probableDirection: false | string[] | null) {
+
         const directions = [verticalSquares, horizontalSquares];
         let currentDirection:string[] = [];
 
-        Math.random() < 0.5? currentDirection = directions[0]: currentDirection = directions[1];
+        if (probableDirection !== null) {
+            probableDirection === verticalSquares? currentDirection = directions[0]: currentDirection = directions[1];
+        } else {
+            Math.random() < 0.5? currentDirection = directions[0]: currentDirection = directions[1];
+        }
+
         let originHitIndex = 0;
 
         function seekBehind(spanIndex:number) {
@@ -277,9 +286,7 @@ export default class AiPlayer extends Player {
         const [verticalSquareStates, horizontalSquareStates] = this.getVerticalAndHorizontalTargetStates(true);
 
         const probableDirection: false | string[] | null = this.checkPlacement(verticalSquareStates, horizontalSquareStates);
-        console.log(probableDirection);
-
-        const target:number[] =  this.damagedShipTargetPursuit(verticalSquareStates, horizontalSquareStates)!;
+        const target:number[] =  this.damagedShipTargetPursuit(verticalSquareStates, horizontalSquareStates, probableDirection)!;
         this.removeCoordinate(target);
 
         return target;
@@ -303,6 +310,7 @@ export default class AiPlayer extends Player {
         chosenTarget = this.damagedTargetFinder(): 
         chosenTarget = this.randomTargetFinder();
 
+        console.log(this.hitQueue);
         return chosenTarget;        
     }
 }
