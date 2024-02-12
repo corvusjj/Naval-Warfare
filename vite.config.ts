@@ -10,8 +10,9 @@ export default defineConfig({
     build: {
         rollupOptions: {
           input: {
-            game: resolve(__dirname, './src/pages/game.html'),
+            main: resolve(__dirname, 'index.html'),
             placement: resolve(__dirname, './src/pages/placement.html'),
+            game: resolve(__dirname, './src/pages/game.html'),
           },
         },
       },
