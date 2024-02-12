@@ -1,12 +1,12 @@
-import { expect, it, describe, beforeEach } from "vitest";
+import { expect, it, beforeEach } from "vitest";
 import Player from "../gameTemplates/player";
 
 let player1: Player;
 let player2: Player;
 
 beforeEach(() => {
-    player1 = new Player();
-    player2 = new Player();
+    player1 = new Player('name');
+    player2 = new Player('name');
 
     player2.gameBoard.placeShip(
         player2.ships.b, '1-7','b'
