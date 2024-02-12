@@ -179,24 +179,28 @@ export default class AiPlayer extends Player {
 
     //  will return =>
     //      false: both directions are impossible
-    //      null: both are possible && no hits
-    //      string[]: only one is possible || both are possible but one has hits
+    //      string[]: only one is possible || both are possible but one has hits || both are possible but one has more squares
+    //      null: both are possible && no hits && equal length
     checkPlacement(verticalSquares:string[], horizontalSquares:string[]) {
         const probableDirection = [verticalSquares, horizontalSquares];
 
-        //  check for length
+        //  check for length placement
         if (verticalSquares.length < this.enemyShipLengths[this.enemyShipLengths.length - 1]) probableDirection.splice(0, 1);
         if (horizontalSquares.length < this.enemyShipLengths[this.enemyShipLengths.length - 1]) probableDirection.splice(1, 1);
-
         if (probableDirection.length === 0) return false;
         if (probableDirection.length === 1) return probableDirection[0];
 
         //  if it can be placed on both directions, now check for successive hits.
         const verticalHits = verticalSquares.filter(state => state === 'hit').length;
         const horizontalHits = horizontalSquares.filter(state => state === 'hit').length;
+        if (verticalHits !== horizontalHits) return verticalHits > horizontalHits? probableDirection[0]: probableDirection[1];
 
-        if (verticalHits === horizontalHits) return null;
-        return verticalHits > horizontalHits? probableDirection[0]: probableDirection[1];
+        //  if both have no hits, now check for which direction has more squares.
+        if (verticalSquares.length !== horizontalSquares.length) {
+            return verticalSquares.length > horizontalSquares.length? probableDirection[0]: probableDirection[1];
+        }
+
+        return null;
     }
 
     damagedShipTargetPursuit(
@@ -319,6 +323,4 @@ export default class AiPlayer extends Player {
     }
 }
 
-//  detect adjacentHit
-//  checkPlacement for random hits
-//  check successiveHits length
+//  remove seeker
