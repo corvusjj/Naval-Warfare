@@ -7,45 +7,12 @@ interface attackState {
     coordinates: number[][];
 }
 
-//  every time the computer selects a focusedTarget, this object will be responsible for the
-//  checkPlacement method in both y and x axis from the enemy ships' minimum length. Will reset 
-//  on the the next focused target.
-class Seeker {
-    focusedTarget: number[];
-    directions: string[];
-    currentDirection: string;
-
-    constructor() {
-        this.focusedTarget = [];
-        this.directions = ['vertical', 'horizontal'];
-        this.currentDirection = '';
-    }
-
-    setCurrentDirection(direction:string) {
-        const directionIndex = this.directions.indexOf(direction);
-        this.directions.splice(directionIndex, 1);
-        this.currentDirection = direction;
-    }
-
-    setRandomDirection() {
-        Math.random() < 0.5?
-        this.setCurrentDirection(this.directions[0]): 
-        this.setCurrentDirection(this.directions[1]);
-    }
-
-    reset() {
-        this.focusedTarget = [];
-        this.directions = ['vertical', 'horizontal'];
-        this.currentDirection = '';
-    }
-}
-
 export default class AiPlayer extends Player {
     enemySquares: number[][];
     squaresInDiagonal: number[][];
     hitQueue: number[][];
     enemyShipLengths: number[];
-    seeker: Seeker;
+    focusedTarget: number[];
 
     constructor(name:string) {
         super(name);
@@ -54,7 +21,7 @@ export default class AiPlayer extends Player {
 
         this.hitQueue = [];
         this.enemyShipLengths = [5, 4, 3, 3, 2];
-        this.seeker = new Seeker;
+        this.focusedTarget = [];
     }
 
     getDiagonalCoordinates() {
@@ -141,7 +108,7 @@ export default class AiPlayer extends Player {
             }
         }
 
-        const originSquare = this.seeker.focusedTarget;
+        const originSquare = this.focusedTarget;
         const maxEnemyShip = this.enemyShipLengths[0];        
         const directions = ['top', 'right', 'bottom', 'left'];
         let squareSpan = 1;
@@ -244,7 +211,7 @@ export default class AiPlayer extends Player {
         const seekNextTarget = (): seekCoordParams => {
             originHitIndex = currentDirection.findIndex(state => state === 'origin-hit');
 
-            const focusedTarget:number[] = this.seeker.focusedTarget;
+            const focusedTarget:number[] = this.focusedTarget;
             let direction = '';
             let span = 0;
 
@@ -286,7 +253,7 @@ export default class AiPlayer extends Player {
     }
 
     damagedTargetFinder():number[] {
-        this.seeker.focusedTarget = this.hitQueue[0];
+        this.focusedTarget = this.hitQueue[0];
         const [verticalSquareStates, horizontalSquareStates] = this.getVerticalAndHorizontalTargetStates(true);
 
         const probableDirection: false | string[] | null = this.checkPlacement(verticalSquareStates, horizontalSquareStates);
@@ -301,7 +268,7 @@ export default class AiPlayer extends Player {
         const diagonalRandomIndex = Math.round(Math.random() * (remainingDiagonalSquares - 1));
         const target = this.squaresInDiagonal[diagonalRandomIndex];
 
-        this.seeker.focusedTarget = target;
+        this.focusedTarget = target;
         this.removeCoordinate(target);
 
         const [verticalSquareStates, horizontalSquareStates] = this.getVerticalAndHorizontalTargetStates(false);
@@ -312,7 +279,6 @@ export default class AiPlayer extends Player {
     }
 
     chooseTarget() {
-        this.seeker.reset();
         let chosenTarget: number[] = [];
 
         this.hitQueue.length > 0?
@@ -322,5 +288,3 @@ export default class AiPlayer extends Player {
         return chosenTarget;        
     }
 }
-
-//  remove seeker
