@@ -1,5 +1,6 @@
 import { expect, it, beforeEach } from "vitest";
 import Player from "../gameTemplates/player";
+import idGenerator from "../utilities/playerId";
 
 let player1: Player;
 let player2: Player;
@@ -20,4 +21,13 @@ it('should attack another player', () => {
         hits: 1,
         sunk: false
     });
+});
+
+it('amount of id-strings in idGenerator should always contain a max of 2', () => {
+    idGenerator.setId();
+    idGenerator.setId();
+    idGenerator.setId();
+    idGenerator.setId();
+
+    expect((idGenerator.getIdUsedLength())).toBe(2);
 });

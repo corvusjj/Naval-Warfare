@@ -12,6 +12,10 @@ const idGenerator = {
         this.idUsed.push(idToString);
       
         return idToString;
+    },
+    
+    getIdUsedLength() {
+        return this.idUsed.length;
     }
 }
 
