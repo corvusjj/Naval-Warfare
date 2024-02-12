@@ -173,35 +173,35 @@ describe('game board states', () => {
         gameBoard.placeShip(destroyer, '3-7', 'd');
     });
 
-    it('missed attack should return "miss" with right coordinates', () => {
+    it('missed attack should return "miss" with right coordinates and square-key', () => {
         expect(gameBoard.receiveAttack([2,5])).toEqual(
-            { state: 'miss', coordinates: [[2,5]] }
+            { state: 'miss', squareKey: '.', coordinates: [[2,5]] }
         );
     });
 
-    it('attacked ship should return "hit" with right coordinates', () => {
+    it('attacked ship should return "hit" with right coordinates and square-key', () => {
         expect(gameBoard.receiveAttack([8,1])).toEqual(
-            { state: 'hit', coordinates: [[8,1]] }
+            { state: 'hit', squareKey:'s', coordinates: [[8,1]] }
         );
     });
 
-    it('attacked ship on its last square should return "sunk" along with all its coordinates', () => {
+    it('attacked ship on its last square should return "sunk" along with its square-key and all coordinates', () => {
         gameBoard.receiveAttack([9,1]);
         gameBoard.receiveAttack([10,1]);
 
         expect(gameBoard.receiveAttack([8,1])).toEqual(
-            { state: 'sunk', coordinates: [[8,1], [9,1], [10,1]] }
+            { state: 'sunk', squareKey: 's', coordinates: [[8,1], [9,1], [10,1]] }
         );
     });
 
-    it('last ship attack on its last square should return "game-over" along with all its coordinates', () => {
+    it('last ship attack on its last square should return "game-over" along with its square-key and all coordinates', () => {
         gameBoard.receiveAttack([9,1]);
         gameBoard.receiveAttack([10,1]);
         gameBoard.receiveAttack([8,1]);
         gameBoard.receiveAttack([3,7]);
 
         expect(gameBoard.receiveAttack([4,7])).toEqual(
-            { state: 'game-over', coordinates: [[3,7], [4,7]] }
+            { state: 'game-over', squareKey: 'd', coordinates: [[3,7], [4,7]] }
         );
     });
 
