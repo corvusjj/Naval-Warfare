@@ -13,7 +13,7 @@ const resetFleetBtn = document.querySelector('#reset-btn');
 const randomFleetBtn = document.querySelector('#random-btn');
 const startBtn:HTMLButtonElement = document.querySelector('#start-btn')!;
 
-interface PlayersData {
+ export interface PlayersData {
     vsComputer: boolean;
     players: string[];
 }
