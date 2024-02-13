@@ -218,7 +218,7 @@ function animateAttackerText(text:string) {
         attackingPlayerSpan.textContent += content[currentIndex];
         currentIndex += 1;
 
-        setTimeout(addText, 70);
+        setTimeout(addText, 30);
     }
 
     addText();
