@@ -1,7 +1,9 @@
+import '../style/menu.scss';
+
 interface PlayersData {
     vsComputer: boolean;
     players: string[];
- }
+}
 
 const chooseOpponentBtn = document.querySelectorAll<HTMLButtonElement>('.btn-opponent');
 const inputNameModal = document.querySelector<HTMLDialogElement>('#input-name-modal')!;

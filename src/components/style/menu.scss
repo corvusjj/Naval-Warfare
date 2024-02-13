@@ -1,0 +1,87 @@
+/* black-ops-one-regular - latin */
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Black Ops One';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../../fonts/black-ops-one-v20-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* oswald-regular - latin */
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Oswald';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../../fonts/oswald-v53-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+$inner-color: #001833;
+$outer-color: #222d38;
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: $outer-color;
+    color: #dfdddd;
+    font-family: 'Oswald', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    min-height: 100vh;
+}
+
+%container {
+    border-radius: 10px;
+    box-shadow: 0 2px 0 hsla(0, 0%, 100%, .15), inset 0 2px 2px hsla(0, 0%, 0%, 0.2);
+    background: $inner-color;
+}
+
+aside, main {
+    @extend %container;
+    font-weight: 300;
+    height: 90vh;
+    max-height: 800px;
+}
+
+aside {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: scroll;
+
+    h2 {
+        
+    }
+
+    p {
+        margin-top: 1rem;
+        font-size: 14px;
+        line-height: 1.5rem;
+        font-family: sans-serif;
+    }
+}
+
+@keyframes bob {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(5px); }
+    100% { transform: translateY(-1px); }
+}
+
+main {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h1 {
+        font-size: 8rem;
+        font-family: 'Black Ops one', serif;
+        font-weight: lighter;
+        animation: bob 2s infinite linear;
+        position: relative;
+    }
+}
