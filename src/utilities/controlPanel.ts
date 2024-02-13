@@ -29,7 +29,7 @@ splashAudio.volume = 0.2;
 explosionAudio.volume = 0.5;
 sunkAudio.volume = 0.3;
 optimalAudio.volume = 0.3;
-alertAudio.volume = 0.3;
+alertAudio.volume = 0.2;
 morseAudio.volume = 0.3;
 
 const led = document.querySelector('.led');
