@@ -70,20 +70,20 @@
       </main>
 
       <dialog id="input-name-modal">
-        <form action="">
-          <div class="input-row" id="name-p1">
-            <label for="name-p1">Player-1 Name</label>
-            <input type="text" required>
-          </div>
-          <div class="input-row" id="name-p2">
-            <label for="name-p2">Player-2 Name</label>
-            <input type="text" id="name-p2" required>
-          </div>
-          <button id="submit-btn">Place Ships</button>
-        </form>
+        <div class="modal-container">
+          <form action="">
+            <div class="input-row" id="name-p1">
+              <label for="name-p1">Player-1 Name</label>
+              <input type="text" maxlength="12" required>
+            </div>
+            <div class="input-row" id="name-p2">
+              <label for="name-p2">Player-2 Name</label>
+              <input type="text" id="name-p2" maxlength="12" required>
+            </div>
+            <button id="submit-btn">Place Ships</button>
+          </form>
+        </div>
       </dialog>
-
-      <audio id="waves-audio" src="/audio/waves-bg.mp3"></audio>
 
       <script type="module" src="./src/init/menuInit.ts"></script>
   </body>

@@ -115,23 +115,6 @@ main {
         display: flex;
         gap: 2rem;
         margin-top: 2rem;
-
-        button {
-            background: #222d38;
-            color: #dfdddd;
-            width: 9rem;
-            height: 4rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Oswald', sans-serif;
-            font-size: 1rem;
-            cursor: pointer;
-
-            &:hover {
-                filter: brightness(1.1);
-            }
-        }
     }
 
     a {
@@ -152,5 +135,67 @@ main {
             height: 25px;
         }
     }
+}
 
+button {
+    background: #222d38;
+    color: #dfdddd;
+    width: 9rem;
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+
+    &:hover {
+        filter: brightness(1.1);
+    }
+}
+
+@keyframes modal-grow {
+    from { transform: translate(-50%, -50%) scale(0.8); }
+    to { transform: translate(-50%, -50%) scale(1); }
+}
+
+#input-name-modal {
+    border: none;
+    @extend %container;
+    color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: modal-grow 0.3s ease-in-out;
+
+    &::backdrop {
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-container {
+        border: 1px solid #000;
+        padding: 3rem;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+
+        .input-row {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+
+            input {
+                display: block;
+                font-family: 'Oswald', sans-serif;
+                font-size: 1.2rem;
+                margin-top: 5px;
+                padding-left: 10px;
+            }
+        }
+    }
 }
