@@ -33,6 +33,7 @@ body {
     align-items: center;
     gap: 2rem;
     min-height: 100vh;
+    padding: 0 2rem;
 }
 
 %container {
@@ -49,12 +50,16 @@ aside, main {
 }
 
 aside {
-    flex: 1;
+    flex: 3;
     padding: 2rem;
     overflow-y: scroll;
 
     h2 {
         
+    }
+
+    img {
+        max-width: 100%;
     }
 
     p {
@@ -71,17 +76,81 @@ aside {
     100% { transform: translateY(-1px); }
 }
 
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 main {
-    flex: 3;
+    flex: 5;
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 2rem;
 
     h1 {
-        font-size: 8rem;
+        font-size: 6rem;
         font-family: 'Black Ops one', serif;
         font-weight: lighter;
         animation: bob 2s infinite linear;
         position: relative;
     }
+
+    .ships-container {
+        display: flex;
+        gap: 10rem;
+        align-items: center;
+
+        img {
+            height: fit-content;
+            width: fit-content;
+
+            &:first-of-type { animation: rotate 1s infinite ease-out alternate; }
+            &:nth-of-type(2) { animation: rotate 1.2s linear infinite; }
+            &:nth-of-type(3) { animation: rotate 0.4s linear infinite reverse; }
+        }
+    }
+
+    .button-container {
+        display: flex;
+        gap: 2rem;
+        margin-top: 2rem;
+
+        button {
+            background: #222d38;
+            color: #dfdddd;
+            width: 9rem;
+            height: 4rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+
+            &:hover {
+                filter: brightness(1.1);
+            }
+        }
+    }
+
+    a {
+        display: flex;
+        align-items: center;
+        gap: 0.2rem;
+        text-decoration: none;
+        color: #dfdddd;
+        position: absolute;
+        bottom: 4rem;
+
+        & * {
+            pointer-events: none;
+        }
+
+        svg {
+            width: 25px;
+            height: 25px;
+        }
+    }
+
 }
