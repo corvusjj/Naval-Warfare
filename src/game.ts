@@ -132,6 +132,9 @@ const userMethods = {
         runActivateAudio();
         setTimeout(() => { runAttackAudio(state) }, 500);
 
+        //  -------------   AI BLOCK   --------------
+        if (vsComputerTurn) aiHandler.updateAttackState(attackState);
+
         if (state !== 'miss') {
             setTimeout(() => playHitEffects(), 300);
             setTimeout(() => interfaceOperations.setPanelUiToActive(), 600);
@@ -140,14 +143,11 @@ const userMethods = {
             if (state === 'game-over') return gameOver(gameState.attacker.name, gameState.attacker.id);
 
             //  -------------   AI BLOCK   --------------
-            if (vsComputerTurn) aiHandler.attack();
+            if (vsComputerTurn) setTimeout(() => aiHandler.attack(), 700);
         } else {
             setTimeout(() => interfaceOperations.setPanelUiToActive(), 1200);
             setTimeout(() => { nextPlayerTurn() }, 1200);
         }
-
-        //  -------------   AI BLOCK   --------------
-        if (vsComputerTurn) aiHandler.updateAttackState(attackState);
     },
 
     getState: () => {
