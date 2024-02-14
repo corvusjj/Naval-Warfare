@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Ships</title>
+  <script type="module" crossorigin src="/assets/placement-e8dfa45b.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-3cfb730f.js">
+  <link rel="modulepreload" crossorigin href="/assets/battleshipCoordinates-f7ad6856.js">
+  <link rel="stylesheet" href="/assets/placement-12d2c088.css">
+</head>
+<body>
+    <main>
+        <h1 id="player-name">JOHN'S FLEET</h1>
+
+        <section class="guide-container">Drag ships to game-board. Click to toggle direction</section>
+  
+        <section class="gameboard-container">
+          <div class="boards-panel">
+          </div>
+        </section>
+  
+        <section class="modify-placement-container">
+          <button id="reset-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="#dfdddd" viewBox="0 0 512 512" data-name="Layer 1" stroke="#dfdddd" stroke-width=".00512">
+              <path d="M64 256H34a222 222 0 0 1 396-137.85V85h30v105H355v-30h67.27A192.21 192.21 0 0 0 256 64C150.13 64 64 150.13 64 256Zm384 0c0 105.87-86.13 192-192 192a192.21 192.21 0 0 1-166.27-96H157v-30H52v105h30v-33.15A222 222 0 0 0 478 256Z"/>
+            </svg>
+            <span>Reset</span>
+          </button>
+          <button id="random-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="#dfdddd" viewBox="0 0 256 256" stroke="#dfdddd" stroke-width=".00256">
+              <g fill-rule="evenodd">
+                <path d="M47.895 88.097c.001-4.416 3.064-9.837 6.854-12.117l66.257-39.858c3.785-2.277 9.915-2.277 13.707.008l66.28 39.934c3.786 2.28 6.853 7.703 6.852 12.138l-.028 79.603c-.001 4.423-3.069 9.865-6.848 12.154l-66.4 40.205c-3.781 2.29-9.903 2.289-13.69-.01l-66.167-40.185c-3.78-2.295-6.842-7.733-6.84-12.151l.023-79.72zm13.936-6.474 65.834 36.759 62.766-36.278-62.872-36.918L61.83 81.623zM57.585 93.52c0 1.628-1.065 71.86-1.065 71.86-.034 2.206 1.467 4.917 3.367 6.064l61.612 37.182.567-77.413s-64.48-39.322-64.48-37.693zm76.107 114.938 60.912-38.66c2.332-1.48 4.223-4.915 4.223-7.679V93.125l-65.135 37.513v77.82z"/>
+                <path d="M77.76 132.287c-4.782 2.762-11.122.735-14.16-4.526-3.037-5.261-1.622-11.765 3.16-14.526 4.783-2.762 11.123-.735 14.16 4.526 3.038 5.261 1.623 11.765-3.16 14.526zm32 21c-4.782 2.762-11.122.735-14.16-4.526-3.037-5.261-1.622-11.765 3.16-14.526 4.783-2.762 11.123-.735 14.16 4.526 3.038 5.261 1.623 11.765-3.16 14.526zm-32 16c-4.782 2.762-11.122.735-14.16-4.526-3.037-5.261-1.622-11.765 3.16-14.526 4.783-2.762 11.123-.735 14.16 4.526 3.038 5.261 1.623 11.765-3.16 14.526zm32 21c-4.782 2.762-11.122.735-14.16-4.526-3.037-5.261-1.622-11.765 3.16-14.526 4.783-2.762 11.123-.735 14.16 4.526 3.038 5.261 1.623 11.765-3.16 14.526zm78.238-78.052c-4.783-2.762-11.122-.735-14.16 4.526-3.037 5.261-1.623 11.765 3.16 14.526 4.783 2.762 11.123.735 14.16-4.526 3.038-5.261 1.623-11.765-3.16-14.526zm-16.238 29c-4.782-2.762-11.122-.735-14.16 4.526-3.037 5.261-1.622 11.765 3.16 14.526 4.783 2.762 11.123.735 14.16-4.526 3.038-5.261 1.623-11.765-3.16-14.526zm-17 28c-4.782-2.762-11.122-.735-14.16 4.526-3.037 5.261-1.622 11.765 3.16 14.526 4.783 2.762 11.123.735 14.16-4.526 3.038-5.261 1.623-11.765-3.16-14.526zM128.5 69c-6.351 0-11.5 4.925-11.5 11s5.149 11 11.5 11S140 86.075 140 80s-5.149-11-11.5-11z"/>
+              </g>
+            </svg>
+            <span>Random</span>
+          </button>
+        </section>
+  
+        <section class="ships-container">
+          <div class="ship-container" id="carrier">
+            <div class="ship ship-default" 
+                 data-ship="carrier" 
+                 data-length="5" 
+                 draggable="true" 
+                 data-vertical="false"
+                 data-character="c"
+            >
+              <img src="images/carrier.png" alt="">
+              <img src="images/carrier-v.png" alt="">
+            </div>
+          </div>
+
+          <div class="ship-container" id="battleship">
+            <div class="ship ship-default"  
+                 data-ship="battleship" 
+                 data-length="4" 
+                 draggable="true" 
+                 data-vertical="false"
+                 data-character="b"
+            >
+              <img src="images/battleship.png" alt="">
+              <img src="images/battleship-v.png" alt="">
+            </div>
+          </div>
+
+          <div class="ship-container" id="cruiser">
+            <div class="ship ship-default" 
+                 data-ship="cruiser" 
+                 data-length="3" 
+                 draggable="true" 
+                 data-vertical="false"
+                 data-character="r"
+            >
+              <img src="images/cruiser.png" alt="">
+              <img src="images/cruiser-v.png" alt="">
+            </div>
+          </div>
+
+          <div class="ship-container" id="submarine">
+            <div class="ship ship-default" 
+                 data-ship="submarine" 
+                 data-length="3" 
+                 draggable="true" 
+                 data-vertical="false"
+                 data-character="s"
+            >
+              <img src="images/submarine.png" alt="">
+              <img src="images/submarine-v.png" alt="">
+            </div>
+          </div>
+
+          <div class="ship-container" id="destroyer">
+            <div class="ship ship-default" 
+                 data-ship="destroyer" 
+                 data-length="2" 
+                 draggable="true" 
+                 data-vertical="false"
+                 data-character="d"
+            >
+              <img src="images/destroyer.png" alt="">
+              <img src="images/destroyer-v.png" alt="">
+            </div>
+          </div>
+        </section>
+  
+        <section class="start-game-container">
+            <button id="start-btn">Start Game</button>
+            <a id="start-game-link" href="./game.html"></a>
+        </section>
+    </main>
+    
+</body>
+</html>
