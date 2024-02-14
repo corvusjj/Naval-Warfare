@@ -112,6 +112,16 @@ aside {
         font-size: 14px;
         line-height: 1.5rem;
         font-family: sans-serif;
+        text-align: justify;
+
+        &:first-of-type::first-letter {
+            font-size: 6rem;
+            float: left;
+            font-family: 'Black Ops One', serif;
+            font-weight: lighter;
+            line-height: 4.5rem;
+            margin-right: 5px;
+        }
     }
 }
 
