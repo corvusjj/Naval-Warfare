@@ -54,12 +54,57 @@ aside {
     padding: 2rem;
     overflow-y: scroll;
 
-    h2 {
-        
+    em {
+        font-size: 14px;
     }
 
-    img {
-        max-width: 100%;
+    .image-container {
+        position: relative;
+        width: 100%;
+        height: 280px;
+        margin: 2rem 0;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        img[data-active] {
+            opacity: 1;
+        }
+
+        button {
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.5);
+            border: none;
+            color: #000;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+
+            &:hover {
+                opacity: 0.8;
+            }
+
+            svg {
+                width: 15px;
+                pointer-events: none;
+            }
+        }
+
+        button[data-switch="previous"] {
+            left: 10px;
+        }
+
+        button[data-switch="next"] {
+            right: 10px;
+        }
     }
 
     p {
@@ -87,6 +132,7 @@ main {
     flex-direction: column;
     align-items: center;
     padding: 2rem;
+    position: relative;
 
     h1 {
         font-size: 6rem;
@@ -124,7 +170,7 @@ main {
         text-decoration: none;
         color: #dfdddd;
         position: absolute;
-        bottom: 4rem;
+        bottom: 2rem;
 
         & * {
             pointer-events: none;
