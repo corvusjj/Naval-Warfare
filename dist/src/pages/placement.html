@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Place Ships</title>
-  <script type="module" crossorigin src="/assets/placement-e8dfa45b.js"></script>
+  <script type="module" crossorigin src="/assets/placement-406b557f.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-3cfb730f.js">
   <link rel="modulepreload" crossorigin href="/assets/battleshipCoordinates-f7ad6856.js">
-  <link rel="stylesheet" href="/assets/placement-12d2c088.css">
+  <link rel="stylesheet" href="/assets/placement-8e83a1eb.css">
 </head>
 <body>
     <main>
-        <h1 id="player-name">JOHN'S FLEET</h1>
+        <h1 id="player-name"></h1>
 
         <section class="guide-container">Drag ships to game-board. Click to toggle direction</section>
   
@@ -47,8 +47,8 @@
                  data-vertical="false"
                  data-character="c"
             >
-              <img src="images/carrier.png" alt="">
-              <img src="images/carrier-v.png" alt="">
+              <img src="/images/carrier.png" alt="">
+              <img src="/images/carrier-v.png" alt="">
             </div>
           </div>
 
@@ -60,8 +60,8 @@
                  data-vertical="false"
                  data-character="b"
             >
-              <img src="images/battleship.png" alt="">
-              <img src="images/battleship-v.png" alt="">
+              <img src="/images/battleship.png" alt="">
+              <img src="/images/battleship-v.png" alt="">
             </div>
           </div>
 
@@ -73,8 +73,8 @@
                  data-vertical="false"
                  data-character="r"
             >
-              <img src="images/cruiser.png" alt="">
-              <img src="images/cruiser-v.png" alt="">
+              <img src="/images/cruiser.png" alt="">
+              <img src="/images/cruiser-v.png" alt="">
             </div>
           </div>
 
@@ -86,8 +86,8 @@
                  data-vertical="false"
                  data-character="s"
             >
-              <img src="images/submarine.png" alt="">
-              <img src="images/submarine-v.png" alt="">
+              <img src="/images/submarine.png" alt="">
+              <img src="/images/submarine-v.png" alt="">
             </div>
           </div>
 
@@ -99,8 +99,8 @@
                  data-vertical="false"
                  data-character="d"
             >
-              <img src="images/destroyer.png" alt="">
-              <img src="images/destroyer-v.png" alt="">
+              <img src="/images/destroyer.png" alt="">
+              <img src="/images/destroyer-v.png" alt="">
             </div>
           </div>
         </section>
@@ -110,6 +110,9 @@
             <a id="start-game-link" href="./game.html"></a>
         </section>
     </main>
+
+    <audio id="waves-audio" src="/audio/waves-bg.mp3" loop></audio>
+
     
 </body>
 </html>

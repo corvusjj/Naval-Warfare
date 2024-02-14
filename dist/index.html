@@ -3,29 +3,98 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <link rel="prefetch" href="waves-bg.mp3" as="audio"> -->
-    <!-- <link rel="prefetch" href="background.mp3" as="audio"> -->
+
+    <link rel="prefetch" href="/gif/fire.gif">
+    <link rel="prefetch" href="/gif/radar.gif">
+    <link rel="prefetch" href="/gif/waves.gif">
+
+    <link rel="prefetch" href="/audio/waves-bg.mp3" as="audio">
+    <link rel="prefetch" href="/audio/background.mp3" as="audio">
+    <link rel="prefetch" href="/audio/activate.mp3" as="audio">
+    <link rel="prefetch" href="/audio/alert.mp3" as="audio">
+    <link rel="prefetch" href="/audio/explosion.mp3" as="audio">
+    <link rel="prefetch" href="/audio/game-over-morse.mp3" as="audio">
+    <link rel="prefetch" href="/audio/optimal.mp3" as="audio">
+    <link rel="prefetch" href="/audio/splash-bs.mp3" as="audio">
+    <link rel="prefetch" href="/audio/sunk.mp3" as="audio">
+
+    <link rel="prefetch" href="/images/carrier.png" as="image">
+    <link rel="prefetch" href="/images/battleship.png" as="image">
+    <link rel="prefetch" href="/images/cruiser.png" as="image">
+    <link rel="prefetch" href="/images/submarine.png" as="image">
+    <link rel="prefetch" href="/images/destroyer.png" as="image">
+    <link rel="prefetch" href="/images/carrier-v.png" as="image">
+    <link rel="prefetch" href="/images/battleship-v.png" as="image">
+    <link rel="prefetch" href="/images/cruiser-v.png" as="image">
+    <link rel="prefetch" href="/images/submarine-v.png" as="image">
+    <link rel="prefetch" href="/images/destroyer-v.png" as="image">
+
     <title>Battleship</title>
-    <script type="module" crossorigin src="/assets/main-12a352ce.js"></script>
+    <script type="module" crossorigin src="/assets/main-e3b8d3fe.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-3cfb730f.js">
+    <link rel="stylesheet" href="/assets/index-2ccb8c3f.css">
   </head>
 
   <body>
-      <button class="btn-opponent">vs player2</button>
-      <button class="btn-opponent" data-vs-computer>vs computer</button>
+      <aside>
+        <h2>Breaking News: Warships Stranded at Sea!</h2>
+        <em>Some AI Journalist, Feb 13, 2024</em>
+        <div class="image-container">
+          <button class="carousel-btn" data-switch="previous">
+            <svg xmlns="http://www.w3.org/2000/svg" baseProfile="tiny" viewBox="0 0 42 42" xml:space="preserve" transform="rotate(180)">
+              <path fill-rule="evenodd" d="m14 1 20 20-20 20-5-5 15-15L9 6z"/>
+            </svg>
+          </button>
+          <button class="carousel-btn" data-switch="next">
+            <svg xmlns="http://www.w3.org/2000/svg" baseProfile="tiny" viewBox="0 0 42 42" xml:space="preserve">
+              <path fill-rule="evenodd" d="m14 1 20 20-20 20-5-5 15-15L9 6z"/>
+            </svg>
+          </button>
+        </div>
+        <p>
+          In an unprecedented sequence of events, a crisis has unfolded on the high seas, leaving warships from both Norway and the UK stranded without access to the scheduled "replenishment at sea" (RAS), which is a method of transferring fuel from one ship to another while under way. The situation escalated after two individuals, reportedly incited by a provocative act, threw Heinz tomato soup at a renowned painting, triggering widespread outrage in the UK. In response, the government swiftly enacted a ban on fossil fuels, sending shockwaves through the maritime community.
+        </p>
+        <p>
+          Concurrently, Norwegian activists, fervently protesting against oil shipments, blockaded crucial cargo routes. The confluence of these events has resulted in a sobering impasse, leaving naval crews grappling with the unexpected consequences of geopolitical tensions and environmental activism. "I told them we should invest in some massive sails," said one frustrated naval officer, "but they didn't take me seriously!"
+        </p>
+        <p>
+          <b>TLDR:</b> Heinz tomato soup resulted in naval conflict.
+        </p>
+      </aside>
+
+      <main>
+        <h1>BATTLESHIP</h1>
+        <div class="ships-container">
+          <img src="/images/carrier-v.png" alt="">
+          <img src="/images/battleship-v.png" alt="">
+          <img src="/images/destroyer-v.png" alt="">
+        </div>
+        <div class="button-container">
+          <button class="btn-opponent">2 PLAYERS</button>
+          <button class="btn-opponent" data-vs-computer>VS COMPUTER</button>
+        </div>
+        <a href="https://github.com/john0ground/Battleship" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#dfdddd">
+            <path d="M10 0c5.523 0 10 4.59 10 10.253 0 4.529-2.862 8.371-6.833 9.728-.507.101-.687-.219-.687-.492 0-.338.012-1.442.012-2.814 0-.956-.32-1.58-.679-1.898 2.227-.254 4.567-1.121 4.567-5.059 0-1.12-.388-2.034-1.03-2.752.104-.259.447-1.302-.098-2.714 0 0-.838-.275-2.747 1.051-.799-.227-1.655-.341-2.505-.345-.85.004-1.705.118-2.503.345-1.911-1.326-2.751-1.051-2.751-1.051-.543 1.412-.2 2.455-.097 2.714-.639.718-1.03 1.632-1.03 2.752 0 3.928 2.335 4.808 4.556 5.067-.286.256-.545.708-.635 1.371-.57.262-2.018.715-2.91-.852 0 0-.529-.985-1.533-1.057 0 0-.975-.013-.068.623 0 0 .655.315 1.11 1.5 0 0 .587 1.83 3.369 1.21.005.857.014 1.665.014 1.909 0 .271-.184.588-.683.493C2.865 18.627 0 14.783 0 10.253 0 4.59 4.478 0 10 0" fill="#dfdddd" fill-rule="evenodd"/>
+          </svg>
+          <span>JohnC</span>
+        </a>
+      </main>
 
       <dialog id="input-name-modal">
-        <form action="">
-          <div class="input-row" id="name-p1">
-            <label for="name-p1">Player-1 Name</label>
-            <input type="text" required>
-          </div>
-          <div class="input-row" id="name-p2">
-            <label for="name-p2">Player-2 Name</label>
-            <input type="text" id="name-p2" required>
-          </div>
-          <button id="submit-btn">Place Ships</button>
-        </form>
+        <div class="modal-container">
+          <form action="">
+            <div class="input-row" id="name-p1">
+              <label for="name-p1">Player-1 Name</label>
+              <input type="text" maxlength="12" required>
+            </div>
+            <div class="input-row" id="name-p2">
+              <label for="name-p2">Player-2 Name</label>
+              <input type="text" id="name-p2" maxlength="12" required>
+            </div>
+            <button id="submit-btn">Place Ships</button>
+          </form>
+        </div>
       </dialog>
 
       
