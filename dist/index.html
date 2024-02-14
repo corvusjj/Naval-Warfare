@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="prefetch" href="waves-bg.mp3" as="audio"> -->
+    <!-- <link rel="prefetch" href="background.mp3" as="audio"> -->
+    <title>Battleship</title>
+    <script type="module" crossorigin src="/assets/main-12a352ce.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-3cfb730f.js">
+  </head>
+
+  <body>
+      <button class="btn-opponent">vs player2</button>
+      <button class="btn-opponent" data-vs-computer>vs computer</button>
+
+      <dialog id="input-name-modal">
+        <form action="">
+          <div class="input-row" id="name-p1">
+            <label for="name-p1">Player-1 Name</label>
+            <input type="text" required>
+          </div>
+          <div class="input-row" id="name-p2">
+            <label for="name-p2">Player-2 Name</label>
+            <input type="text" id="name-p2" required>
+          </div>
+          <button id="submit-btn">Place Ships</button>
+        </form>
+      </dialog>
+
+      
+  </body>
+</html>

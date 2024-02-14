@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battleship Game</title>
+  <script type="module" crossorigin src="/assets/game-1cd86571.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-3cfb730f.js">
+  <link rel="modulepreload" crossorigin href="/assets/battleshipCoordinates-f7ad6856.js">
+  <link rel="stylesheet" href="/assets/game-d4f43477.css">
+</head>
+<body>
+    <main>
+      <button id="settings-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+          <g stroke="#dfdddd" stroke-width="1.5">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M3.66122 10.6392c.47255.2969.7766.8027.7766 1.3607-.00001.5581-.30406 1.0639-.7766 1.3608-.32156.202-.52874.3635-.67614.5556-.32291.4209-.46542.9527-.39618 1.4786.05192.3944.28489.7979.75083 1.605.46595.807.69892 1.2105 1.01453 1.4527.42082.3229.95268.4654 1.47858.3962.24003-.0316.48344-.1303.81912-.3077.49348-.2608 1.08362-.2712 1.56699.0079.48332.2791.76932.7953.79017 1.353.0142.3795.05046.6397.14312.8634.20299.49.59234.8794 1.08236 1.0824C10.6022 22 11.0681 22 12 22c.9319 0 1.3978 0 1.7654-.1522.49-.203.8794-.5924 1.0824-1.0824.0926-.2237.1289-.4839.1431-.8633.0208-.5578.3068-1.074.7902-1.3531.4833-.279 1.0734-.2686 1.5668-.0078.3358.1774.5792.2761.8192.3077.5259.0693 1.0578-.0733 1.4786-.3962.3156-.2421.5486-.6457 1.0146-1.4527.2074-.3593.3687-.6386.4883-.8728m-.8099-2.7664c-.4725-.2969-.7765-.8027-.7766-1.3607 0-.5581.3041-1.064.7766-1.3609.3216-.202.5287-.3635.6761-.5556.3229-.42082.4654-.95268.3962-1.47858-.0519-.39442-.2849-.79794-.7509-1.60497-.4659-.80704-.6989-1.21055-1.0145-1.45273-.4208-.32291-.9527-.46542-1.4786-.39619-.24.03161-.4834.13027-.8191.3077-.4935.26081-1.0836.27121-1.5669-.00787-.4833-.27906-.7693-.79526-.7901-1.35293-.0142-.37951-.0505-.63968-.1431-.8634-.203-.49005-.5924-.8794-1.0824-1.08239C13.3978 2 12.9319 2 12 2c-.9319 0-1.3978 0-1.7654.15224-.49002.20299-.87937.59234-1.08236 1.08239-.09266.2237-.12892.48385-.14312.86331-.02086.55772-.30687 1.07397-.79021 1.35302-.48334.27906-1.07343.26863-1.56686.00784-.33572-.17744-.57915-.27611-.8192-.30772-.5259-.06923-1.05776.07328-1.47858.39619-.31561.24218-.54858.6457-1.01453 1.45273-.20743.35929-.36869.63859-.48836.87273" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </button>
+
+      <section class="player">
+        <span id="attacking-player">McArthur</span>
+        <button id="see-fleet-btn">SEE FLEET</button>
+      </section>
+
+      <section class="gameboard-container">
+        <div class="boards-panel"></div>
+        <div class="attack-highlight vertical"></div>
+        <div class="attack-highlight horizontal"></div>
+      </section>
+
+      <section class="control-container">
+        <div class="led"></div>
+        <button id="music" data-active="true">
+          <svg id="music-icon-on" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24.00 24.00" fill="none" stroke="#dfdddd">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+            <g id="SVGRepo_iconCarrier"> <path d="M12.5 8.89001V18.5M12.5 8.89001V5.57656C12.5 5.36922 12.5 5.26554 12.5347 5.17733C12.5653 5.09943 12.615 5.03047 12.6792 4.97678C12.752 4.91597 12.8503 4.88318 13.047 4.81761L17.447 3.35095C17.8025 3.23245 17.9803 3.17319 18.1218 3.20872C18.2456 3.23982 18.3529 3.31713 18.4216 3.42479C18.5 3.54779 18.5 3.73516 18.5 4.10989V7.42335C18.5 7.63069 18.5 7.73436 18.4653 7.82258C18.4347 7.90048 18.385 7.96943 18.3208 8.02313C18.248 8.08394 18.1497 8.11672 17.953 8.18229L13.553 9.64896C13.1975 9.76746 13.0197 9.82671 12.8782 9.79119C12.7544 9.76009 12.6471 9.68278 12.5784 9.57512C12.5 9.45212 12.5 9.26475 12.5 8.89001ZM12.5 18.5C12.5 19.8807 10.933 21 9 21C7.067 21 5.5 19.8807 5.5 18.5C5.5 17.1192 7.067 16 9 16C10.933 16 12.5 17.1192 12.5 18.5Z" stroke="#dfdddd" stroke-width="0.8399999999999999" stroke-linecap="round" stroke-linejoin="round"/> </g>
+          </svg>
+          <svg id="music-icon-off" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+            <g id="SVGRepo_iconCarrier"> <path d="M12.5 6.8935V5.57661C12.5 5.36926 12.5 5.26559 12.5347 5.17738C12.5653 5.09948 12.615 5.03052 12.6792 4.97682C12.752 4.91601 12.8503 4.88323 13.047 4.81766L17.447 3.35099C17.8025 3.23249 17.9803 3.17324 18.1218 3.20877C18.2456 3.23987 18.3529 3.31718 18.4216 3.42484C18.5 3.54783 18.5 3.7352 18.5 4.10994V7.42339C18.5 7.63074 18.5 7.73441 18.4653 7.82262C18.4347 7.90052 18.385 7.96948 18.3208 8.02318C18.248 8.08399 18.1497 8.11677 17.953 8.18234L14.8192 9.22692M12.5 12.5V18.5M12.5 18.5C12.5 19.8807 10.933 21 9 21C7.067 21 5.5 19.8807 5.5 18.5C5.5 17.1193 7.067 16 9 16C10.933 16 12.5 17.1193 12.5 18.5ZM3 3L21 21" stroke="#dfdddd" stroke-width="0.8399999999999999" stroke-linecap="round" stroke-linejoin="round"/> </g>
+          </svg>
+        </button>
+        <button id="sound" data-active="true">
+          <svg id="sound-icon-on" xmlns="http://www.w3.org/2000/svg" viewBox="-0.5 0 25 25" fill="none" stroke="#dfdddd">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+            <g id="SVGRepo_iconCarrier"> <path d="M12.5493 4.50005C11.3193 4.04005 8.70926 5.49996 6.54926 7.40996H4.94922C3.88835 7.40996 2.87093 7.83145 2.12079 8.58159C1.37064 9.33174 0.949219 10.3491 0.949219 11.41V13.41C0.949219 14.4708 1.37064 15.4883 2.12079 16.2385C2.87093 16.9886 3.88835 17.41 4.94922 17.41H6.54926C8.65926 19.35 11.2693 20.78 12.5493 20.33C14.6493 19.55 14.9992 15.33 14.9992 12.41C14.9992 9.48996 14.6493 5.28005 12.5493 4.50005Z" stroke="#dfdddd" stroke-width="0.95" stroke-linecap="round" stroke-linejoin="round"/> <path d="M20.6602 6.71997C22.1593 8.22011 23.0015 10.2542 23.0015 12.375C23.0015 14.4958 22.1593 16.5299 20.6602 18.03" stroke="#dfdddd" stroke-width="0.95" stroke-linecap="round" stroke-linejoin="round"/> <path d="M18.5391 15.95C19.4764 15.0123 20.003 13.7407 20.003 12.4149C20.003 11.0891 19.4764 9.81764 18.5391 8.88" stroke="#dfdddd" stroke-width="0.95" stroke-linecap="round" stroke-linejoin="round"/> </g>
+          </svg>
+          <svg id="sound-icon-off" xmlns="http://www.w3.org/2000/svg" viewBox="-0.5 0 25 25" fill="none" stroke="#dfdddd">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+            <g id="SVGRepo_iconCarrier"> <path d="M12.5493 4.50005C11.3193 4.04005 8.70926 5.49996 6.54926 7.40996H4.94922C3.88835 7.40996 2.87093 7.83145 2.12079 8.58159C1.37064 9.33174 0.949219 10.3491 0.949219 11.41V13.41C0.949219 14.4708 1.37064 15.4883 2.12079 16.2385C2.87093 16.9886 3.88835 17.41 4.94922 17.41H6.54926C8.65926 19.35 11.2693 20.78 12.5493 20.33C14.6493 19.55 14.9992 15.33 14.9992 12.41C14.9992 9.48996 14.6493 5.28005 12.5493 4.50005Z" stroke="#dfdddd" stroke-width="0.95" stroke-linecap="round" stroke-linejoin="round"/> </g>
+          </svg>
+        </button>
+        <button id="wave-sound" data-active="true">
+          <svg id="wave-sound-icon-on" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+            <g id="SVGRepo_iconCarrier"> <path d="M3 10C5.48276 10 7.34483 7 7.34483 7C7.34483 7 9.2069 10 11.6897 10C14.1724 10 16.6552 7 16.6552 7C16.6552 7 19.1379 10 21 10" stroke="#ffffff" stroke-width="0.72" stroke-linecap="round" stroke-linejoin="round"/> <path d="M3 17C5.48276 17 7.34483 14 7.34483 14C7.34483 14 9.2069 17 11.6897 17C14.1724 17 16.6552 14 16.6552 14C16.6552 14 19.1379 17 21 17" stroke="#ffffff" stroke-width="0.72" stroke-linecap="round" stroke-linejoin="round"/> </g>
+          </svg>
+          <svg id="wave-sound-icon-off" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff">
+            <path d="M3 17c2.48276 0 4.34483-3 4.34483-3s1.86207 3 4.34487 3c2.4827 0 4.9655-3 4.9655-3S19.1379 17 21 17" stroke-width=".72" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </section>
+
+      <section class="ships-container">
+
+        <div class="p1-ships">
+          <div class="ship-container" data-ship-key="c">
+            <img src="/carrier.png" alt="">
+          </div>
+          <div class="ship-container" data-ship-key="b">
+            <img src="/battleship.png" alt="">
+          </div>
+          <div class="ship-container" data-ship-key="r">
+            <img src="/cruiser.png" alt="">
+          </div>
+          <div class="ship-container" data-ship-key="s">
+            <img src="/submarine.png" alt="">
+          </div>
+          <div class="ship-container" data-ship-key="d">
+            <img src="/destroyer.png" alt="">
+          </div>
+        </div>
+
+        <div class="p2-ships">
+          <div class="ship-container" data-ship-key="c">
+            <img src="/carrier.png" alt="">
+          </div>
+          <div class="ship-container" data-ship-key="b">
+            <img src="/battleship.png" alt="">
+          </div>
+          <div class="ship-container" data-ship-key="r">
+            <img src="/cruiser.png" alt="">
+          </div>
+          <div class="ship-container" data-ship-key="s">
+            <img src="/submarine.png" alt="">
+          </div>
+          <div class="ship-container" data-ship-key="d">
+            <img src="/destroyer.png" alt="">
+          </div>
+        </div>
+        
+      </section>
+
+      <section class="nav-container">
+        <img src="/radar.gif" alt="">
+        <img src="/waves.gif" alt="">
+      </section>
+
+      <section class="gameboard-ships">
+        <div class="p1-deployed-ship" data-vertical="false" data-ship-key="c">
+          <img src="/carrier.png" alt="">
+          <img src="/carrier-v.png" alt="">
+        </div>
+
+        <div class="p1-deployed-ship" data-vertical="false" data-ship-key="b">
+          <img src="/battleship.png" alt="">
+          <img src="/battleship-v.png" alt="">
+        </div>
+
+        <div class="p1-deployed-ship" data-vertical="false" data-ship-key="r">
+          <img src="/cruiser.png" alt="">
+          <img src="/cruiser-v.png" alt="">
+        </div>
+
+        <div class="p1-deployed-ship" data-vertical="false" data-ship-key="s">
+          <img src="/submarine.png" alt="">
+          <img src="/submarine-v.png" alt="">
+        </div>
+
+        <div class="p1-deployed-ship" data-vertical="false" data-ship-key="d">
+          <img src="/destroyer.png" alt="">
+          <img src="/destroyer-v.png" alt="">
+        </div>
+
+        <div class="p2-deployed-ship" data-vertical="false" data-ship-key="c">
+          <img src="/carrier.png" alt="">
+          <img src="/carrier-v.png" alt="">
+        </div>
+
+        <div class="p2-deployed-ship" data-vertical="false" data-ship-key="b">
+          <img src="/battleship.png" alt="">
+          <img src="/battleship-v.png" alt="">
+        </div>
+
+        <div class="p2-deployed-ship" data-vertical="false" data-ship-key="r">
+          <img src="/cruiser.png" alt="">
+          <img src="/cruiser-v.png" alt="">
+        </div>
+
+        <div class="p2-deployed-ship" data-vertical="false" data-ship-key="s">
+          <img src="/submarine.png" alt="">
+          <img src="/submarine-v.png" alt="">
+        </div>
+
+        <div class="p2-deployed-ship" data-vertical="false" data-ship-key="d">
+          <img src="/destroyer.png" alt="">
+          <img src="/destroyer-v.png" alt="">
+        </div>
+      </section>
+
+      <!-- ================================================ RECEIVE ATTACK ICONS  =================================================== -->
+      
+      <div class="miss-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="#c8dfe9cc" viewBox="0 0 24 24" xml:space="preserve">
+          <path d="M5.6 4.2 4.2 5.6l6.4 6.4-6.4 6.4 1.4 1.4 6.4-6.4 6.4 6.4 1.4-1.4-6.4-6.4 6.4-6.4-1.4-1.4-6.4 6.4-6.4-6.4z"/>
+          <path style="fill:none" d="M0 0h24v24H0z"/>
+        </svg>
+      </div>
+
+      <div class="fire-gif">
+        <img src="/fire.gif" alt="">
+      </div>
+    </main>
+
+    <!-- ================================================  AUDIO  =================================================== -->
+    <audio id="background-music" src="/background.mp3" loop></audio>
+    <audio id="waves-audio" src="/waves-bg.mp3" loop></audio>
+    
+    <audio id="activate-audio" src="/activate.mp3"></audio>
+    <audio id="splash-audio" src="/splash-bs.mp3"></audio>
+    <audio id="explosion-audio" src="/explosion.mp3"></audio>
+    <audio id="sunk-audio" src="/sunk.mp3"></audio>
+    <audio id="optimal-audio" src="/optimal.mp3"></audio>
+    <audio id="alert-audio" src="/alert.mp3"></audio>
+    <audio id="morse-audio" src="/game-over-morse.mp3"></audio>
+
+    <!-- ================================================  SETTINGS MODAL  =================================================== -->
+    <dialog id="settings-modal" class="modal">
+      <div class="container">
+        <h2>SETTINGS</h2>
+
+        <button id="ui-motion-btn" data-active="false">
+          <div id="settings-led"></div>
+          <span>Simulate ship motion</span>
+        </button>
+        <a href="./placement.html">Back to Placement</a>
+        <a href="../../index.html">Main Menu</a>
+      </div>
+    </dialog>
+
+    <!-- ================================================  GAME-OVER MODAL  =================================================== -->
+    <dialog id="game-over-modal" class="modal">
+      <div class="container">
+        <h2>GAME-OVER, <span id="winner-name"></span> Wins</h2>
+
+        <div class="display-fleet-container">
+          <div class="fleet-modal" data-player="1">
+            <h3></h3>
+          </div>
+          <div class="fleet-modal" data-player="2">
+            <h3></h3>
+          </div>
+        </div>
+
+        <a href="./placement.html">Play Again</a>
+        <a href="../../index.html">Main Menu</a>
+      </div>
+    </dialog>
+
+      
+</body>
+</html>
