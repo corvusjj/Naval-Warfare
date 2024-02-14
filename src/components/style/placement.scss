@@ -1,3 +1,21 @@
+/* black-ops-one-regular - latin */
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Black Ops One';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../../fonts/black-ops-one-v20-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* oswald-regular - latin */
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Oswald';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../../fonts/oswald-v53-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
 $inner-color: #001833;
 $outer-color: #222d38;
 
@@ -10,10 +28,10 @@ $outer-color: #222d38;
 body {
     background: $outer-color;
     color: #dfdddd;
+    font-family: 'Oswald', sans-serif;
 }
 
 main {
-    // border: 1px solid #fff;
     display: grid;
     grid-template-columns: repeat(3, auto);
     align-items: center;
@@ -34,6 +52,9 @@ main {
     position: absolute;
     top: 3rem;
     left: 48%;
+    font-family: 'Black Ops One', serif;
+    font-weight: lighter;
+    letter-spacing: 2px;
 }
 
 .guide-container {
@@ -127,6 +148,8 @@ main {
         display: flex;
         justify-content: center;
         align-items: center;
+        font-family: inherit;
+        font-size: 1rem;
         cursor: pointer;
 
         &:hover {
@@ -142,7 +165,6 @@ main {
             width: 2.1rem;
             margin-right: 0.5rem;
         }
-
     }
 }
 
@@ -164,7 +186,9 @@ main {
 
         &::before {
             position: absolute;
-            bottom: -1.5rem;
+            bottom: -1.7rem;
+            left: 50%;
+            transform: translate(-50%);
         }
 
         &:nth-of-type(1)::before { content: 'Carrier'; }
@@ -271,8 +295,9 @@ main {
         height: 3.5rem;
         position: relative;
         text-align: left;
-        padding-left: 1.5rem;
+        padding-left: 1rem;
         filter: brightness(0.7);
+        font-family: inherit;
         pointer-events: none;
         cursor: pointer;
 
