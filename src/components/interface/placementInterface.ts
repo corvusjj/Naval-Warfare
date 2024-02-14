@@ -12,8 +12,11 @@ const boardsPanel = document.querySelector('.boards-panel')!;
 const resetFleetBtn = document.querySelector('#reset-btn');
 const randomFleetBtn = document.querySelector('#random-btn');
 const startBtn:HTMLButtonElement = document.querySelector('#start-btn')!;
+const wavesAudio:HTMLAudioElement = document.querySelector('#waves-audio')!;
 
- export interface PlayersData {
+wavesAudio.volume = 0.7;
+
+export interface PlayersData {
     vsComputer: boolean;
     players: string[];
 }
@@ -402,4 +405,5 @@ export function initialize() {
     resetFleetBtn?.addEventListener('click', resetPlacement);
     randomFleetBtn?.addEventListener('click', randomPlacement);
     startBtn.addEventListener('click', runStartBtn);
+    void wavesAudio.play();
 }
